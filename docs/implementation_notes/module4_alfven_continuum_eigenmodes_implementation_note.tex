@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\input{../shared/project_style.tex}
+\rhead{Module 4 Implementation Note}
+
+\begin{document}
+\DocTitle{Module 4 Implementation Note}{Reduced Alfv\'en Continuum and Eigenmode Benchmark}{Python/MATLAB architecture, algorithms, data products, tests, and reproducibility}
+
+\begin{overviewbox}
+\textbf{Status.} The first conventional solver milestone is implemented. Python execution and all repository tests pass in the build environment. MATLAB source and tests are complete but were not executed here because a MATLAB runtime is unavailable. The implementation is frozen as a reduced verification benchmark; no PINN is included in this milestone.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Implementation objectives}
+The implementation has six requirements:
+\begin{enumerate}[leftmargin=1.6em]
+\item read the same physical case in Python and MATLAB;
+\item assemble the same self-adjoint two-harmonic operator independently;
+\item produce ordered, normalized, sign-canonical eigenvectors;
+\item expose language-neutral output files;
+\item verify dimensions, symmetry, scaling, residuals, and grid convergence;
+\item preserve the existing Module 4 scaffold interface used by the repository backbone.
+\end{enumerate}
+
+\section{Repository paths}
+\begin{longtable}{p{0.42\linewidth} p{0.48\linewidth}}
+\toprule
+Path & Role\\
+\midrule
+\path{python/cases/reduced_ae_benchmark/case.json} & Python copy of the shared benchmark configuration.\\
+\path{matlab/cases/reduced_ae_benchmark/case.json} & Byte-identical MATLAB copy.\\
+\path{python/.../module4_alfven_continuum_eigenmodes/model.py} & Typed configuration and result containers.\\
+\path{python/.../module4_alfven_continuum_eigenmodes/benchmark.py} & Profiles, matrix assembly, eigensolve, convergence, and output writer.\\
+\path{python/.../module4_alfven_continuum_eigenmodes/solver.py} & Public module interface and backbone compatibility.\\
+\path{matlab/src/+kinetic_mhd_pinn/+module4_.../} & MATLAB package containing the equivalent numerical stages.\\
+\path{data/reference/reduced_ae_benchmark/} & Frozen Python reference outputs and figures.\\
+\path{python/tests/test_module4_reduced_ae.py} & Python physics, regression, and output-contract tests.\\
+\path{matlab/tests/test_module4_reduced_ae.m} & MATLAB physics and Python-reference comparison tests.\\
+\bottomrule
+\end{longtable}
+
+\section{Configuration schema}
+The JSON case contains five active groups: \texttt{geometry}, \texttt{profiles}, and \texttt{mode}, together with \texttt{numerics} and \texttt{verification}. Both implementations parse SI quantities without implicit unit conversion. The two case files are tested for byte equality to prevent silent language divergence.
+
+\begin{notebox}
+The duplicated JSON files are intentional because each language tree remains independently runnable. A test treats either file changing alone as an error.
+\end{notebox}
+
+\section{Python design}
+\subsection{Data classes}
+\path{model.py} defines immutable configuration dataclasses and result containers. Its \texttt{with\_updates} helper creates controlled parameter variants for scaling and convergence tests without mutating the baseline case.
+
+\subsection{Numerical pipeline}
+The Python call sequence is
+\begin{equation}
+\texttt{load\_case}
+\rightarrow
+\texttt{build\_profiles}
+\rightarrow
+\texttt{assemble\_operator}
+\rightarrow
+\texttt{solve\_benchmark}
+\rightarrow
+\texttt{write\_outputs}.
+\end{equation}
+The sparse eigensolve uses \texttt{scipy.sparse.linalg.eigsh} with the smallest-magnitude eigenpairs, a tolerance of $10^{-12}$, and a high iteration ceiling. The operator is positive for the baseline, so smallest magnitude and smallest algebraic eigenvalues coincide.
+
+\subsection{Public Module 4 interface}
+\texttt{AlfvenContinuumEigenmodesModule.run} retains the original architecture contract. The static method \texttt{solve\_case} invokes the actual benchmark. This avoids breaking early backbone tests while replacing the ``scaffold only'' status with a real, explicitly bounded capability.
+
+\section{MATLAB design}
+The MATLAB package follows the same numerical stages using package-qualified functions. \path{solver.m} has two behaviors: with no input it returns the original \texttt{ScaffoldModule}; with a path or decoded structure it runs \texttt{solve\_benchmark}. The eigensolve uses \texttt{eigs} with symmetric/real flags and the lowest real eigenpairs.
+
+MATLAB output names and columns match Python. The MATLAB case driver writes to \path{matlab/outputs/reduced_ae_benchmark}; it does not overwrite the frozen Python reference.
+
+\section{Finite-volume matrix construction}
+The coupling is scaled as $C=\epsilon_c\omega_m\omega_{m+1}$ times a Gaussian envelope, with $0\le\epsilon_c<1$ enforced in both languages so the local two-harmonic matrix remains positive definite. The scalar radial matrix is assembled explicitly from face coefficients. The left boundary contributes no flux. The right Dirichlet boundary contributes $2D(1)/h^2$ to the final diagonal because the face is half a cell from the last unknown. The two-harmonic block operator is assembled from two copies of this radial matrix, diagonal continuum terms, and a diagonal coupling block.
+
+The implementation deliberately uses the ordinary identity mass matrix. If later extensions use nonuniform quadrature, metric Jacobians, or finite elements, the problem should be generalized to
+\begin{equation}
+\mathbf A\mathbf x=\omega^2\mathbf B\mathbf x
+\end{equation}
+with a positive-definite mass matrix $\mathbf B$.
+
+\section{Eigenvector conventions}
+Raw eigenvectors from sparse solvers can differ by sign. Each vector is rescaled so that
+\begin{equation}
+h\mathbf x^{\mathsf T}\mathbf x=1,
+\end{equation}
+and then flipped if its largest-magnitude component is negative. This makes CSV regression and Python/MATLAB comparisons reproducible while respecting the physically arbitrary global sign.
+
+For future degenerate or nearly degenerate eigenspaces, individual eigenvector comparison will be insufficient. Subspace angles or projector differences should then replace component correlations.
+
+\section{Output definitions}
+All numerical tables use comma-separated text to support MATLAB, Python, and external inspection. Frequencies are written in both angular units and hertz. Metadata records the exact normalization and boundary conditions. Figures are secondary products; CSV and JSON files are authoritative.
+
+\section{Automated tests}
+\subsection{Python tests executed in this build}
+The test suite verifies:
+\begin{enumerate}[leftmargin=1.6em]
+\item byte-identical Python/MATLAB case files;
+\item positive density and Alfv\'en speed;
+\item analytic crossing inside the domain and a nonzero avoided crossing;
+\item matrix symmetry and positive computed eigenvalues;
+\item eigenvector normalization and small algebraic residuals;
+\item exact $B_0$ and density scaling;
+\item zero off-diagonal blocks and ordered uncoupled branches when coupling is disabled;
+\item monotonic grid-refinement improvement;
+\item regression against frozen eigenfrequencies;
+\item completeness of the language-neutral output contract;
+\item preservation of the original repository architecture tests.
+\end{enumerate}
+
+\subsection{MATLAB tests}
+The MATLAB suite repeats symmetry, residual, normalization, scaling, convergence, and reference-frequency tests. It can be executed with
+\begin{verbatim}
+cd matlab
+addpath('src')
+results = runtests('tests');
+assert(all([results.Passed]));
+\end{verbatim}
+The repository test script runs MATLAB automatically when the executable is on the system path.
+
+\section{Running the benchmark}
+From the repository root, the Python reference case is regenerated with
+\begin{verbatim}
+python python/cases/reduced_ae_benchmark/run_case.py --doc-figures
+\end{verbatim}
+A user-selected output directory can be supplied with \texttt{--output}. The MATLAB case is run with
+\begin{verbatim}
+cd matlab
+addpath('src')
+addpath('cases/reduced_ae_benchmark')
+run_case
+\end{verbatim}
+
+After MATLAB outputs exist, cross-language comparison is run with
+\begin{verbatim}
+python python/cases/reduced_ae_benchmark/compare_python_matlab.py \
+  data/reference/reduced_ae_benchmark \
+  matlab/outputs/reduced_ae_benchmark
+\end{verbatim}
+The comparator checks eigenfrequency differences and sign-invariant component correlations.
+
+\section{Failure behavior}
+The solvers fail explicitly for nonpositive field, radius, or density; invalid edge-density fraction; nonadjacent harmonics in the baseline model; too few radial cells; invalid eigenpair count; zero eigenvectors; or nonpositive computed $\omega^2$. These checks prevent silently generating meaningless reference data.
+
+\section{Reproducibility and limitations}
+The reference CSV files are generated by Python in the current environment. MATLAB parity is specified and testable but not claimed as executed. Sparse eigensolvers can show small platform-dependent variation, so cross-language tolerance is looser than same-language regression tolerance.
+
+No machine-learning code is part of this update. Module 9 will later consume this benchmark as a trusted target for an eigenvalue PINN. The conventional solver, case JSON, and reference outputs should be versioned before training data or surrogate results are added.
+
+\section{Next implementation milestone}
+The next narrowly defined milestone should implement an eigenvalue PINN for the coupled radial-envelope equations in Section~7 of the physics note. Its acceptance criteria should include frequency error, eigenfunction error up to sign, differential residual, boundary residual, normalization, orthogonality, and robustness across parameter scans. The PINN must not replace the matrix solver as the reference implementation.
+
+\end{document}
