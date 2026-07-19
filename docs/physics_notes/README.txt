@@ -1,0 +1,7 @@
+Physics notes are maintained as LaTeX sources and compiled PDFs using ../shared/project_style.tex.
+
+Advanced module notes live directly in this directory. Module 1 is a completed 58-page textbook physics note, version 1.0; its main LaTeX driver includes maintainable section files in module1_sections/. Its implementation note still correctly states that no validated three-dimensional equilibrium solver exists. Module 4 is a completed 77-page textbook physics note, version 2.0, and the first executable conventional numerical benchmark. Its main driver includes maintainable section files in module4_sections/. The Module 4 chapter preserves the frozen two-harmonic solver results while distinguishing a verified TAE-like avoided crossing from a predictive or strongly localized stellarator TAE. The other advanced module notes remain scaffolds unless their overview states otherwise.
+
+The basics/ subdirectory contains a numbered 100-note prerequisite curriculum spanning mathematics, electromagnetism, plasma physics, MHD, kinetic theory, fusion, stellarators, computational methods, multiphysics coupling, PINNs, and GNNs. Thirty notes are standalone textbook drafts, version 1.0, and seventy remain curriculum scaffolds. See basics/README.md, basics/basics_index.pdf, and basics/curriculum_manifest.json.
+
+Advanced notes should include a prerequisite section that cites stable basics-note numbers and filenames. Modules 1 and 4 currently demonstrate this policy and are modularized for section-by-section maintenance.

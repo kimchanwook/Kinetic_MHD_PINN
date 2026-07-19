@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+\input{../shared/project_style.tex}
+\rhead{Module 1 Physics Note}
+
+\begin{document}
+\DocTitle{Module 1: Stellarator Equilibrium and Magnetic Geometry}{Textbook Physics Note, Version 1.0}{From elementary magnetic confinement to three-dimensional flux coordinates and equilibrium data products}
+
+\begin{overviewbox}
+\textbf{Purpose and status.} This chapter develops the physics and mathematics needed to understand a stellarator equilibrium from the beginning. It assumes no prior plasma-physics background beyond elementary calculus and vectors. Every abbreviation is expanded at first use, every coordinate and field variable is defined, and the physical meaning of the principal equations is stated alongside the mathematics. The chapter explains what an equilibrium is, how magnetic surfaces and field lines are represented, what rotational transform and magnetic shear mean, why a stellarator requires a genuinely three-dimensional description, and which geometric quantities must be delivered to the remaining kinetic-magnetohydrodynamic modules. This is a completed educational physics note. It does \emph{not} claim that a validated three-dimensional equilibrium solver has been implemented in this repository; the corresponding implementation note remains a solver plan.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section*{How to use this chapter}
+\addcontentsline{toc}{section}{How to use this chapter}
+A reader encountering plasma confinement for the first time should read Sections~\ref{sec:physical_picture}--\ref{sec:equilibrium_equations} in order. Sections~\ref{sec:flux_surfaces}--\ref{sec:magnetic_coordinates} introduce the geometry that is required by Module~4, which computes Alfv\'en continua and eigenmodes. Sections~\ref{sec:fourier_geometry}--\ref{sec:equilibrium_solvers} explain how three-dimensional stellarator equilibria are represented and computed. Sections~\ref{sec:outputs}--\ref{sec:verification} define the data products and verification obligations for the project.
+
+The central dependency chain is
+\begin{equation}
+\begin{aligned}
+\text{coils and plasma profiles}
+&\longrightarrow \text{magnetohydrodynamic force balance}\\
+&\longrightarrow \text{magnetic surfaces and field-line geometry}\\
+&\longrightarrow \text{orbit, wave, and transport calculations}.
+\end{aligned}
+\end{equation}
+The purpose of Module~1 is to establish the first three links reliably enough that every downstream calculation uses a common geometry and a common set of conventions.
+
+\begin{physicsbox}
+\textbf{Learning objectives.} After completing this chapter, the reader should be able to:
+\begin{enumerate}[leftmargin=1.6em]
+\item explain why toroidal magnetic confinement requires helical field-line winding;
+\item derive the static ideal-magnetohydrodynamic force-balance equation and interpret magnetic pressure and tension;
+\item define magnetic surfaces, toroidal and poloidal flux, rotational transform, safety factor, and magnetic shear;
+\item distinguish geometric angles from straight-field-line magnetic coordinates;
+\item interpret three-dimensional stellarator Fourier coefficients and field periods;
+\item describe fixed-boundary and free-boundary equilibrium calculations;
+\item identify the geometry, derivatives, metrics, and metadata required by the downstream orbit, wave, transport, and surrogate modules; and
+\item design verification tests that separate numerical convergence from physical validation.
+\end{enumerate}
+\end{physicsbox}
+
+\section*{Recommended prerequisite basics notes}
+\addcontentsline{toc}{section}{Recommended prerequisite basics notes}
+This chapter is designed to be readable without first completing the entire basics curriculum. The following notes provide useful parallel explanations.
+
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.15\textwidth} >{\RaggedRight\arraybackslash}p{0.28\textwidth} >{\RaggedRight\arraybackslash}p{0.47\textwidth}}
+\toprule
+\textbf{Basics note} & \textbf{Subject} & \textbf{Connection to Module 1}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Basics note} & \textbf{Subject} & \textbf{Connection to Module 1}\\
+\midrule
+\endhead
+\href{run:basics/basics_01_units_dimensions_and_normalization.pdf}{Basics 01} & Units, dimensions, and normalization & Reviews the International System of Units, dimensional checks, characteristic scales, and normalized variables.\\
+\href{run:basics/basics_02_vectors_fields_and_coordinate_systems.pdf}{Basics 02} & Vectors, fields, and coordinates & Introduces vector components, basis vectors, cylindrical coordinates, and curvilinear coordinates.\\
+\href{run:basics/basics_03_vector_calculus_for_plasma_physics.pdf}{Basics 03} & Vector calculus & Reviews gradient, divergence, curl, flux, and integral theorems.\\
+\href{run:basics/basics_11_electric_and_magnetic_fields.pdf}{Basics 11} & Electric and magnetic fields & Introduces electromagnetic fields and their physical interpretation.\\
+\href{run:basics/basics_12_maxwell_equations.pdf}{Basics 12} & Maxwell equations & Gives the field equations from which the magnetostatic relations used here are obtained.\\
+\href{run:basics/basics_17_what_is_a_plasma.pdf}{Basics 17} & What is a plasma? & Explains quasineutrality, collective behavior, species, and plasma parameters.\\
+\href{run:basics/basics_21_single_fluid_and_multifluid_descriptions.pdf}{Basics 21} & Fluid descriptions & Explains how particle species are represented by density, velocity, and pressure fields.\\
+\href{run:basics/basics_24_derivation_of_ideal_magnetohydrodynamics.pdf}{Basics 24} & Ideal magnetohydrodynamics & Derives the bulk equations whose time-independent limit defines the present equilibrium problem.\\
+\href{run:basics/basics_26_ideal_ohms_law_and_flux_freezing.pdf}{Basics 26} & Ideal Ohm's law and flux freezing & Explains why magnetic field lines move with a highly conducting ideal plasma.\\
+\href{run:basics/basics_59_magnetic_confinement_concepts.pdf}{Basics 59} & Magnetic-confinement concepts & Provides a shorter conceptual introduction to toroidal confinement.\\
+\href{run:basics/basics_60_tokamaks_and_stellarators.pdf}{Basics 60} & Tokamaks and stellarators & Compares the two principal toroidal magnetic-confinement concepts.\\
+\href{run:basics/basics_61_toroidal_coordinates_and_magnetic_surfaces.pdf}{Basics 61} & Toroidal coordinates and magnetic surfaces & Develops the geometric language used in Sections~\ref{sec:flux_surfaces}--\ref{sec:magnetic_coordinates}.\\
+\href{run:basics/basics_62_rotational_transform_magnetic_shear_and_resonances.pdf}{Basics 62} & Rotational transform and shear & Expands the field-line winding concepts used throughout the project.\\
+\href{run:basics/basics_63_stellarator_symmetry_and_fourier_geometry.pdf}{Basics 63} & Stellarator symmetry and Fourier geometry & Gives a focused account of the spectral surface representation used in Section~\ref{sec:fourier_geometry}.\\
+\href{run:basics/basics_65_magnetic_field_coils_and_biot_savart_law.pdf}{Basics 65} & Coils and the Biot--Savart law & Connects engineering coil currents to the vacuum magnetic field.\\
+\href{run:basics/basics_66_mhd_equilibrium_codes_and_vmec_concepts.pdf}{Basics 66} & Equilibrium codes and VMEC concepts & Gives a companion introduction to numerical three-dimensional equilibrium solvers.\\
+\bottomrule
+\caption{Recommended supporting notes. Basics 59--66 are curriculum scaffolds in the present repository baseline; Module 1 supplies the complete first-pass explanation needed here.}
+\label{tab:module1_prerequisites}
+\end{longtable}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+AE & Alfv\'en eigenmode & A coherent oscillation whose restoring force is largely magnetic tension; computed in Module 4.\\
+Boozer coordinates & Straight-field-line magnetic coordinates & Flux coordinates in which magnetic-field representations are especially useful for particle orbits and neoclassical transport.\\
+Cylindrical coordinates & $(R,\phi,Z)$ & $R$ is distance from the symmetry axis, $\phi$ is the geometric toroidal angle, and $Z$ is vertical position.\\
+EP & Energetic particle & A particle population with energy well above the bulk thermal energy, such as fusion-born alpha particles or neutral-beam ions.\\
+FEM & Finite-element method & A numerical method based on weak forms and piecewise basis functions.\\
+FFT & Fast Fourier transform & An efficient algorithm for converting sampled periodic data to Fourier coefficients and back.\\
+LCFS & Last closed flux surface & The outermost closed magnetic surface used to define the confined plasma region in a nested-surface model.\\
+MHD & Magnetohydrodynamics & A fluid description in which a conducting plasma interacts with electric and magnetic fields.\\
+NBI & Neutral beam injection & A heating and current-drive method that injects fast neutral atoms, which ionize inside the plasma.\\
+PINN & Physics-informed neural network & A neural approximation constrained partly by differential-equation residuals and boundary conditions.\\
+QA & Quasi-axisymmetry & A form of quasisymmetry in which magnetic-field strength is approximately axisymmetric in suitable magnetic coordinates.\\
+QH & Quasi-helical symmetry & A form of quasisymmetry in which magnetic-field strength approximately follows a helical symmetry.\\
+SI & International System of Units & The unit system used unless a normalized variable is explicitly introduced.\\
+VMEC & Variational Moments Equilibrium Code & A widely used code that computes ideal-MHD equilibria with nested magnetic surfaces using a variational formulation.\\
+$\mathbf x$ & Position vector & A point in physical three-dimensional space, usually measured in metres.\\
+$(x,y,z)$ & Cartesian coordinates & Orthogonal coordinates used for general vector operations.\\
+$(R,\phi,Z)$ & Cylindrical coordinates & Coordinates adapted to toroidal devices; $\phi$ increases around the major axis.\\
+$(s,\theta,\zeta)$ & Magnetic flux coordinates & $s$ labels a magnetic surface, $\theta$ is a poloidal angle, and $\zeta$ is a toroidal angle.\\
+$R_0$ & Reference major radius & A characteristic distance from the device symmetry axis to the magnetic axis.\\
+$a$ & Reference minor radius & A characteristic cross-sectional radius of the plasma.\\
+$A$ & Aspect ratio & The dimensionless ratio $A=R_0/a$.\\
+$N_{\mathrm{fp}}$ & Number of field periods & Number of repeated toroidal sectors in a stellarator magnetic configuration.\\
+$\mathbf B$ & Magnetic flux density & The magnetic field measured in tesla; $B=|\mathbf B|$ is its magnitude.\\
+$\mathbf b$ & Magnetic-field unit vector & $\mathbf b=\mathbf B/B$.\\
+$\mathbf E$ & Electric field & Force per unit charge, measured in volts per metre.\\
+$\mathbf J$ & Electric current density & Electric current per unit area, measured in amperes per square metre.\\
+$p$ & Scalar plasma pressure & Isotropic thermodynamic pressure, measured in pascals, in the ideal-MHD equilibrium model.\\
+$\rho_m$ & Mass density & Plasma mass per unit volume, measured in kilograms per cubic metre.\\
+$n_s$ & Number density of species $s$ & Number of particles of species $s$ per unit volume.\\
+$T_s$ & Temperature of species $s$ & Thermal energy scale; when stated in kelvin it is multiplied by Boltzmann's constant in energy expressions.\\
+$q_s$ & Charge of species $s$ & Electric charge of a particle species.\\
+$m_s$ & Mass of species $s$ & Particle mass of species $s$.\\
+$\mu_0$ & Vacuum permeability & Magnetic constant, approximately $4\pi\times10^{-7}\ \mathrm{H\,m^{-1}}$.\\
+$\epsilon_0$ & Vacuum permittivity & Electric constant in Maxwell's equations.\\
+$\psi$ & Toroidal-flux coordinate & A magnetic-surface label proportional to toroidal magnetic flux; the exact normalization must always be stated.\\
+$\Psi_t$ & Toroidal magnetic flux & Magnetic flux through a poloidal cross-section bounded by a magnetic surface.\\
+$\Psi_p$ & Poloidal magnetic flux & Magnetic flux through a toroidal ribbon bounded by a magnetic surface.\\
+$s$ & Normalized flux coordinate & Commonly $s=\Psi_t/\Psi_{t,a}$, where the subscript $a$ denotes the plasma boundary.\\
+$\rho$ & Normalized radius & Often $\rho=\sqrt{s}$; this symbol is not the mass density $\rho_m$.\\
+$\theta$ & Poloidal magnetic angle & Periodic angle that advances around a short way through the plasma cross-section.\\
+$\zeta$ & Toroidal magnetic angle & Periodic angle that advances around the long way through the torus.\\
+$\iota$ & Rotational transform & Average poloidal turns per toroidal turn made by a magnetic field line.\\
+$q$ & Safety factor & In the convention used here, $q=1/\iota$; common in tokamak literature.\\
+$\hat s$ & Magnetic shear & A dimensionless measure of radial variation of field-line pitch; a specific definition is given in Section~\ref{sec:iota}.\\
+$m$ & Poloidal mode number & Integer counting variation in the poloidal angle.\\
+$n$ & Toroidal mode number & Integer counting variation in the toroidal angle under the stated Fourier convention.\\
+$\sqrt{g}$ & Coordinate Jacobian & Volume scale factor satisfying $dV=\sqrt{g}\,ds\,d\theta\,d\zeta$.\\
+$g_{ij}$ & Covariant metric tensor & Dot products of covariant basis vectors: $g_{ij}=\partial_i\mathbf x\cdot\partial_j\mathbf x$.\\
+$g^{ij}$ & Contravariant metric tensor & Dot products of gradients: $g^{ij}=\nabla u^i\cdot\nabla u^j$, where $u^i$ denotes a coordinate.\\
+$V(s)$ & Enclosed volume & Physical volume inside the surface labeled by $s$.\\
+$V'(s)$ & Differential volume & Derivative $dV/ds$, used in flux-surface transport equations.\\
+$\langle A\rangle_s$ & Flux-surface average & Surface-weighted average of a scalar $A$ over the magnetic surface $s$.\\
+$\boldsymbol\kappa$ & Magnetic curvature & $\boldsymbol\kappa=\mathbf b\cdot\nabla\mathbf b$, directed toward the local center of curvature of a field line.\\
+$\beta$ & Plasma beta & Ratio of plasma pressure to magnetic pressure; a precise local or volume-averaged definition must be stated.\\
+$W$ & MHD energy functional & Total magnetic plus internal energy used in a variational equilibrium formulation.\\
+$\gamma_{\mathrm{ad}}$ & Adiabatic index & Ratio of specific heats in an ideal-gas pressure model; not an instability growth rate.\\
+$\omega$ & Angular frequency & Oscillation rate in radians per second.\\
+$k_\parallel$ & Parallel wave number & Spatial phase variation per unit length along $\mathbf B$.\\
+\end{symtable}
+
+
+% The chapter is modularized so each major block can be audited and compiled independently.
+\input{module1_sections/01_physical_foundations}
+\input{module1_sections/02_toroidal_coordinates_and_flux_surfaces}
+\input{module1_sections/03_rotational_transform_and_shear}
+\input{module1_sections/04_magnetic_flux_coordinates}
+\input{module1_sections/05_surface_averages_and_fourier_geometry}
+\input{module1_sections/06_coils_boundaries_and_profiles}
+\input{module1_sections/07_three_dimensional_geometry_and_downstream_quantities}
+\input{module1_sections/08_reduced_analytic_equilibrium}
+\input{module1_sections/09_numerical_equilibrium_solution}
+\input{module1_sections/10_coordinate_transformation_and_interpolation}
+\input{module1_sections/11_module1_output_contract}
+\input{module1_sections/12_worked_examples}
+\input{module1_sections/13_verification_surrogates_and_limitations}
+\input{module1_sections/14_summary_and_appendices}
+\input{module1_sections/15_references}
+
+\end{document}

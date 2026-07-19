@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\input{../shared/project_style.tex}
+\rhead{Module 5 Physics Note}
+
+\begin{document}
+\DocTitle{Module 5: Kinetic Energetic-Particle Drive and Damping}{Physics-Note Scaffold for \texttt{Kinetic\_MHD\_PINN}}{Module boundary, mathematical anchor, interfaces, verification obligations, and surrogate role}
+
+\begin{overviewbox}
+\textbf{Purpose of this scaffold.} Evaluate resonant energetic-particle drive and reduced damping contributions to determine whether each Alfvén eigenmode grows or decays. This document establishes the module boundary before a full derivation or implementation is written. Statements labeled as planned work are not claims of a completed solver.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Prerequisite basics notes}
+This advanced module is still a scaffold, but its required conceptual path is now explicit. The recommended reading order is
+\begin{equation}
+32\rightarrow34\rightarrow35\rightarrow37\rightarrow39\rightarrow40,
+\qquad
+41\rightarrow42\rightarrow44\rightarrow48.
+\end{equation}
+\begin{longtable}{p{0.12\linewidth} p{0.42\linewidth} p{0.36\linewidth}}
+\toprule
+\textbf{Note} & \textbf{Standalone prerequisite} & \textbf{Role in Module 5}\\
+\midrule
+Basics 32 & \href{run:basics/basics_32_alfven_waves_from_first_principles.pdf}{Alfv\'en Waves from First Principles} & Defines the fluid wave and Alfv\'en speed.\\
+Basics 34 & \href{run:basics/basics_34_parallel_wave_number_and_field_line_propagation.pdf}{Parallel Wave Number and Field-Line Propagation} & Defines $k_\parallel$ and field-line phase.\\
+Basics 35 & \href{run:basics/basics_35_alfven_continuum.pdf}{Alfv\'en Continuum} & Locates continuum branches and resonant surfaces.\\
+Basics 37 & \href{run:basics/basics_37_toroidal_alfven_eigenmodes.pdf}{Toroidal Alfv\'en Eigenmodes} & Supplies the discrete gap-mode structure.\\
+Basics 39 & \href{run:basics/basics_39_wave_particle_resonance.pdf}{Wave-Particle Resonance} & Derives orbital synchronism and resonant power transfer.\\
+Basics 40 & \href{run:basics/basics_40_growth_damping_and_complex_frequency.pdf}{Growth, Damping, and Complex Frequency} & Defines net $\gamma$, thresholds, and saturation.\\
+Basics 41 & \href{run:basics/basics_41_phase_space_and_distribution_functions.pdf}{Phase Space and Distribution Functions} & Defines measures, moments, and marker weights.\\
+Basics 42 & \href{run:basics/basics_42_vlasov_equation.pdf}{Vlasov Equation} & Provides the collisionless kinetic parent equation.\\
+Basics 44 & \href{run:basics/basics_44_guiding_center_theory.pdf}{Guiding-Center Theory} & Provides reduced orbit frequencies and invariants.\\
+Basics 48 & \href{run:basics/basics_48_energetic_particle_distributions.pdf}{Energetic-Particle Distributions} & Defines alpha/NBI distributions and free-energy gradients.\\
+\bottomrule
+\end{longtable}
+
+
+\SymbolsAcronymsSection
+\begin{symtable}
+AE & Alfv\'en eigenmode & A discrete shear-Alfv\'en mode that can interact resonantly with energetic particles.\\
+EP & Energetic particle & Fusion-born alpha particle, neutral-beam ion, or other suprathermal population.\\
+MHD & Magnetohydrodynamics & Fluid description of the bulk plasma and magnetic field.\\
+PINN & Physics-informed neural network & Neural approximation trained with governing-equation and boundary-condition residuals.\\
+$\psi$ & Flux-surface coordinate & Reduced radial coordinate labeling nested magnetic surfaces when such surfaces exist.\\
+$f_f$ & Energetic-particle distribution & Reduced or full phase-space distribution of the fast-ion population.\\
+$\omega$ & Mode frequency & Real oscillation frequency unless a complex convention is stated.\\
+$\gamma$ & Growth rate & Positive for instability and negative for damping under the adopted convention.\\
+$\mathbf U$ & Coupled state & Collection of fields and reduced variables exchanged among modules.\\
+\end{symtable}
+
+\section{Scope}
+\textbf{Module purpose.} Evaluate resonant energetic-particle drive and reduced damping contributions to determine whether each Alfvén eigenmode grows or decays.
+
+\textbf{Upstream dependency.} Modules 2--4.
+
+\textbf{Primary input contract.} mode structure, mode frequency, equilibrium, orbit frequencies, and $f_f$.
+
+\textbf{Primary output contract.} $\gamma_{\mathrm{EP}}$, damping terms, net $\gamma_j$, resonance maps, and stability labels.
+
+\section{Mathematical starting point}
+The first governing-equation anchor for this module is
+\begin{equation}
+\gamma_j=\gamma_{\mathrm{EP},j}-\gamma_{\mathrm{cont},j}-\gamma_{\mathrm{Landau},j}-\gamma_{\mathrm{FLR},j}-\gamma_{\mathrm{other},j}.
+\end{equation}
+A full version of this note must define every normalization, sign convention, coordinate system, boundary condition, initial condition, closure, and approximation used to turn this anchor into a solvable model.
+
+\section{Planned fidelity progression}
+\begin{enumerate}[leftmargin=1.6em]
+\item Analytic or manufactured limit with a known qualitative or quantitative solution.
+\item Reduced executable model with explicit assumptions and independent verification.
+\item Coupled interface test using synthetic upstream data.
+\item Higher-fidelity or external-code comparison when a trusted reference becomes available.
+\end{enumerate}
+
+\section{Numerical-method obligations}
+The implementation note for this module must specify:
+\begin{itemize}[leftmargin=1.6em]
+\item state representation and units;
+\item spatial, temporal, velocity-space, or spectral discretization as applicable;
+\item solver and convergence criteria;
+\item conservation, positivity, symmetry, and invariant checks;
+\item input/output schema and interpolation/remapping policy;
+\item uncertainty sources and failure flags.
+\end{itemize}
+
+\section{Physics-inspired surrogate opportunity}
+Physics-regularized surrogate mapping equilibrium and energetic-particle distributions to mode frequency, growth rate, and uncertainty.
+
+A surrogate is acceptable only if its validation includes out-of-distribution tests, physical-residual checks, conserved-quantity error, and comparison against a conventional solver or trusted reference. A low data error alone is insufficient.
+
+\section{Coupling role}
+This module exchanges data through typed project state products rather than direct access to another solver's internal arrays. Coupling code belongs in Module 8. Any feedback edge introduced here must identify its physical mechanism, direction, natural timescale, units, and whether the exchange is explicit, lagged, or iterated.
+
+\section{Verification checklist}
+\begin{enumerate}[leftmargin=1.6em]
+\item Confirm dimensional consistency and adopted normalization.
+\item Recover at least one analytic or manufactured limit.
+\item Demonstrate convergence with resolution or basis size.
+\item Quantify sensitivity to boundary/initial conditions and closure parameters.
+\item Verify relevant particle, energy, momentum, or phase-space budgets.
+\item Record known nonphysical regimes and solver failure behavior.
+\end{enumerate}
+
+\section{Planned references}
+The completed note should cite primary literature for the governing model, a trusted numerical-method reference, and benchmark or validation sources. References will be selected when this module becomes an active implementation target.
+
+\end{document}

@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+\input{../shared/project_style.tex}
+\rhead{Module 11 Physics Note}
+
+\begin{document}
+\DocTitle{Module 11: GNN Physical Dependency Discovery and Coupling Optimization}{Physics-Note Scaffold for \texttt{Kinetic\_MHD\_PINN}}{Module boundary, mathematical anchor, interfaces, verification obligations, and surrogate role}
+
+\begin{overviewbox}
+\textbf{Purpose of this scaffold.} Infer directed physical-variable dependencies, feedback groups, state-dependent coupling strengths, and candidate numerical exchange sequences from synthetic interventions. This document establishes the module boundary before a full derivation or implementation is written. Statements labeled as planned work are not claims of a completed solver.
+\end{overviewbox}
+
+\ProjectTOC
+
+\SymbolsAcronymsSection
+\begin{symtable}
+AE & Alfv\'en eigenmode & A discrete shear-Alfv\'en mode that can interact resonantly with energetic particles.\\
+EP & Energetic particle & Fusion-born alpha particle, neutral-beam ion, or other suprathermal population.\\
+MHD & Magnetohydrodynamics & Fluid description of the bulk plasma and magnetic field.\\
+PINN & Physics-informed neural network & Neural approximation trained with governing-equation and boundary-condition residuals.\\
+$\psi$ & Flux-surface coordinate & Reduced radial coordinate labeling nested magnetic surfaces when such surfaces exist.\\
+$f_f$ & Energetic-particle distribution & Reduced or full phase-space distribution of the fast-ion population.\\
+$\omega$ & Mode frequency & Real oscillation frequency unless a complex convention is stated.\\
+$\gamma$ & Growth rate & Positive for instability and negative for damping under the adopted convention.\\
+$\mathbf U$ & Coupled state & Collection of fields and reduced variables exchanged among modules.\\
+\end{symtable}
+
+\section{Scope}
+\textbf{Module purpose.} Infer directed physical-variable dependencies, feedback groups, state-dependent coupling strengths, and candidate numerical exchange sequences from synthetic interventions.
+
+\textbf{Upstream dependency.} Module 8 trajectories and controlled synthetic interventions.
+
+\textbf{Primary input contract.} multimodule trajectories, intervention labels, mechanism switches, time lags, and candidate graph priors.
+
+\textbf{Primary output contract.} directed typed graphs, edge strengths and lags, strongly connected feedback groups, and ranked coupling strategies.
+
+\section{Mathematical starting point}
+The first governing-equation anchor for this module is
+\begin{equation}
+\widehat G=\arg\min_G\left(\mathcal L_{\mathrm{trajectory}}+\lambda_{\mathrm{phys}}\mathcal L_{\mathrm{admissibility}}+\lambda_{\mathrm{sparse}}\lVert G\rVert_1\right).
+\end{equation}
+A full version of this note must define every normalization, sign convention, coordinate system, boundary condition, initial condition, closure, and approximation used to turn this anchor into a solvable model.
+
+\section{Planned fidelity progression}
+\begin{enumerate}[leftmargin=1.6em]
+\item Analytic or manufactured limit with a known qualitative or quantitative solution.
+\item Reduced executable model with explicit assumptions and independent verification.
+\item Coupled interface test using synthetic upstream data.
+\item Higher-fidelity or external-code comparison when a trusted reference becomes available.
+\end{enumerate}
+
+\section{Numerical-method obligations}
+The implementation note for this module must specify:
+\begin{itemize}[leftmargin=1.6em]
+\item state representation and units;
+\item spatial, temporal, velocity-space, or spectral discretization as applicable;
+\item solver and convergence criteria;
+\item conservation, positivity, symmetry, and invariant checks;
+\item input/output schema and interpolation/remapping policy;
+\item uncertainty sources and failure flags.
+\end{itemize}
+
+\section{Physics-inspired surrogate opportunity}
+Graph learning complements rather than replaces physical reasoning: causality, conservation, and timescale constraints remain hard admissibility filters.
+
+A surrogate is acceptable only if its validation includes out-of-distribution tests, physical-residual checks, conserved-quantity error, and comparison against a conventional solver or trusted reference. A low data error alone is insufficient.
+
+\section{Coupling role}
+This module exchanges data through typed project state products rather than direct access to another solver's internal arrays. Coupling code belongs in Module 8. Any feedback edge introduced here must identify its physical mechanism, direction, natural timescale, units, and whether the exchange is explicit, lagged, or iterated.
+
+\section{Verification checklist}
+\begin{enumerate}[leftmargin=1.6em]
+\item Confirm dimensional consistency and adopted normalization.
+\item Recover at least one analytic or manufactured limit.
+\item Demonstrate convergence with resolution or basis size.
+\item Quantify sensitivity to boundary/initial conditions and closure parameters.
+\item Verify relevant particle, energy, momentum, or phase-space budgets.
+\item Record known nonphysical regimes and solver failure behavior.
+\end{enumerate}
+
+\section{Planned references}
+The completed note should cite primary literature for the governing model, a trusted numerical-method reference, and benchmark or validation sources. References will be selected when this module becomes an active implementation target.
+
+\end{document}

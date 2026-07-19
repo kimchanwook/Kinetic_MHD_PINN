@@ -1,0 +1,126 @@
+\documentclass[11pt]{article}
+\input{../shared/project_style.tex}
+\rhead{Module 4 Textbook Note}
+
+\begin{document}
+\DocTitle{Module 4: Alfv\'en Continuum and Fluid-MHD Eigenmodes}{From magnetic tension to a verified coupled-harmonic eigenvalue benchmark}{Textbook physics note, version 2.0; conventional Python and MATLAB benchmark retained unchanged}
+
+\begin{overviewbox}
+\textbf{Textbook note, version 2.0.} This chapter develops the fluid-magnetohydrodynamic description of shear-Alfv\'en waves from the ideal-MHD equations, explains why nonuniform toroidal and stellarator plasmas possess an Alfv\'en continuous spectrum, derives geometric harmonic coupling and spectral gaps, and then constructs the project's verified two-harmonic radial eigenvalue benchmark. The presentation is self-contained enough for a reader with no prior plasma-wave background: every acronym, symbol, approximation, boundary condition, numerical operation, and verification metric is defined. The implemented benchmark remains intentionally reduced. It is a transparent verification target for later kinetic-drive and physics-informed machine-learning modules, not a predictive three-dimensional stellarator stability calculation.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section*{Prerequisite basics notes and reading path}
+\addcontentsline{toc}{section}{Prerequisite basics notes and reading path}
+The chapter rederives its central results, but the standalone basics notes provide slower introductions and additional exercises. The first six entries are completed textbook drafts. Basics 69 and 73 remain explicit scaffolds in the present curriculum, so their numerical material is developed directly and fully in this chapter.
+
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.14\textwidth} >{\RaggedRight\arraybackslash}p{0.29\textwidth} >{\RaggedRight\arraybackslash}p{0.47\textwidth}}
+\toprule
+\textbf{Basics note} & \textbf{Subject} & \textbf{Role in Module 4}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Basics note} & \textbf{Subject} & \textbf{Role in Module 4}\\
+\midrule
+\endhead
+\href{run:basics/basics_29_linearization_of_mhd_equations.pdf}{Basics 29} & Linearization of MHD equations & Equilibrium-plus-perturbation expansions, first-order equations, normal modes, and the origin of an eigenvalue problem.\\
+\href{run:basics/basics_32_alfven_waves_from_first_principles.pdf}{Basics 32} & Alfv\'en waves from first principles & Magnetic tension, shear polarization, the Alfv\'en speed, and the uniform-plasma dispersion relation.\\
+\href{run:basics/basics_34_parallel_wave_number_and_field_line_propagation.pdf}{Basics 34} & Parallel wave number and field-line propagation & Fourier conventions, field-line pitch, rotational transform, rational surfaces, and $k_\parallel$.\\
+\href{run:basics/basics_35_alfven_continuum.pdf}{Basics 35} & Alfv\'en continuum & Local continuum frequencies, resonant surfaces, phase mixing, and the distinction between a continuum and a discrete spectrum.\\
+\href{run:basics/basics_36_coupled_harmonics_and_avoided_crossings.pdf}{Basics 36} & Coupled harmonics and avoided crossings & Two-mode matrices, eigenvalue repulsion, mixing angles, gap formation, and positivity.\\
+\href{run:basics/basics_37_toroidal_alfven_eigenmodes.pdf}{Basics 37} & Toroidicity-induced Alfv\'en eigenmodes & Neighboring-harmonic coupling, TAE gaps, global mode localization, and links to energetic-particle physics.\\
+\href{run:basics/basics_69_finite_volume_methods.pdf}{Basics 69} & Finite-volume methods & Control-volume integration, face fluxes, conservative radial discretization, and boundary-face treatment.\\
+\href{run:basics/basics_73_numerical_eigenvalue_solvers.pdf}{Basics 73} & Numerical eigenvalue solvers & Sparse symmetric matrices, Lanczos iteration, residuals, normalization, orthogonality, and mode tracking.\\
+\bottomrule
+\caption{Recommended prerequisite path. A focused first reading is 29 $\rightarrow$ 32 $\rightarrow$ 34 $\rightarrow$ 35 $\rightarrow$ 36 $\rightarrow$ 37, followed by the numerical sections of this chapter.}
+\label{tab:module4_prerequisites}
+\end{longtable}
+
+\begin{notebox}
+\textbf{Relationship to Module 1.} Module 1 supplies the equilibrium magnetic geometry, density, magnetic-field strength, rotational transform, flux coordinates, metric coefficients, and boundary surfaces on which a realistic Module 4 calculation would operate. The present benchmark replaces those high-dimensional inputs by analytic radial profiles so that every limiting case and numerical operation can be checked independently.
+\end{notebox}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+AE & Alfv\'en eigenmode & A global shear-Alfv\'en oscillation with a discrete or weakly continuum-coupled frequency.\\
+TAE & Toroidicity-induced Alfv\'en eigenmode & An AE associated primarily with toroidal coupling of neighboring poloidal harmonics.\\
+EAE & Ellipticity-induced Alfv\'en eigenmode & An AE associated with ellipticity-driven harmonic coupling, commonly involving $\Delta m=2$.\\
+HAE & Helicity-induced Alfv\'en eigenmode & An AE produced by helical geometric harmonics, especially relevant in stellarators.\\
+NAE & Noncircularity-induced Alfv\'en eigenmode & General name for modes associated with noncircular shaping harmonics.\\
+RSAE & Reversed-shear Alfv\'en eigenmode & A mode localized near a minimum or maximum of the safety-factor or rotational-transform profile.\\
+MHD & Magnetohydrodynamics & A continuum-fluid model coupling plasma mass, momentum, pressure, and electromagnetic fields.\\
+EP & Energetic particle & A suprathermal ion such as a fusion-born alpha particle or neutral-beam ion.\\
+PINN & Physics-informed neural network & A neural model trained partly by differential-equation, boundary-condition, normalization, or eigenvalue residuals.\\
+FVM & Finite-volume method & A conservative discretization obtained by integrating a differential equation over control volumes.\\
+PDE & Partial differential equation & An equation involving derivatives with respect to more than one independent variable.\\
+ODE & Ordinary differential equation & An equation involving derivatives with respect to one independent variable.\\
+WKB & Wentzel--Kramers--Brillouin approximation & A local asymptotic method for waves whose wavelength is short compared with equilibrium variation scales.\\
+SI & International System of Units & Unit system used throughout unless a normalized quantity is explicitly introduced.\\
+$\mathbf x$ & Position vector & A point in physical three-dimensional space, measured in metres.\\
+$t$ & Time & Independent variable measured in seconds.\\
+$\rho_0(\mathbf x)$ & Equilibrium mass density & Time-independent bulk-plasma mass per unit volume, in kilograms per cubic metre.\\
+$\rho_1(\mathbf x,t)$ & Density perturbation & First-order departure from equilibrium mass density.\\
+$p_0(\mathbf x)$ & Equilibrium pressure & Time-independent scalar ideal-MHD pressure, in pascals.\\
+$p_1(\mathbf x,t)$ & Pressure perturbation & First-order departure from equilibrium pressure.\\
+$\mathbf B_0(\mathbf x)$ & Equilibrium magnetic field & Time-independent magnetic flux density, in tesla.\\
+$\mathbf B_1(\mathbf x,t)$ & Magnetic perturbation & First-order departure from the equilibrium magnetic field.\\
+$\mathbf J_0,\mathbf J_1$ & Current densities & Equilibrium and first-order electric current density, in amperes per square metre.\\
+$\mathbf v_1(\mathbf x,t)$ & Perturbed fluid velocity & First-order bulk-plasma velocity; the equilibrium flow is set to zero in the principal derivation.\\
+$\boldsymbol\xi(\mathbf x,t)$ & Lagrangian displacement & Displacement of a fluid element from its equilibrium position; $\mathbf v_1=\partial\boldsymbol\xi/\partial t$.\\
+$\mu_0$ & Vacuum permeability & Magnetic constant $4\pi\times10^{-7}\ \mathrm{H\,m^{-1}}$.\\
+$\gamma_{\mathrm{ad}}$ & Adiabatic index & Ratio of specific heats used in the ideal-MHD pressure law; it is not a growth rate.\\
+$\omega$ & Angular frequency & Temporal phase rate in radians per second; ordinary frequency is $f=\omega/(2\pi)$.\\
+$\gamma$ & Growth or damping rate & Imaginary part of a complex mode frequency in later kinetic models; the present self-adjoint benchmark has $\gamma=0$.\\
+$\mathbf k$ & Wave vector & Spatial phase-gradient vector, in radians per metre.\\
+$k_\parallel$ & Parallel wave number & Component $\mathbf k\cdot\mathbf b_0$ along the equilibrium magnetic field.\\
+$k_\perp$ & Perpendicular wave number & Magnitude of wave-vector variation perpendicular to $\mathbf B_0$.\\
+$\mathbf b_0$ & Magnetic-field unit vector & $\mathbf b_0=\mathbf B_0/B_0$, where $B_0=|\mathbf B_0|$.\\
+$v_A$ & Alfv\'en speed & $v_A=B_0/\sqrt{\mu_0\rho_0}$.\\
+$c_s$ & Sound speed & Compressional-fluid speed scale, commonly $c_s^2=\gamma_{\mathrm{ad}}p_0/\rho_0$.\\
+$\beta$ & Plasma beta & Ratio of plasma pressure to magnetic pressure; locally $\beta=2\mu_0p_0/B_0^2$.\\
+$(s,\theta,\zeta)$ & Magnetic flux coordinates & $s$ labels a magnetic surface, $\theta$ is poloidal angle, and $\zeta$ is toroidal angle.\\
+$R_0$ & Reference major radius & Characteristic distance from the toroidal symmetry axis to the magnetic axis, in metres.\\
+$a$ & Reference minor radius & Characteristic plasma cross-sectional radius, in metres.\\
+$\iota(s)$ & Rotational transform & Average poloidal turns per toroidal turn of a field line.\\
+$q(s)$ & Safety factor & Reciprocal of rotational transform in the convention used here: $q=1/\iota$.\\
+$m$ & Poloidal mode number & Integer Fourier label multiplying the poloidal angle.\\
+$n$ & Toroidal mode number & Integer Fourier label multiplying the toroidal angle under the stated sign convention.\\
+$N_{\mathrm{fp}}$ & Number of field periods & Number of repeated toroidal sectors in a stellarator equilibrium.\\
+$\omega_m(s)$ & Uncoupled continuum branch & Local shear-Alfv\'en frequency associated with poloidal harmonic $m$.\\
+$\Omega_\pm(s)$ & Coupled local branches & Lower and upper eigenfrequencies of the local two-harmonic matrix.\\
+$C(s)$ & Harmonic coupling & Real off-diagonal coefficient with units of angular frequency squared.\\
+$s_c$ & Crossing coordinate & Radial position at which the two uncoupled branches have equal magnitude in the baseline model.\\
+$D(s)$ & Radial stiffness coefficient & Coefficient of the radial envelope-gradient term, with units of angular frequency squared because $s$ is dimensionless.\\
+$\xi_m(s)$ & Harmonic envelope & Radial amplitude of the $m$th poloidal Fourier component.\\
+$\mathcal L$ & Linear wave operator & Differential operator acting on the displacement or reduced harmonic envelopes.\\
+$\mathcal E$ & Quadratic energy functional & Numerator of the reduced Rayleigh quotient.\\
+$\mathcal N$ & Mode norm & Positive quadratic normalization functional.\\
+$N$ & Number of radial cells & Grid resolution in the finite-volume benchmark.\\
+$h$ & Radial cell width & Uniform spacing $h=1/N$ in normalized coordinate $s$.\\
+$\mathbf A$ & Discrete operator matrix & Real symmetric block matrix satisfying $\mathbf A\mathbf x=\omega^2\mathbf x$.\\
+$\lambda$ & Generic eigenvalue & In the benchmark, $\lambda=\omega^2$.\\
+$\mathbf x_j$ & Discrete eigenvector & Grid representation of global mode $j$.\\
+$r_j$ & Relative algebraic residual & Dimensionless measure of how closely a computed eigenpair satisfies the discrete equation.\\
+\end{symtable}
+
+\input{module4_sections/01_orientation_and_model_hierarchy}
+\input{module4_sections/02_ideal_mhd_and_linearization}
+\input{module4_sections/03_uniform_shear_alfven_waves}
+\input{module4_sections/04_toroidal_geometry_and_parallel_structure}
+\input{module4_sections/05_alfven_continuum_and_resonant_surfaces}
+\input{module4_sections/06_geometric_coupling_and_spectral_gaps}
+\input{module4_sections/07_global_alfven_eigenmodes}
+\input{module4_sections/08_reduced_benchmark_construction}
+\input{module4_sections/09_variational_form_and_boundary_conditions}
+\input{module4_sections/10_finite_volume_discretization}
+\input{module4_sections/11_sparse_eigensolution_and_mode_processing}
+\input{module4_sections/12_baseline_results_and_interpretation}
+\input{module4_sections/13_verification_validation_and_sensitivity}
+\input{module4_sections/14_interfaces_to_modules_1_5_and_9}
+\input{module4_sections/15_worked_examples}
+\input{module4_sections/16_common_misconceptions_and_failure_modes}
+\input{module4_sections/17_exercises_computational_labs_and_summary}
+\input{module4_sections/18_references}
+
+\end{document}
