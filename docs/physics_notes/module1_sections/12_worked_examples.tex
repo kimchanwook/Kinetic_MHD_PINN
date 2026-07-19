@@ -1,0 +1,75 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Worked conceptual examples}
+\label{sec:worked_examples}
+
+\subsection{Example 1: pressure as a flux function}
+Suppose a nested magnetic surface is labeled by $s$. Start from force balance,
+\begin{equation}
+\nabla p=\mathbf J\times\mathbf B.
+\end{equation}
+Dot with $\mathbf B$:
+\begin{equation}
+\mathbf B\cdot\nabla p=0.
+\end{equation}
+Parameterize a field line by $\tau$ using $d\mathbf x/d\tau=\mathbf B$. The pressure derivative along the line is
+\begin{equation}
+\frac{dp}{d\tau}
+=\frac{d\mathbf x}{d\tau}\cdot\nabla p
+=\mathbf B\cdot\nabla p
+=0.
+\end{equation}
+Therefore $p$ is constant along that field line. If the line densely covers the surface and $p$ is continuous, all points on the surface have the same pressure, so $p=p(s)$.
+
+\subsection{Example 2: field-line closure}
+Let $\iota=2/5$ and use the straight-line solution
+\begin{equation}
+\theta(\zeta)=\theta_0+\frac{2}{5}\zeta.
+\end{equation}
+After five toroidal turns, $\Delta\zeta=10\pi$. The poloidal advance is
+\begin{equation}
+\Delta\theta=\frac{2}{5}(10\pi)=4\pi,
+\end{equation}
+which is two poloidal turns. The angular coordinates return to their starting values modulo $2\pi$, so the ideal field line closes.
+
+\subsection{Example 3: a rational Alfven resonance surface}
+Take a mode with $(m,n)=(2,1)$ and the transform profile
+\begin{equation}
+\iota(s)=0.35+0.30s.
+\end{equation}
+The simple parallel wave number vanishes when
+\begin{equation}
+2\iota(s)-1=0.
+\end{equation}
+Thus
+\begin{equation}
+2(0.35+0.30s)-1=0
+\quad\Rightarrow\quad
+s=0.5.
+\end{equation}
+The surface $s=0.5$ is the rational surface $\iota=1/2$ for this harmonic. In a more complete shear-Alfven model, coupling, compressibility, and finite-frequency effects determine the actual continuum behavior near this location.
+
+\subsection{Example 4: beta estimate}
+Let $p=2.0\times10^5\ \mathrm{Pa}$ and $B=2.5\ \mathrm T$. The magnetic pressure is
+\begin{equation}
+\frac{B^2}{2\mu_0}
+=\frac{(2.5)^2}{2(4\pi\times10^{-7})}
+\approx2.49\times10^6\ \mathrm{Pa}.
+\end{equation}
+The local beta is
+\begin{equation}
+\beta\approx\frac{2.0\times10^5}{2.49\times10^6}
+\approx0.080,
+\end{equation}
+or approximately $8.0\%$. This does not mean magnetic forces exceed pressure forces everywhere by exactly a factor of $12.5$; equilibrium depends on gradients and curvature, not only local energy-density ratios.
+
+\subsection{Example 5: field-period Fourier variation}
+Suppose $N_{\mathrm{fp}}=4$ and a surface contains the term
+\begin{equation}
+R_{1,1}(s)\cos(\theta-4\zeta).
+\end{equation}
+Increasing $\zeta$ by one field period, $\Delta\zeta=2\pi/4$, changes the phase by
+\begin{equation}
+-4\Delta\zeta=-2\pi.
+\end{equation}
+The cosine is unchanged, confirming fourfold toroidal periodicity.
+

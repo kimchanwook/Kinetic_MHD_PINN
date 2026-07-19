@@ -1,0 +1,102 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Sparse eigensolution, residuals, normalization, and mode tracking}
+\label{sec:eigensolution}
+
+\subsection{Why a sparse solver is appropriate}
+For $N$ radial cells and two harmonics, $\mathbf A$ has dimension $2N$. A dense symmetric eigensolver requires memory proportional to $(2N)^2$ and work roughly proportional to $(2N)^3$ to compute the full spectrum. The benchmark needs only the lowest eight eigenpairs and the matrix is sparse, so an iterative Krylov-subspace method is more efficient.
+
+Python uses \texttt{scipy.sparse.linalg.eigsh}, an interface to ARPACK for real symmetric problems. MATLAB uses \texttt{eigs}. The implementations are independent but request the same low-frequency portion of the spectrum.
+
+\subsection{Krylov-subspace idea}
+Given a starting vector $\mathbf q_1$, a Krylov space of dimension $k$ is
+\begin{equation}
+\mathcal K_k(\mathbf A,\mathbf q_1)
+=\operatorname{span}\left\{\mathbf q_1,\mathbf A\mathbf q_1,\mathbf A^2\mathbf q_1,\ldots,\mathbf A^{k-1}\mathbf q_1\right\}.
+\end{equation}
+The Lanczos process constructs an orthonormal basis for this space and projects $\mathbf A$ onto a much smaller symmetric tridiagonal matrix. Eigenpairs of the projected matrix, called Ritz pairs, approximate selected eigenpairs of $\mathbf A$.
+
+The method never needs to form a dense inverse. It repeatedly multiplies vectors by the sparse matrix, which costs approximately the number of nonzero entries.
+
+\subsection{Which part of the spectrum}
+The Python code requests \texttt{which="SM"}, meaning eigenvalues of smallest magnitude. Since the verified baseline matrix is positive definite, these are also the lowest positive $\omega^2$. If the matrix became indefinite, smallest magnitude would not necessarily mean most negative or lowest algebraic value, and the physical selection logic would need revision.
+
+For large problems or interior gap modes, shift-invert iteration is often preferable. To target eigenvalues near $\sigma$, one solves systems involving
+\begin{equation}
+(\mathbf A-\sigma\mathbf I)^{-1},
+\end{equation}
+whose largest transformed eigenvalues correspond to original eigenvalues closest to $\sigma$. That strategy requires a robust sparse factorization or linear solver and is not needed for the current small benchmark.
+
+\subsection{Sorting and positivity}
+After solution, eigenvalues are sorted in increasing order. The benchmark rejects nonpositive values because its baseline is intended to represent stable oscillations with real
+\begin{equation}
+\omega_j=\sqrt{\lambda_j}.
+\end{equation}
+Ordinary frequency is
+\begin{equation}
+f_j=\frac{\omega_j}{2\pi}.
+\end{equation}
+A negative $\lambda$ in a more general ideal-MHD calculation would signal an unstable direction or a modeling/discretization defect, depending on context. It should not be silently clipped.
+
+\subsection{Algebraic residual}
+For a computed eigenpair $(\lambda_j,\mathbf x_j)$, define
+\begin{equation}
+\mathbf r_j=\mathbf A\mathbf x_j-\lambda_j\mathbf x_j.
+\end{equation}
+The reported relative residual is
+\begin{equation}
+\boxed{
+r_j=\frac{\|\mathbf A\mathbf x_j-\lambda_j\mathbf x_j\|_2}
+{\|\mathbf A\mathbf x_j\|_2}.}
+\label{eq:relative_eigen_residual}
+\end{equation}
+A small residual shows that the pair accurately solves the discrete matrix equation. It does not prove that the matrix accurately represents the intended physics or that the grid is sufficiently fine.
+
+Alternative denominators include $\|\mathbf A\|\|\mathbf x\|+|\lambda|\|\mathbf x\|$ or $|\lambda|\|\mathbf x\|$. The project's definition is frozen for regression consistency.
+
+\subsection{Orthogonality check}
+For a symmetric matrix, exact eigenvectors associated with distinct eigenvalues are Euclidean orthogonal. After grid-weight normalization, the discrete continuous-inner-product matrix is
+\begin{equation}
+\mathbf G=h\mathbf X^{\mathsf T}\mathbf X,
+\end{equation}
+where columns of $\mathbf X$ are modes. Ideally $\mathbf G\approx\mathbf I$. Loss of orthogonality can indicate an eigensolver tolerance issue, severe near-degeneracy, or incorrect postprocessing.
+
+\subsection{Canonical sign convention}
+For each real eigenvector, the code finds
+\begin{equation}
+i_*=\arg\max_i|x_i|
+\end{equation}
+and multiplies by $-1$ if $x_{i_*}<0$. This operation makes plotted and stored mode shapes deterministic under ordinary nondegenerate conditions. It does not change any physical observable that is quadratic in the mode amplitude.
+
+\subsection{Representative-mode selection}
+The output plotting routine chooses a mode near the center of the local avoided-crossing interval. This is a visualization criterion, not a new eigenvalue calculation. A more complete classification algorithm would combine:
+\begin{itemize}[leftmargin=1.6em]
+\item distance from gap-center frequency;
+\item radial localization near $s_c$;
+\item balance of the two harmonic weights;
+\item separation from local continuum branches;
+\item convergence and mode-overlap continuity under parameter scans.
+\end{itemize}
+
+\subsection{Mode tracking under parameter scans}
+Suppose eigenvectors at parameter values $\alpha_k$ and $\alpha_{k+1}$ are $\mathbf x_i^{(k)}$ and $\mathbf x_j^{(k+1)}$. Define overlap
+\begin{equation}
+O_{ij}=h\left|\left(\mathbf x_i^{(k)}\right)^{\mathsf T}\mathbf x_j^{(k+1)}\right|.
+\end{equation}
+A simple tracker assigns modes to maximize total overlap rather than matching only sorted index. Near a true or nearly degenerate subspace, tracking should operate on groups of modes.
+
+\subsection{Error hierarchy}
+A trustworthy eigenfrequency requires control of several different errors:
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{algebraic iteration error}: measured by the residual;
+\item \textbf{spatial discretization error}: measured by grid refinement;
+\item \textbf{implementation error}: addressed by tests and independent code parity;
+\item \textbf{model-form error}: difference between the reduced operator and actual stellarator physics;
+\item \textbf{input uncertainty}: uncertainty in equilibrium, density, field, and boundary data.
+\end{enumerate}
+A residual of $10^{-12}$ addresses only the first item. It cannot compensate for an oversimplified physical model.
+
+\subsection{Conditioning and clustered eigenvalues}
+The sensitivity of an isolated symmetric eigenvalue to a small matrix perturbation $\delta\mathbf A$ is bounded by the perturbation norm. Eigenvectors are more sensitive when neighboring eigenvalues are close. In gap and avoided-crossing problems, the frequency may be stable while harmonic identity changes rapidly. This is a physical feature of mode mixing and a numerical challenge for labels.
+
+\subsection{Data precision and reproducibility}
+The reference CSV files store values with high decimal precision so regression tests can detect unintended changes. Reproducibility also requires the case file, code version, solver choice, tolerances, grid, boundary conditions, normalization, and output schema. A table of frequencies without this metadata is insufficient to reproduce a numerical spectrum.

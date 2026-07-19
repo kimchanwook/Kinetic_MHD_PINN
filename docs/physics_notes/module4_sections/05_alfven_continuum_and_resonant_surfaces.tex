@@ -1,0 +1,109 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{The Alfv\'en continuum, resonant surfaces, and phase mixing}
+\label{sec:continuum}
+
+\subsection{Why the spectrum is continuous}
+Suppose each magnetic surface can oscillate locally at
+\begin{equation}
+\omega_A(s)=|k_\parallel(s)|v_A(s).
+\end{equation}
+The surface label $s$ is continuous. Unless $k_\parallel v_A$ is constant, a continuous family of surfaces corresponds to a continuous family of natural frequencies. This is the shear-Alfv\'en continuum.
+
+A useful idealized equation is
+\begin{equation}
+\frac{\partial^2\xi(s,t)}{\partial t^2}+\omega_A^2(s)\xi(s,t)=0,
+\label{eq:independent_surface_oscillators}
+\end{equation}
+which describes independent oscillators labeled by $s$. Its solution is
+\begin{equation}
+\xi(s,t)=A(s)\cos[\omega_A(s)t]+B(s)\sin[\omega_A(s)t].
+\end{equation}
+There is no single global frequency unless the initial condition excites only surfaces sharing one frequency or additional radial coupling organizes a collective mode.
+
+\subsection{Continuum branch versus discrete mode}
+A continuum branch $\omega_m(s)$ is a function of radius. A discrete eigenmode has one eigenfrequency $\omega_j$ and one global spatial eigenfunction. The two concepts are frequently confused because both appear on frequency-versus-radius diagrams.
+
+A continuum diagram plots local frequencies available at each surface. A global mode is often drawn as a horizontal line at its single frequency. If that line intersects a continuum branch, the corresponding radius is a continuum-resonant surface. If the frequency lies inside a gap over the relevant radial region, the mode can avoid a direct ideal continuum resonance.
+
+\subsection{Resonant layer in a driven equation}
+A schematic forced response is
+\begin{equation}
+\left[\omega_A^2(s)-\omega^2\right]\xi(s)=S(s),
+\label{eq:forced_local_response}
+\end{equation}
+where $S$ is a drive. At $s=s_r$ such that
+\begin{equation}
+\omega^2=\omega_A^2(s_r),
+\label{eq:continuum_resonance_condition}
+\end{equation}
+the ideal local denominator vanishes. A full differential equation includes radial derivatives and geometric factors, but the same resonance appears as a singular or rapidly varying layer. Physical dissipation, kinetic effects, or a mathematically specified causal prescription regularizes the ideal singularity.
+
+\subsection{Local expansion near resonance}
+Let
+\begin{equation}
+\Delta(s)=\omega_A^2(s)-\omega^2.
+\end{equation}
+Near a simple resonance,
+\begin{equation}
+\Delta(s)\approx\Delta'(s_r)(s-s_r).
+\end{equation}
+Then the local forced response behaves schematically as
+\begin{equation}
+\xi(s)\sim\frac{S(s_r)}{\Delta'(s_r)(s-s_r)}.
+\end{equation}
+Actual ideal-MHD continuum equations often produce logarithmic or derivative singularities rather than this exact algebraic form, but the message is the same: the eigenfunction develops fine radial structure and naive smooth-basis approximations may converge poorly.
+
+\subsection{Phase mixing}
+Take two nearby surfaces separated by $\Delta s$. Their phase difference after time $t$ is
+\begin{equation}
+\Delta\phi(t)=\left[\omega_A(s+\Delta s)-\omega_A(s)\right]t
+\approx\omega_A'(s)\Delta s\,t.
+\end{equation}
+Even if the initial perturbation is radially smooth, the radial phase gradient grows as
+\begin{equation}
+\frac{\partial\phi}{\partial s}=\omega_A'(s)t.
+\end{equation}
+The effective radial wave number therefore grows approximately linearly:
+\begin{equation}
+k_s(t)\sim\omega_A'(s)t.
+\label{eq:phase_mixing_ks}
+\end{equation}
+This process is called phase mixing. It transfers structure to progressively smaller radial scales. Arbitrarily weak resistivity, viscosity, finite-Larmor-radius physics, or numerical diffusion can become important once those scales are sufficiently small.
+
+\subsection{Continuum damping}
+A global mode whose frequency intersects the continuum can transfer energy into localized continuum oscillations. From the perspective of the coherent global mode, this appears as damping even in the limit of very small explicit dissipation. Quantitative continuum damping requires a treatment beyond the real self-adjoint benchmark, such as analytic continuation, resistive regularization, kinetic formulations, or specialized numerical methods.
+
+The present benchmark does not compute continuum damping. It uses smooth coupled local branches as a diagnostic and a regular radial stiffness operator as a verification problem. A global eigenvalue lying inside the local gap near the crossing is therefore called \emph{gap-associated} or \emph{TAE-like}; it is not automatically proven free of continuum resonance everywhere.
+
+\subsection{How a continuum appears in a finite matrix}
+A finite-dimensional matrix has only discrete eigenvalues. When a continuous differential operator is discretized, the continuum is represented by a growing collection of grid-dependent eigenvalues. As resolution increases, those eigenvalues become more numerous and may cluster along the continuum branches.
+
+This creates a numerical danger: a computed discrete eigenpair may be merely a discretized continuum state rather than a converged global eigenmode. Diagnostic questions include:
+\begin{enumerate}[leftmargin=1.6em]
+\item Does the eigenfrequency converge under grid refinement?
+\item Does the eigenfunction remain smooth and spatially resolved?
+\item Does it localize ever more sharply around one resonant surface?
+\item Does its identity persist under small parameter changes?
+\item Is it separated from the discretized continuum spectrum by a geometric gap?
+\end{enumerate}
+The reduced benchmark is designed to produce smooth low-order modes with clear finite-volume convergence, but it does not reproduce a mathematical continuum singularity.
+
+\subsection{Density and transform contributions to continuum slope}
+For
+\begin{equation}
+\omega_m(s)=|n-m\iota(s)|\frac{B_0}{R_0\sqrt{\mu_0\rho(s)}},
+\end{equation}
+away from a zero of $n-m\iota$, a logarithmic derivative gives
+\begin{equation}
+\frac{1}{\omega_m}\frac{d\omega_m}{ds}
+=-\frac{m\iota'}{n-m\iota}-\frac{1}{2}\frac{\rho'}{\rho},
+\label{eq:continuum_log_slope}
+\end{equation}
+for the sign region where $n-m\iota>0$; the absolute value requires corresponding sign care elsewhere. The first term is due to magnetic shear, and the second is due to density variation. A falling density raises $v_A$ toward the edge, while increasing $\iota$ can either increase or decrease $|k_\parallel|$ depending on the harmonic and radius.
+
+\subsection{Continuum accumulation points and extrema}
+If $d\omega_A/ds=0$, nearby surfaces have nearly equal frequencies. Such extrema or accumulation regions can support slowly varying radial wave packets and can organize special eigenmodes, including reversed-shear Alfv\'en eigenmodes when a nonmonotonic $q$ or $\iota$ profile creates a local continuum extremum. The baseline transform profile is monotonic and is chosen for a neighboring-harmonic crossing rather than an RSAE scenario.
+
+\begin{notebox}
+\textbf{Do not equate continuum with noise.} The continuum is a genuine property of the ideal wave operator in a nonuniform plasma. Numerical resolution issues arise because a finite matrix approximates that continuous spectrum, not because the physical continuum is a numerical artifact.
+\end{notebox}

@@ -1,0 +1,51 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{References and further reading}
+\label{sec:references}
+
+The references below include foundational ideal-MHD, Alfv\'en-wave, continuum, eigenmode, stellarator, and numerical sources. They do not imply that the reduced benchmark implements the full models in those publications.
+
+\begin{enumerate}[leftmargin=1.8em]
+\item H. Alfv\'en, ``Existence of electromagnetic-hydrodynamic waves,'' \emph{Nature} \textbf{150}, 405--406 (1942). The original introduction of what are now called Alfv\'en waves.
+
+\item J. P. Freidberg, \emph{Ideal Magnetohydrodynamics}, Plenum Press, New York (1987). Standard derivations of ideal-MHD equilibrium, linear stability, and the energy principle.
+
+\item J. P. Freidberg, \emph{Plasma Physics and Fusion Energy}, Cambridge University Press (2007). Accessible treatment of magnetic confinement and MHD waves.
+
+\item J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010). Comprehensive spectral theory and MHD continua.
+
+\item J. P. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004). Mathematical structure of ideal and resistive MHD.
+
+\item I. B. Bernstein, E. A. Frieman, M. D. Kruskal, and R. M. Kulsrud, ``An energy principle for hydromagnetic stability problems,'' \emph{Proceedings of the Royal Society A} \textbf{244}, 17--40 (1958). Foundational ideal-MHD energy principle.
+
+\item C. Z. Cheng, L. Chen, and M. S. Chance, ``High-$n$ ideal and resistive shear Alfv\'en waves in tokamaks,'' \emph{Annals of Physics} \textbf{161}, 21--47 (1985), doi:10.1016/0003-4916(85)90335-5.
+
+\item G. Y. Fu and J. W. Van Dam, ``Excitation of the toroidicity-induced shear Alfv\'en eigenmode by fusion alpha particles in an ignited tokamak,'' \emph{Physics of Fluids B} \textbf{1}, 1949--1952 (1989).
+
+\item F. Zonca and L. Chen, ``Theory of toroidal Alfv\'en modes excited by energetic particles in tokamaks,'' \emph{Physics of Plasmas} \textbf{3}, 323--343 (1996), doi:10.1063/1.871857.
+
+\item L. Chen and F. Zonca, ``Physics of Alfv\'en waves and energetic particles in burning plasmas,'' \emph{Reviews of Modern Physics} \textbf{88}, 015008 (2016), doi:10.1103/RevModPhys.88.015008.
+
+\item W. W. Heidbrink, ``Basic physics of Alfv\'en instabilities driven by energetic particles in toroidally confined plasmas,'' \emph{Physics of Plasmas} \textbf{15}, 055501 (2008), doi:10.1063/1.2838239.
+
+\item N. N. Gorelenkov, ``Revisiting eigenmode interaction with the Alfv\'en continuum,'' \emph{Physical Review Letters} \textbf{95}, 265003 (2005), doi:10.1103/PhysRevLett.95.265003.
+
+\item D. A. Spong, E. D'Azevedo, and Y. Todo, ``Clustered frequency analysis of shear Alfv\'en modes in stellarators,'' and related stellarator Alfv\'en-eigenmode literature. Consult device-specific publications for the exact operator and coupling conventions used in each code.
+
+\item J. Varela, A. Shimizu, D. A. Spong, L. Garcia, and Y. Ghai, ``Study of the Alfv\'en eigenmodes stability in CFQS plasma using a Landau closure model,'' \emph{Nuclear Fusion} \textbf{61}, 026023 (2021), doi:10.1088/1741-4326/abd072.
+
+\item S. P. Hirshman and J. C. Whitson, ``Steepest-descent moment method for three-dimensional magnetohydrodynamic equilibria,'' \emph{Physics of Fluids} \textbf{26}, 3553--3568 (1983). Foundation of the VMEC equilibrium method that can supply geometry to later Module 4 fidelity levels.
+
+\item R. LeVeque, \emph{Finite Volume Methods for Hyperbolic Problems}, Cambridge University Press (2002). General finite-volume principles; the benchmark applies the conservative flux idea to a self-adjoint radial operator rather than a hyperbolic conservation law.
+
+\item Y. Saad, \emph{Numerical Methods for Large Eigenvalue Problems}, revised edition, Society for Industrial and Applied Mathematics (2011). Krylov-subspace and sparse eigenvalue methods.
+
+\item G. H. Golub and C. F. Van Loan, \emph{Matrix Computations}, fourth edition, Johns Hopkins University Press (2013). Symmetric eigenproblems, residuals, conditioning, and subspace methods.
+
+\item A. Quarteroni, R. Sacco, and F. Saleri, \emph{Numerical Mathematics}, second edition, Springer (2007). Discretization error, eigenproblems, and numerical verification concepts.
+
+\item P. J. Schmid, ``Dynamic mode decomposition of numerical and experimental data,'' \emph{Journal of Fluid Mechanics} \textbf{656}, 5--28 (2010). Not an MHD eigenmode solver, but useful for distinguishing operator eigenanalysis from data-driven modal decompositions.
+\end{enumerate}
+
+\begin{notebox}
+\textbf{Reference discipline.} Before comparing formulas between sources, check the Fourier phase, sign of toroidal angle, definition of $n$, definition of rotational transform or safety factor, use of angular versus ordinary frequency, and normalization of magnetic flux. Many apparent contradictions are convention differences.
+\end{notebox}

@@ -1,0 +1,163 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Worked examples}
+\label{sec:worked_examples}
+
+\subsection{Example 1: calculate an Alfv\'en speed and frequency}
+Let
+\begin{equation}
+B_0=\SI{2.5}{T},
+\qquad
+\rho=3.3\times10^{-8}\ \mathrm{kg\,m^{-3}}.
+\end{equation}
+Then
+\begin{align}
+v_A
+&=\frac{B_0}{\sqrt{\mu_0\rho}}\\
+&=\frac{2.5}{\sqrt{(4\pi\times10^{-7})(3.3\times10^{-8})}}\\
+&\approx1.228\times10^7\ \mathrm{m\,s^{-1}}.
+\end{align}
+Suppose $R_0=\SI{3}{m}$, $n=2$, $m=4$, and $\iota=0.50$. Then
+\begin{equation}
+n-m\iota=2-4(0.50)=0.
+\end{equation}
+This harmonic is at a rational surface and the reduced uncoupled frequency is zero. If instead $\iota=0.45$,
+\begin{equation}
+|n-m\iota|=|2-1.8|=0.2,
+\end{equation}
+so
+\begin{align}
+\omega_m&=0.2\frac{v_A}{R_0}
+\approx0.2\frac{1.228\times10^7}{3}
+\approx8.19\times10^5\ \mathrm{s^{-1}},\\
+f_m&=\frac{\omega_m}{2\pi}\approx\SI{130}{kHz}.
+\end{align}
+This example shows that the dimensional scale $v_A/R_0$ is multiplied by a potentially small field-line phase factor $|n-m\iota|$.
+
+\subsection{Example 2: locate the neighboring-harmonic crossing}
+Take $n=2$, $m=3$, $\iota_0=0.35$, $\iota_1=0.65$, and $a_\iota=1$. The crossing transform is
+\begin{equation}
+\iota_c=\frac{2n}{2m+1}=\frac{4}{7}=0.5714286.
+\end{equation}
+The inverse profile gives
+\begin{equation}
+s_c=\frac{0.5714286-0.35}{0.65-0.35}=0.7380952.
+\end{equation}
+Check the two signed factors:
+\begin{align}
+n-m\iota_c&=2-3\left(\frac{4}{7}\right)=\frac{2}{7},\\
+n-(m+1)\iota_c&=2-4\left(\frac{4}{7}\right)=-\frac{2}{7}.
+\end{align}
+They are equal and opposite, as required.
+
+\subsection{Example 3: compute the local avoided-crossing gap}
+Suppose the uncoupled crossing angular frequency is
+\begin{equation}
+\omega_c=1.50\times10^6\ \mathrm{s^{-1}}
+\end{equation}
+and the coupling is
+\begin{equation}
+C=0.20\omega_c^2.
+\end{equation}
+At the crossing,
+\begin{align}
+\Omega_-&=\omega_c\sqrt{1-0.20}=0.8944\omega_c,\\
+\Omega_+&=\omega_c\sqrt{1+0.20}=1.0954\omega_c.
+\end{align}
+Therefore
+\begin{equation}
+\Delta\omega=(1.0954-0.8944)\omega_c=0.2010\omega_c.
+\end{equation}
+The small-coupling estimate gives
+\begin{equation}
+\Delta\omega\approx\frac{C}{\omega_c}=0.20\omega_c,
+\end{equation}
+which is accurate here to about one-half percent.
+
+\subsection{Example 4: harmonic mixing away from and at the crossing}
+Let $a-b=4C$. Then
+\begin{equation}
+\tan2\alpha=\frac{2C}{a-b}=\frac{1}{2},
+\end{equation}
+so
+\begin{equation}
+2\alpha\approx26.565^\circ,
+\qquad
+\alpha\approx13.283^\circ.
+\end{equation}
+The lower branch has weights approximately
+\begin{equation}
+\cos^2\alpha\approx0.947,
+\qquad
+\sin^2\alpha\approx0.053.
+\end{equation}
+It remains mostly one harmonic. At $a=b$, $\alpha=45^\circ$ and both weights are $0.5$. Equal mixing is therefore a localized feature of the crossing region unless coupling is very strong.
+
+\subsection{Example 5: derive one interior finite-volume row}
+Let $h=0.1$, $D_{i-1/2}=2.0\times10^9\ \mathrm{s^{-2}}$, and $D_{i+1/2}=3.0\times10^9\ \mathrm{s^{-2}}$. From Eq.~\eqref{eq:interior_stencil},
+\begin{align}
+K_{i,i-1}&=-\frac{2.0\times10^9}{0.1^2}=-2.0\times10^{11}\ \mathrm{s^{-2}},\\
+K_{i,i}&=\frac{2.0\times10^9+3.0\times10^9}{0.1^2}=5.0\times10^{11}\ \mathrm{s^{-2}},\\
+K_{i,i+1}&=-\frac{3.0\times10^9}{0.1^2}=-3.0\times10^{11}\ \mathrm{s^{-2}}.
+\end{align}
+The row sum is zero because an interior constant function has zero gradient. At the edge, the Dirichlet penalty makes the row sum nonzero and removes the constant null mode.
+
+\subsection{Example 6: normalize a discrete two-harmonic mode}
+Suppose $N=4$, so $h=0.25$, and an unnormalized vector is
+\begin{equation}
+\mathbf x=
+\begin{bmatrix}
+1&2&1&0&\;0&1&1&0
+\end{bmatrix}^{\mathsf T}.
+\end{equation}
+Its Euclidean squared norm is
+\begin{equation}
+\mathbf x^{\mathsf T}\mathbf x=1+4+1+0+0+1+1+0=8.
+\end{equation}
+The grid-weighted norm is
+\begin{equation}
+h\mathbf x^{\mathsf T}\mathbf x=0.25(8)=2.
+\end{equation}
+Therefore the normalized vector is
+\begin{equation}
+\mathbf x_N=\frac{\mathbf x}{\sqrt2}.
+\end{equation}
+Using only Euclidean normalization would produce an integral norm of $h=0.25$ rather than one.
+
+\subsection{Example 7: separate residual error from discretization error}
+Assume a 128-cell calculation gives $f_{128}=\SI{271.101167}{kHz}$ with residual $10^{-12}$, while a 256-cell calculation gives $f_{256}=\SI{271.117830}{kHz}$ with the same residual. The relative difference is
+\begin{equation}
+\frac{|f_{256}-f_{128}|}{f_{256}}
+\approx6.15\times10^{-5}.
+\end{equation}
+The eigensolver has solved each discrete matrix extremely accurately, but the spatial discretization still shifts the frequency by tens of parts per million. A smaller algebraic residual would not remove this grid error.
+
+\subsection{Example 8: test exact magnetic-field scaling}
+Let a reference eigenfrequency be
+\begin{equation}
+f_1(B_0=\SI{2.5}{T})=\SI{160.504376}{kHz}.
+\end{equation}
+If the field is doubled to \SI{5.0}{T}, the benchmark predicts exactly
+\begin{equation}
+f_1=2(160.504376)=\SI{321.008752}{kHz}
+\end{equation}
+up to numerical roundoff, because every matrix coefficient scales as $B_0^2$.
+
+\subsection{Example 9: determine whether a frequency criterion is sufficient}
+Mode 2 has $f_2=\SI{271.118}{kHz}$, inside the local crossing-cell interval $[183.207,297.516]\ \mathrm{kHz}$. However, its peak is at $s\approx0.275$, its centroid is $\bar s\approx0.429$, and $W_{m=4}\approx0.920$. Therefore:
+\begin{equation}
+\text{frequency in local interval}
+\not\Rightarrow
+\text{strong localization at }s_c.
+\end{equation}
+The correct conclusion is that the mode is useful for coupled-harmonic verification, not that frequency alone proves a trapped TAE.
+
+\subsection{Example 10: construct a PINN trial function satisfying both boundaries}
+For one component, let a neural network output $N_\theta(s)$. A trial function
+\begin{equation}
+\widehat\xi(s)=(1-s)N_\theta(s)
+\end{equation}
+satisfies the edge Dirichlet condition but not necessarily the axis Neumann condition. To satisfy both exactly, use a function of $s^2$:
+\begin{equation}
+\boxed{\widehat\xi(s)=(1-s^2)N_\theta(s^2).}
+\end{equation}
+At $s=1$, $\widehat\xi=0$. At $s=0$, every term in $d\widehat\xi/ds$ contains a factor of $s$, so $\widehat\xi'(0)=0$. The construction must be applied to both harmonic components, followed by normalization and mode-selection constraints.

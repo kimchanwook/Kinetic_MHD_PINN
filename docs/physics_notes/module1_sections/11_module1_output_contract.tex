@@ -1,0 +1,80 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Module 1 output contract}
+\label{sec:outputs}
+
+\subsection{Minimum geometry product}
+A useful equilibrium data product must identify the equilibrium uniquely and contain enough information for independent checks. At minimum, it should include:
+\begin{enumerate}[leftmargin=1.6em]
+\item coordinate definitions and angle orientation;
+\item unit system and normalization constants;
+\item field-period number $N_{\mathrm{fp}}$;
+\item magnetic-axis representation;
+\item surface mapping $\mathbf x(s,\theta,\zeta)$ or equivalent Fourier coefficients;
+\item magnetic field $\mathbf B$ and magnitude $B$;
+\item rotational transform $\iota(s)$;
+\item pressure $p(s)$ and, when used, mass density $\rho_m(s)$;
+\item Jacobian $\sqrt g$ and metric tensors or enough information to reconstruct them;
+\item enclosed volume $V(s)$ and $V'(s)$;
+\item derivatives required for $\nabla B$, curvature, and parallel operators;
+\item boundary and last-closed-surface definition;
+\item convergence diagnostics and failure flags.
+\end{enumerate}
+
+\subsection{Recommended metadata}
+Recommended metadata include:
+\begin{itemize}[leftmargin=1.6em]
+\item solver name and version;
+\item source input-file checksum;
+\item fixed-boundary or free-boundary designation;
+\item pressure and current-profile formulas;
+\item radial and spectral resolution;
+\item nonlinear tolerance and achieved residuals;
+\item sign convention for toroidal flux, poloidal flux, $\iota$, and angles;
+\item whether $\zeta$ is geometric or magnetic toroidal angle;
+\item coordinate transformation method;
+\item date and provenance of coil geometry;
+\item known warnings, extrapolation regions, and invalid domains.
+\end{itemize}
+
+\subsection{Suggested array shapes}
+For a sampled grid with $N_s$ radial points, $N_\theta$ poloidal points, and $N_\zeta$ toroidal points, representative arrays are
+\begin{align}
+\texttt{position}&:[N_s,N_\theta,N_\zeta,3],\\
+\texttt{B\_vector}&:[N_s,N_\theta,N_\zeta,3],\\
+\texttt{B\_magnitude}&:[N_s,N_\theta,N_\zeta],\\
+\texttt{jacobian}&:[N_s,N_\theta,N_\zeta],\\
+\texttt{iota}&:[N_s],\\
+\texttt{pressure}&:[N_s],\\
+\texttt{Vprime}&:[N_s].
+\end{align}
+The final software schema may use spectral coefficients instead of dense arrays. Whatever representation is chosen, axis order and memory layout must be documented.
+
+\subsection{Downstream consumers}
+The main consumers are:
+\begin{longtable}{>{\RaggedRight\arraybackslash}p{0.16\textwidth} >{\RaggedRight\arraybackslash}p{0.30\textwidth} >{\RaggedRight\arraybackslash}p{0.44\textwidth}}
+\toprule
+\textbf{Module} & \textbf{Required Module 1 quantities} & \textbf{Physical use}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Module} & \textbf{Required Module 1 quantities} & \textbf{Physical use}\\
+\midrule
+\endhead
+Module 2 & $s$, volume, profiles, field strength & Places energetic-particle sources and distributions on the equilibrium.\\
+Module 3 & $\mathbf B$, $B$, $\nabla B$, $\boldsymbol\kappa$, coordinates, wall mapping & Advances guiding centers and identifies confined and lost trajectories.\\
+Module 4 & $\iota$, $B$, $\rho_m$, metric, $\mathbf b\cdot\nabla$ & Computes shear-Alfven continua, harmonic coupling, and eigenmodes.\\
+Module 5 & mode geometry plus orbit frequencies derived from Module 1 & Evaluates wave-particle resonances and energetic-particle drive.\\
+Module 6 & $V'$, radial coordinate, mode geometry & Evolves reduced fast-ion transport conservatively.\\
+Module 7 & $V'$, surface areas, density and field data & Evolves heating and thermal profiles.\\
+Module 8 & all typed state products and provenance & Coordinates multiphysics exchanges and detects stale geometry.\\
+Module 9 & parameterized equilibrium inputs and physical residuals & Trains and validates equilibrium or downstream surrogate models.\\
+Module 10 & viewing geometry and field mapping & Generates synthetic diagnostic signals.\\
+Module 11 & named physical dependencies and interventions & Learns candidate coupling graphs without treating arrays as anonymous features.\\
+\bottomrule
+\caption{Principal equilibrium dependencies across the project.}
+\label{tab:module1_consumers}
+\end{longtable}
+
+\subsection{Versioning and immutable state products}
+An equilibrium should be treated as an immutable state product with a unique identifier. If pressure, coil current, boundary shape, or plasma current changes enough to require a new solve, the resulting geometry receives a new identifier. Downstream outputs should record the exact equilibrium identifier used. This prevents a mode spectrum or orbit-loss map from being paired accidentally with a different geometry.
+

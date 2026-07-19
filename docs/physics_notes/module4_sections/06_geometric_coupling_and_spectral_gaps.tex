@@ -1,0 +1,148 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Geometric harmonic coupling, avoided crossings, and spectral gaps}
+\label{sec:gaps}
+
+\subsection{Why Fourier harmonics couple}
+In a uniform cylinder with coefficients independent of $\theta$ and $\zeta$, Fourier harmonics are orthogonal and can be solved independently. Toroidal and stellarator equilibria contain angle-dependent magnetic-field strength, curvature, Jacobian, and metric coefficients. Multiplying an equilibrium Fourier harmonic by a perturbation Fourier harmonic generates sidebands, as in Eq.~\eqref{eq:stellarator_selection_rule}. The wave operator therefore becomes a matrix in harmonic space.
+
+For a large-aspect-ratio circular torus,
+\begin{equation}
+B(\theta)\approx B_{00}\left(1-\epsilon\cos\theta\right),
+\qquad
+\epsilon=\frac{r}{R_0}\ll1.
+\end{equation}
+The factor $\cos\theta=(e^{i\theta}+e^{-i\theta})/2$ couples a perturbation with poloidal number $m$ to $m\pm1$. This is the basic origin of toroidicity-induced coupling. Elliptical shaping contains a $\cos2\theta$ component and can couple $m$ to $m\pm2$. Three-dimensional helical geometry can change both $m$ and $n$.
+
+\subsection{Local two-harmonic matrix}
+Retain two real harmonic amplitudes, labeled 1 and 2, with uncoupled squared frequencies $a=\omega_1^2$ and $b=\omega_2^2$. Let the symmetric coupling be $C$. The local matrix is
+\begin{equation}
+\mathbf H=\begin{bmatrix}a&C\\C&b\end{bmatrix}.
+\label{eq:generic_two_mode_matrix}
+\end{equation}
+The eigenvalue condition is
+\begin{equation}
+\det(\mathbf H-\lambda\mathbf I)
+=(a-\lambda)(b-\lambda)-C^2=0.
+\end{equation}
+Solving the quadratic gives
+\begin{equation}
+\boxed{
+\lambda_\pm=\frac{a+b}{2}
+\pm\sqrt{\left(\frac{a-b}{2}\right)^2+C^2}.}
+\label{eq:two_mode_eigenvalues}
+\end{equation}
+For the Alfv\'en problem, $\lambda_\pm=\Omega_\pm^2$.
+
+\subsection{Exact crossing and avoided crossing}
+Without coupling, $C=0$, the eigenvalues are simply $a$ and $b$, so they cross when $a=b$. With $C\neq0$, at the uncoupled crossing $a=b=\omega_c^2$,
+\begin{equation}
+\Omega_\pm^2=\omega_c^2\pm|C|.
+\label{eq:gap_at_crossing_omega2}
+\end{equation}
+The separation in squared frequency is
+\begin{equation}
+\Delta(\omega^2)=2|C|.
+\end{equation}
+The separation in frequency is
+\begin{equation}
+\Delta\omega=\sqrt{\omega_c^2+|C|}-\sqrt{\omega_c^2-|C|}.
+\label{eq:exact_gap_frequency}
+\end{equation}
+For $|C|\ll\omega_c^2$, expand the square roots:
+\begin{equation}
+\boxed{\Delta\omega\approx\frac{|C|}{\omega_c}.}
+\label{eq:small_gap_frequency}
+\end{equation}
+Thus the eigenvalues repel. The uncoupled crossing becomes an avoided crossing and a local spectral gap opens between the lower and upper coupled branches.
+
+\subsection{Eigenvectors and mixing angle}
+Let the normalized lower and upper eigenvectors be
+\begin{equation}
+\mathbf u_-=\begin{bmatrix}\cos\alpha\\-\sin\alpha\end{bmatrix},
+\qquad
+\mathbf u_+=\begin{bmatrix}\sin\alpha\\\cos\alpha\end{bmatrix}.
+\end{equation}
+The mixing angle satisfies
+\begin{equation}
+\tan2\alpha=\frac{2C}{a-b}.
+\label{eq:mixing_angle}
+\end{equation}
+Far from the crossing, $|a-b|\gg2|C|$, so $\alpha$ approaches 0 or $\pi/2$ and each eigenvector is dominated by one original harmonic. At the crossing, $a=b$, so $\alpha=\pi/4$ up to sign conventions: the eigenvectors are equal-magnitude symmetric and antisymmetric combinations.
+
+The harmonic identity therefore exchanges continuously through the avoided crossing. Tracking a mode only by sorted eigenvalue can produce an apparent label swap. Eigenvector overlap or harmonic weight is needed to follow the same physical branch.
+
+\subsection{Positivity condition}
+For a real symmetric $2\times2$ matrix to be positive definite,
+\begin{equation}
+a>0,
+\qquad
+ab-C^2>0.
+\label{eq:two_mode_positivity}
+\end{equation}
+The benchmark chooses
+\begin{equation}
+C=\epsilon_c\omega_1\omega_2\,g(s),
+\qquad
+0\le g(s)\le1,
+\end{equation}
+with $0\le\epsilon_c<1$. Then
+\begin{equation}
+C^2\le\epsilon_c^2\omega_1^2\omega_2^2<\omega_1^2\omega_2^2
+\end{equation}
+away from an exact continuum zero. This guarantees positive local eigenvalues while retaining a tunable gap.
+
+\subsection{Neighboring-harmonic TAE crossing}
+For the benchmark harmonics $m$ and $m+1$ at fixed $n$,
+\begin{equation}
+k_{\parallel,m}=\frac{n-m\iota}{R_0},
+\qquad
+k_{\parallel,m+1}=\frac{n-(m+1)\iota}{R_0}.
+\end{equation}
+The TAE-like crossing is chosen where the wave numbers are equal in magnitude and opposite in sign:
+\begin{equation}
+n-m\iota_c=-\left[n-(m+1)\iota_c\right].
+\end{equation}
+Solving,
+\begin{equation}
+2n=(2m+1)\iota_c,
+\end{equation}
+so
+\begin{equation}
+\boxed{\iota_c=\frac{2n}{2m+1},
+\qquad
+q_c=\frac{2m+1}{2n}.}
+\label{eq:tae_crossing_iota}
+\end{equation}
+At this point,
+\begin{align}
+n-m\iota_c&=\frac{n}{2m+1},\\
+n-(m+1)\iota_c&=-\frac{n}{2m+1}.
+\end{align}
+The uncoupled crossing frequency is therefore
+\begin{equation}
+\omega_c=\frac{|n|}{2m+1}\frac{v_A(s_c)}{R_0}.
+\label{eq:crossing_frequency_general}
+\end{equation}
+Using $q_c=(2m+1)/(2n)$ gives the familiar large-aspect-ratio estimate
+\begin{equation}
+\boxed{\omega_c\approx\frac{v_A(s_c)}{2q_cR_0}.}
+\label{eq:tae_gap_center}
+\end{equation}
+
+\subsection{Different geometric gaps}
+The label of an Alfv\'en eigenmode should identify the dominant gap-forming mechanism, not merely any mode in the Alfv\'en range.
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{TAE:} toroidicity couples mainly $m$ and $m+1$ at fixed $n$.
+\item \textbf{EAE:} ellipticity commonly couples $m$ and $m+2$.
+\item \textbf{NAE:} higher noncircularity harmonics create additional gaps.
+\item \textbf{HAE:} helical stellarator geometry couples poloidal and toroidal sidebands.
+\item \textbf{RSAE:} reversed magnetic shear creates a continuum extremum rather than relying solely on a conventional neighboring-harmonic gap.
+\end{itemize}
+In a strongly three-dimensional stellarator, several couplings may be comparable, so classification can become approximate. A large harmonic-space matrix is then more faithful than a two-mode label.
+
+\subsection{Local gap does not guarantee a global mode}
+Equation~\eqref{eq:two_mode_eigenvalues} is local in $s$. It states that the two local branches avoid one another. A global eigenmode additionally requires radial structure, boundary conditions, and a frequency compatible with the full radial operator. A local gap is therefore a necessary organizing feature for a gap mode, not a sufficient proof that one exists.
+
+\begin{physicsbox}
+\textbf{Two distinct operations.} Diagonalizing the $2\times2$ matrix at each radius produces local coupled continuum branches. Solving the radial differential eigenproblem produces global eigenmodes. The first operation does not replace the second.
+\end{physicsbox}

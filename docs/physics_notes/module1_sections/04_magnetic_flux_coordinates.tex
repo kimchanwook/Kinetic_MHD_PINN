@@ -1,0 +1,117 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Magnetic flux coordinates}
+\label{sec:magnetic_coordinates}
+
+\subsection{Coordinate mapping}
+Let
+\begin{equation}
+(u^1,u^2,u^3)=(s,\theta,\zeta)
+\end{equation}
+be curvilinear coordinates. The physical position is a mapping
+\begin{equation}
+\mathbf x=\mathbf x(s,\theta,\zeta).
+\label{eq:coordinate_mapping}
+\end{equation}
+The covariant basis vectors are
+\begin{equation}
+\mathbf e_i=\frac{\partial\mathbf x}{\partial u^i},
+\end{equation}
+and the reciprocal, or contravariant, basis vectors are
+\begin{equation}
+\mathbf e^i=\nabla u^i.
+\end{equation}
+They satisfy
+\begin{equation}
+\mathbf e_i\cdot\mathbf e^j=\delta_i^{\ j},
+\end{equation}
+where $\delta_i^{\ j}$ is the Kronecker delta, equal to one when $i=j$ and zero otherwise.
+
+\subsection{Metric tensors}
+The covariant metric tensor is
+\begin{equation}
+g_{ij}=\mathbf e_i\cdot\mathbf e_j,
+\label{eq:covariant_metric}
+\end{equation}
+and the contravariant metric tensor is
+\begin{equation}
+g^{ij}=\mathbf e^i\cdot\mathbf e^j.
+\label{eq:contravariant_metric}
+\end{equation}
+The matrices $[g_{ij}]$ and $[g^{ij}]$ are inverses. They convert coordinate derivatives and components into physical lengths and dot products.
+
+For example, the squared differential distance is
+\begin{equation}
+d\ell^2=g_{ij}\,du^i du^j,
+\label{eq:line_element}
+\end{equation}
+where repeated indices are summed from 1 to 3.
+
+\subsection{Jacobian and volume element}
+The coordinate Jacobian is
+\begin{equation}
+\sqrt{g}=\mathbf e_s\cdot(\mathbf e_\theta\times\mathbf e_\zeta).
+\label{eq:jacobian}
+\end{equation}
+The physical volume element is
+\begin{equation}
+dV=\sqrt{g}\,ds\,d\theta\,d\zeta.
+\label{eq:volume_element}
+\end{equation}
+The sign of $\sqrt{g}$ depends on coordinate orientation. A production interface should either enforce a positive orientation or store the sign convention explicitly.
+
+\subsection{Contravariant representation of a tangent, divergence-free field}
+A particularly useful straight-field-line representation is
+\begin{equation}
+\boxed{
+\mathbf B
+=\nabla\psi\times\nabla\theta
++\iota(\psi)\,\nabla\zeta\times\nabla\psi.
+}
+\label{eq:B_contravariant}
+\end{equation}
+Here $\psi$ is a toroidal-flux-like surface coordinate. Equation~\eqref{eq:B_contravariant} automatically gives
+\begin{equation}
+\mathbf B\cdot\nabla\psi=0
+\end{equation}
+and, provided $\iota$ depends only on $\psi$, satisfies $\nabla\cdot\mathbf B=0$.
+
+Using the Jacobian identity
+\begin{equation}
+(\nabla\psi\times\nabla\theta)\cdot\nabla\zeta=\frac{1}{\sqrt{g}},
+\end{equation}
+we find
+\begin{align}
+\mathbf B\cdot\nabla\zeta&=\frac{1}{\sqrt{g}},\\
+\mathbf B\cdot\nabla\theta&=\frac{\iota}{\sqrt{g}}.
+\end{align}
+Therefore
+\begin{equation}
+\frac{d\theta}{d\zeta}
+=\frac{\mathbf B\cdot\nabla\theta}{\mathbf B\cdot\nabla\zeta}
+=\iota,
+\end{equation}
+which explains the phrase \textbf{straight-field-line coordinates}: in the $(\theta,\zeta)$ plane, field lines are straight lines of slope $\iota$.
+
+\subsection{Covariant representation and Boozer coordinates}
+Any vector can also be expanded in gradients:
+\begin{equation}
+\mathbf B=B_s\nabla s+B_\theta\nabla\theta+B_\zeta\nabla\zeta.
+\end{equation}
+In Boozer coordinates the covariant representation can be written
+\begin{equation}
+\mathbf B
+=K(s,\theta,\zeta)\nabla s
++I(s)\nabla\theta
++G(s)\nabla\zeta.
+\label{eq:B_boozer_covariant}
+\end{equation}
+The functions $I(s)$ and $G(s)$ are flux functions related to net toroidal and poloidal currents, while $K$ may vary over a surface. Exact multiplicative and sign conventions depend on how flux and angles are normalized. This is why a geometry file must store metadata rather than only arrays.
+
+Boozer coordinates are useful because the magnetic-field-line trajectories are straight and the covariant angular components are flux functions. Guiding-center orbit equations and quasisymmetry are especially transparent in this representation. Detailed treatments of flux coordinates and the original Boozer construction are given in Refs.~\cite{dHaeseleer1991,boozer1981}.
+
+\subsection{Hamada coordinates}
+Hamada coordinates are another straight-field-line system. They are constructed so that both magnetic field lines and current lines have simple contravariant representations and the Jacobian is a flux function under suitable conditions. Boozer and Hamada coordinates serve different analytical and numerical purposes; neither is simply a geometric angle system.
+
+\subsection{Coordinate singularity at the magnetic axis}
+At $s=0$, all poloidal angles refer to the same physical magnetic axis. The coordinate system is therefore singular in the same way that polar angle is undefined at the origin. This is a coordinate singularity, not necessarily a physical singularity. Numerical representations must impose regularity conditions so that physical fields remain finite and single-valued near the axis.
+

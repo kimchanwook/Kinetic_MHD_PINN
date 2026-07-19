@@ -1,0 +1,128 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Exercises and computational laboratories}
+\label{sec:exercises}
+
+\subsection{Conceptual exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Explain in words why a transverse displacement that is constant along a uniform field produces no shear-Alfv\'en restoring force.
+\item Distinguish magnetic pressure from magnetic tension using Eq.~\eqref{eq:magnetic_pressure_tension}.
+\item Explain why a fluid-MHD eigenmode is a legitimate component of a kinetic-MHD model.
+\item Explain why $\omega_A(s)$ forms a continuum when $s$ is continuous.
+\item Distinguish a rational surface, a continuum-resonant surface, and a neighboring-harmonic crossing surface.
+\item Explain why a local avoided crossing does not prove the existence of a global gap mode.
+\item Explain why mode amplitude is undetermined in a homogeneous linear eigenproblem.
+\item Explain the difference between verification and validation using the current benchmark as an example.
+\end{enumerate}
+
+\subsection{Derivation exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Starting from Eqs.~\eqref{eq:mhd_induction} and \eqref{eq:v_xi}, derive Eq.~\eqref{eq:b1_xi}.
+\item Starting from the adiabatic pressure equation, derive Eq.~\eqref{eq:p1_xi}.
+\item Repeat the uniform shear-Alfv\'en derivation for displacement in the $y$ direction.
+\item Show explicitly that the uniform shear-Alfv\'en wave has equal cycle-averaged kinetic and magnetic energy.
+\item Derive Eq.~\eqref{eq:kparallel_benchmark} from the stated Fourier convention and field-line pitch, carefully documenting the sign convention.
+\item Derive the logarithmic continuum slope in Eq.~\eqref{eq:continuum_log_slope}.
+\item Diagonalize Eq.~\eqref{eq:generic_two_mode_matrix} and derive both eigenvalues and the mixing-angle relation.
+\item Derive the crossing transform and crossing frequency in Eqs.~\eqref{eq:tae_crossing_iota}--\eqref{eq:tae_gap_center}.
+\item Derive the Euler--Lagrange equations from Eqs.~\eqref{eq:reduced_energy}--\eqref{eq:reduced_norm}.
+\item Prove the discrete positivity identity in Eq.~\eqref{eq:discrete_K_positive}.
+\end{enumerate}
+
+\subsection{Numerical exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Reproduce the baseline density, transform, Alfv\'en speed, and uncoupled continuum arrays directly from the JSON file without calling the project solver.
+\item Verify the crossing location numerically and compare the exact $s_c$ with the nearest cell center for $N=64,128,256,512$.
+\item Set $\epsilon_c=0$ and verify that the two block families can be solved independently.
+\item Scan $B_0$ and confirm that every frequency is linear in $B_0$ while normalized eigenvectors remain unchanged to numerical precision.
+\item Scan a uniform density multiplier and confirm the inverse-square-root scaling.
+\item Compute the observed convergence order for modes 1--4 using at least four grids and Richardson extrapolation.
+\item Calculate the discrete orthogonality matrix $h\mathbf X^{\mathsf T}\mathbf X$.
+\item Reproduce Table~\ref{tab:harmonic_diagnostics} from the eigenmode CSV.
+\item Track modes through a coupling scan using maximum eigenvector overlap. Compare with sorted-index tracking.
+\item Replace the arithmetic face average by a harmonic average and determine the convergence difference for the smooth baseline coefficient.
+\end{enumerate}
+
+\subsection{Model-development laboratories}
+\begin{enumerate}[leftmargin=1.8em]
+\item Tune $\epsilon_c$, $w_c$, and $\epsilon_r$ to produce a mode whose frequency lies in the local gap and whose radial density peaks near $s_c$. Preserve the original case and create a separately versioned case.
+\item Generalize the operator to $M$ harmonics with a sparse coupling graph. Verify symmetry and the decoupled limit for every edge of the graph.
+\item Add a nonuniform mass matrix $\mathbf M$ and solve $\mathbf A\mathbf x=\omega^2\mathbf M\mathbf x$. Define the correct normalization and residual.
+\item Construct a cylindrical analytic benchmark with constant $D$ and constant potential so that mixed-boundary eigenvalues are known exactly.
+\item Implement a nonuniform radial grid and derive face distances and cell widths carefully.
+\item Create an eigenvalue PINN using the exact boundary-satisfying trial function from Worked Example 10. Compare strong-form and variational losses.
+\item Train multiple neural modes using orthogonality constraints. Test whether the network repeatedly collapses to the lowest mode.
+\item Import an equilibrium-derived $\iota(s)$ and density profile while retaining the surrogate coupling. Quantify which changes are simple rescalings and which alter mode structure.
+\item Replace the surrogate coupling with coefficients derived from a controlled large-aspect-ratio toroidal model.
+\item Design a validation case against a trusted external eigenmode code, including equilibrium conversion, harmonic convention, normalization, and uncertainty accounting.
+\end{enumerate}
+
+\section{Chapter summary}
+\label{sec:summary}
+
+\begin{physicsbox}
+\textbf{Physical chain.}
+\begin{equation*}
+\begin{aligned}
+\text{magnetic tension}
+&\rightarrow \omega=|k_\parallel|v_A
+\rightarrow \omega_m(s)\\
+&\rightarrow \text{Alfv\'en continuum}
+\rightarrow \text{geometric harmonic coupling}\\
+&\rightarrow \text{spectral gaps}
+\rightarrow \text{global eigenmodes}.
+\end{aligned}
+\end{equation*}
+\end{physicsbox}
+
+The shear-Alfv\'en wave is a transverse fluid-MHD oscillation restored mainly by magnetic tension. In a uniform medium it satisfies
+\begin{equation}
+\omega^2=k_\parallel^2v_A^2,
+\qquad
+v_A=\frac{B_0}{\sqrt{\mu_0\rho_0}}.
+\end{equation}
+In a toroidal plasma, field-line pitch and density vary across magnetic surfaces. For the benchmark convention,
+\begin{equation}
+k_{\parallel,m}=\frac{n-m\iota}{R_0},
+\end{equation}
+so each harmonic has a radially varying local continuum branch.
+
+Toroidal and three-dimensional geometry couples Fourier harmonics. A symmetric two-mode matrix produces avoided crossing, harmonic mixing, and a local gap. Neighboring harmonics $m$ and $m+1$ cross at
+\begin{equation}
+\iota_c=\frac{2n}{2m+1}.
+\end{equation}
+A local gap alone does not establish a global eigenmode. Radial derivatives and boundary conditions must be solved.
+
+The project's executable benchmark uses two coupled radial envelopes:
+\begin{equation}
+-\frac{d}{ds}\left(D\frac{d\boldsymbol\xi}{ds}\right)
++\mathbf H_{\mathrm{loc}}\boldsymbol\xi
+=\omega^2\boldsymbol\xi.
+\end{equation}
+It follows from a positive quadratic functional and is self-adjoint under zero axis flux and zero edge value. A cell-centered finite-volume discretization produces a real symmetric sparse matrix.
+
+The baseline solver is strongly verified as a reduced numerical benchmark: it passes symmetry, decoupling, exact Alfv\'en scaling, residual, regression, and grid-refinement tests; Python reference tests pass, and MATLAB parity is defined for environments with MATLAB. The frozen output demonstrates coupled branches and convergent mixed-harmonic eigenmodes.
+
+The baseline should not be overinterpreted. Mode 2 lies within the local crossing-cell interval but is not strongly localized at the crossing and is dominated by one harmonic. The current result is therefore not a validated predictive stellarator TAE. It is a transparent conventional target for the next stages: many-harmonic geometry, equilibrium-derived coefficients, kinetic drive and damping, and eigenvalue PINNs.
+
+\section{Minimum interview-level explanation}
+A concise but technically accurate explanation is:
+
+\begin{overviewbox}
+A shear-Alfv\'en wave bends magnetic field lines, and magnetic tension restores them. Its local frequency is approximately $\omega_A=|k_\parallel|v_A$. In a toroidal plasma, rotational transform, magnetic geometry, and density vary across flux surfaces, so the local Alfv\'en frequency forms a continuum. Toroidal or stellarator geometry couples Fourier harmonics and opens gaps at avoided crossings. Global Alfv\'en eigenmodes can form through radial coupling and boundary conditions, sometimes inside those gaps. Module 4 solves a verified reduced fluid-MHD eigenproblem for that structure. Module 5 then determines whether energetic particles drive or damp the mode through kinetic resonances.
+\end{overviewbox}
+
+\section{Completion checklist for the reader}
+A reader is prepared to move to Module 5 when they can answer all of the following without relying on memorized phrases:
+\begin{itemize}[leftmargin=1.6em]
+\item What physical force restores a shear-Alfv\'en wave?
+\item Why is $v_A$ proportional to $B$ and inversely proportional to $\sqrt\rho$?
+\item How is $k_\parallel$ obtained from $(m,n,\iota)$ under a stated convention?
+\item Why does radial nonuniformity create a continuum?
+\item What is the difference between a local continuum branch and a global eigenmode?
+\item How does a $2\times2$ coupling matrix open a gap?
+\item Why is a mode frequency insufficient for classifying a TAE?
+\item Why is the reduced operator self-adjoint?
+\item How are the axis and edge boundary conditions discretized?
+\item What do residual, grid convergence, and code parity each establish?
+\item Which information must Module 4 pass to a kinetic resonance calculation?
+\end{itemize}

@@ -1,0 +1,151 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Axisymmetry versus fully three-dimensional equilibrium}
+\label{sec:axisymmetry_vs_3d}
+
+\subsection{Axisymmetric reduction}
+An axisymmetric equilibrium is invariant under toroidal rotation:
+\begin{equation}
+\frac{\partial}{\partial\phi}=0.
+\end{equation}
+This continuous symmetry produces a conserved canonical toroidal momentum for particle motion and permits the magnetic field to be represented using a two-dimensional poloidal-flux function. The equilibrium equations reduce to the Grad--Shafranov equation, a nonlinear elliptic partial differential equation in the $(R,Z)$ plane.
+
+The exact Grad--Shafranov form depends on flux normalization. A common form is
+\begin{equation}
+R\frac{\partial}{\partial R}
+\left(\frac{1}{R}\frac{\partial\psi_p}{\partial R}\right)
++\frac{\partial^2\psi_p}{\partial Z^2}
+=-\mu_0R^2\frac{dp}{d\psi_p}
+-F\frac{dF}{d\psi_p},
+\label{eq:grad_shafranov}
+\end{equation}
+where $\psi_p(R,Z)$ is a poloidal-flux function and $F(\psi_p)=RB_\phi$. This equation is included to show what axisymmetry buys mathematically: a scalar two-dimensional equilibrium equation.
+
+\subsection{Why a stellarator is harder}
+A stellarator generally has only discrete toroidal periodicity, not continuous axisymmetry. Quantities depend on all three coordinates:
+\begin{equation}
+A=A(s,\theta,\zeta).
+\end{equation}
+There is no single two-dimensional Grad--Shafranov equation that describes a general three-dimensional stellarator equilibrium. Instead, numerical methods solve coupled equations for the shapes of many nested surfaces and for field/current quantities over each surface.
+
+Three-dimensionality affects more than computational cost. It changes the confinement physics summarized in the review by Helander~\cite{helander2014}:
+\begin{itemize}[leftmargin=1.6em]
+\item magnetic-well structure and trapped-particle orbits;
+\item bootstrap and Pfirsch--Schluter currents;
+\item neoclassical transport;
+\item energetic-particle confinement;
+\item coupling among poloidal and toroidal wave harmonics;
+\item coil complexity and sensitivity to errors.
+\end{itemize}
+
+\section{Quasisymmetry and related optimization ideas}
+\label{sec:quasisymmetry}
+
+\subsection{Why symmetry matters for particle confinement}
+In an exactly axisymmetric magnetic field, the particle Lagrangian is independent of the toroidal angle. Noether's theorem then gives conservation of canonical toroidal momentum. This extra invariant strongly restricts radial particle excursions.
+
+A stellarator lacks exact axisymmetry in physical space, but it can be designed so that the magnetic-field magnitude $B$ has an approximate continuous symmetry in Boozer coordinates. This property is called \textbf{quasisymmetry}. The vector field remains three-dimensional, while the magnitude sampled by guiding centers has a simpler dependence.
+
+\subsection{General quasisymmetric form}
+A quasisymmetric magnetic-field strength has the form
+\begin{equation}
+B=B\left(s,M\theta-N\zeta\right),
+\label{eq:quasisymmetry_form}
+\end{equation}
+where $M$ and $N$ are fixed integers that define the symmetry direction. The most common cases are:
+\begin{itemize}[leftmargin=1.6em]
+\item \textbf{quasi-axisymmetry:} $N=0$, so $B$ is approximately independent of the Boozer toroidal angle;
+\item \textbf{quasi-helical symmetry:} both $M$ and $N$ are nonzero, so $B$ approximately follows a helical angle.
+\end{itemize}
+The word ``quasi'' is essential: exact global quasisymmetry is severely constrained, and practical configurations minimize symmetry-breaking Fourier components rather than eliminating all of them. Modern high-precision constructions are discussed by Landreman and Paul~\cite{landremanPaul2022}.
+
+\subsection{Quasi-isodynamic configurations}
+Another stellarator optimization strategy is quasi-isodynamicity, associated with favorable contours of the second adiabatic invariant and reduced radial drift of trapped particles. It is not the same condition as quasisymmetry. Both strategies aim to improve confinement but organize the magnetic geometry differently.
+
+\subsection{Why Module 1 should not reduce geometry to one score}
+A single quasisymmetry-error metric cannot fully characterize an equilibrium. A useful geometry database should retain the field spectrum, rotational transform, magnetic shear, curvature, magnetic wells, effective ripple measures, and coil/plasma constraints. Different downstream modules are sensitive to different features.
+
+\section{Geometric quantities needed for particle orbits}
+\label{sec:orbit_geometry}
+
+\subsection{Field magnitude and unit vector}
+Guiding-center motion depends on
+\begin{equation}
+B=|\mathbf B|,
+\qquad
+\mathbf b=\frac{\mathbf B}{B}.
+\end{equation}
+These must be available as continuous functions or sufficiently accurate interpolants in physical space or magnetic coordinates.
+
+\subsection{Magnetic-field gradient}
+The gradient
+\begin{equation}
+\nabla B
+\end{equation}
+drives the grad-$B$ drift. A noisy numerical derivative can cause artificial orbit diffusion even when $B$ itself is accurate. Geometry export should therefore include either analytically differentiable spectral representations or derivative fields computed with controlled accuracy.
+
+\subsection{Field-line curvature}
+The curvature
+\begin{equation}
+\boldsymbol\kappa=\mathbf b\cdot\nabla\mathbf b
+\end{equation}
+drives curvature drift and contributes to MHD interchange physics. Its dimensions are inverse length. The curvature vector is perpendicular to $\mathbf b$ because differentiating $\mathbf b\cdot\mathbf b=1$ along the field gives
+\begin{equation}
+\mathbf b\cdot\boldsymbol\kappa=0.
+\end{equation}
+
+\subsection{Mirror ratio and magnetic wells}
+On a chosen field line or surface, define
+\begin{equation}
+B_{\min}(s)=\min_{\theta,\zeta}B(s,\theta,\zeta),
+\qquad
+B_{\max}(s)=\max_{\theta,\zeta}B(s,\theta,\zeta).
+\end{equation}
+The mirror ratio is
+\begin{equation}
+\mathcal R_m(s)=\frac{B_{\max}(s)}{B_{\min}(s)}.
+\end{equation}
+Particles with sufficiently large perpendicular velocity can be reflected from high-$B$ regions and become trapped. The detailed arrangement of local minima and maxima along a field line matters more than the mirror ratio alone.
+
+\subsection{Electric potential}
+Module 1 primarily supplies magnetic equilibrium, but guiding-center orbits may also require an electrostatic potential
+\begin{equation}
+\Phi=\Phi(s,\theta,\zeta),
+\qquad
+\mathbf E=-\nabla\Phi
+\end{equation}
+for a static electrostatic field. A lowest-order model often assumes $\Phi=\Phi(s)$, giving a radial electric field. Because this potential is not determined by ideal magnetostatic force balance alone, its source and coupling location must be documented separately.
+
+\section{Geometric quantities needed for waves and stability}
+\label{sec:wave_geometry}
+
+\subsection{Parallel derivative}
+The derivative along the magnetic field is
+\begin{equation}
+\nabla_\parallel A=\mathbf b\cdot\nabla A
+\end{equation}
+for a scalar $A$. In magnetic coordinates, the contravariant field representation provides
+\begin{equation}
+\mathbf B\cdot\nabla A
+=\frac{1}{\sqrt g}
+\left(\frac{\partial A}{\partial\zeta}
++\iota\frac{\partial A}{\partial\theta}\right)
+\label{eq:Bdotgrad_straight}
+\end{equation}
+under the convention of Equation~\eqref{eq:B_contravariant}. This operator is central to shear-Alfven propagation.
+
+\subsection{Local Alfven frequency}
+For a Fourier harmonic proportional to $\exp[i(m\theta-n\zeta-\omega t)]$, a reduced local shear-Alfven frequency is
+\begin{equation}
+\omega_A(s,\theta,\zeta)
+\sim |k_\parallel|v_A,
+\qquad
+v_A=\frac{B}{\sqrt{\mu_0\rho_m}}.
+\end{equation}
+In a three-dimensional equilibrium, $B$, the metric, and sometimes density vary over a surface, so a full continuum calculation is more involved than the simple radial expression used in the reduced Module 4 benchmark.
+
+\subsection{Curvature and pressure-gradient coupling}
+MHD stability operators contain combinations of pressure gradient, current, field-line curvature, and metric coefficients. Bad curvature means that pressure forces tend to displace plasma farther in the direction of the original displacement; good curvature tends to provide restoration. In a three-dimensional torus, curvature varies strongly along a field line, so stability depends on weighted averages and mode structure rather than a single local sign.
+
+\subsection{Geodesic curvature}
+Curvature can be decomposed relative to a flux surface into normal and tangential components. Geodesic curvature lies within the surface and is perpendicular to the field line. It participates in coupling between shear-Alfven and compressional or acoustic responses. A production equilibrium interface should provide enough metric and derivative information to calculate this decomposition consistently.
+

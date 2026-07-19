@@ -1,0 +1,119 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Chapter summary}
+\label{sec:summary}
+
+\begin{enumerate}[leftmargin=1.6em]
+\item Magnetic confinement exploits rapid gyromotion and relatively free motion along magnetic field lines. Closing field lines toroidally avoids simple end loss.
+\item A stellarator uses three-dimensional external magnetic geometry to produce field-line twist without relying on a large transformer-driven plasma current.
+\item Static ideal-MHD equilibrium satisfies
+\begin{equation*}
+\nabla p=\mathbf J\times\mathbf B,
+\qquad
+\nabla\times\mathbf B=\mu_0\mathbf J,
+\qquad
+\nabla\cdot\mathbf B=0.
+\end{equation*}
+\item Force balance implies $\mathbf B\cdot\nabla p=0$, so pressure is a flux function when nested surfaces exist.
+\item A magnetic surface satisfies $\mathbf B\cdot\nabla s=0$. The normalized toroidal-flux coordinate $s$ labels nested surfaces, while $\rho=\sqrt{s}$ is a convenient radius-like coordinate.
+\item Rotational transform $\iota=d\theta/d\zeta$ measures average field-line pitch. The safety factor is $q=1/\iota$ under the project convention.
+\item Radial variation of $\iota$ produces magnetic shear. Rational values $\iota=n/m$ identify surfaces important for islands and wave resonances.
+\item Straight-field-line coordinates make field lines straight in angular coordinate space. Boozer coordinates are especially useful for particle-orbit and quasisymmetry analysis.
+\item Three-dimensional surfaces and field strength are represented efficiently by Fourier series in poloidal and toroidal angles.
+\item The vacuum coil field and plasma-current field both contribute to the operating equilibrium.
+\item Fixed-boundary calculations prescribe the plasma boundary; free-boundary calculations solve the plasma-vacuum interface with coil fields.
+\item A numerical equilibrium is a nonlinear constrained problem requiring radial and spectral convergence studies, force-balance checks, and coordinate-quality diagnostics.
+\item Downstream modules require not only $\mathbf B$ but also $B$, derivatives, curvature, metrics, Jacobian, $\iota$, $V'$, profiles, conventions, provenance, and uncertainty information.
+\item A physics-informed surrogate must preserve equilibrium constraints and derived-quantity accuracy; it cannot be validated by field-value error alone.
+\end{enumerate}
+
+\appendix
+
+\section{Vector identities used in this chapter}
+\label{app:vector_identities}
+
+\subsection{Triple-product identities}
+For vectors $\mathbf A$, $\mathbf C$, and $\mathbf D$,
+\begin{align}
+\mathbf A\cdot(\mathbf C\times\mathbf D)
+&=\mathbf C\cdot(\mathbf D\times\mathbf A)
+=\mathbf D\cdot(\mathbf A\times\mathbf C),\\
+\mathbf A\times(\mathbf C\times\mathbf D)
+&=\mathbf C(\mathbf A\cdot\mathbf D)
+-\mathbf D(\mathbf A\cdot\mathbf C).
+\end{align}
+
+\subsection{Magnetic-force identity}
+For a differentiable vector field $\mathbf B$,
+\begin{equation}
+(\nabla\times\mathbf B)\times\mathbf B
+=(\mathbf B\cdot\nabla)\mathbf B
+-\frac{1}{2}\nabla B^2
+-\mathbf B(\nabla\cdot\mathbf B).
+\end{equation}
+When $\nabla\cdot\mathbf B=0$, this yields Equation~\eqref{eq:magnetic_force_decomposition}.
+
+\subsection{Divergence of a curl}
+For a sufficiently smooth vector potential $\mathbf A$,
+\begin{equation}
+\nabla\cdot(\nabla\times\mathbf A)=0.
+\end{equation}
+Thus representing $\mathbf B=\nabla\times\mathbf A$ enforces the solenoidal condition analytically.
+
+\section{Derivation of the straight-field-line representation}
+\label{app:straight_field_derivation}
+
+Let $\psi$ label magnetic surfaces and let $\theta$ and $\zeta$ be periodic angles. A field tangent to surfaces can be represented using cross products containing $\nabla\psi$:
+\begin{equation}
+\mathbf B
+=A(\psi,\theta,\zeta)\nabla\psi\times\nabla\theta
++C(\psi,\theta,\zeta)\nabla\zeta\times\nabla\psi.
+\end{equation}
+The two terms are tangent to constant-$\psi$ surfaces. A suitable angular-coordinate choice and flux normalization set $A=1$ and make $C=\iota(\psi)$, giving Equation~\eqref{eq:B_contravariant}. This coordinate construction is nontrivial globally; the equation should be understood as the defining representation of an appropriate straight-field-line system, not as a statement that arbitrary geometric angles already have this property.
+
+\section{Example project interface checklist}
+\label{app:interface_checklist}
+
+Before a Module 1 state product is accepted by another module, verify:
+\begin{enumerate}[leftmargin=1.6em]
+\item The equilibrium identifier and source checksum are present.
+\item SI units or normalization constants are present for every dimensional field.
+\item The meanings of $s$, $\rho$, $\theta$, and $\zeta$ are documented.
+\item Angle orientation, flux signs, and the $q$--$\iota$ convention are documented.
+\item The valid domain and last closed flux surface are identified.
+\item The field-period convention and Fourier convention are identified.
+\item $\mathbf B$, $B$, position, Jacobian, metric, and $\iota$ are mutually consistent.
+\item Derivatives are generated from the same representation as the primary field where possible.
+\item The minimum Jacobian is positive under the stored orientation.
+\item Force, divergence, tangency, and transform residuals pass specified tolerances.
+\item Radial and spectral convergence evidence is attached.
+\item Interpolation and extrapolation behavior is documented.
+\item The geometry does not silently extrapolate outside the valid plasma or vacuum domain.
+\item Downstream outputs retain the equilibrium identifier.
+\end{enumerate}
+
+\section{Review questions and exercises}
+\label{app:exercises}
+
+\begin{enumerate}[leftmargin=1.8em]
+\item Explain why a purely toroidal magnetic field is not generally sufficient for good toroidal confinement. Distinguish particle streaming from cross-field drifts.
+\item Starting from $\nabla p=\mathbf J\times\mathbf B$, prove that both $\mathbf B$ and $\mathbf J$ are tangent to constant-pressure surfaces.
+\item Derive Equation~\eqref{eq:Jperp} for the perpendicular current.
+\item Use the magnetic-force identity to interpret magnetic pressure and tension.
+\item For $B=3\ \mathrm T$ and $p=1.5\times10^5\ \mathrm{Pa}$, calculate the local beta.
+\item A field line has $\iota=0.42$. How many poloidal turns does it make during ten toroidal turns? Is the line guaranteed to close?
+\item For $\iota(s)=0.3+0.4s$, locate the surfaces with $\iota=1/2$ and $\iota=2/3$, if they lie in $0\leq s\leq1$.
+\item Show that Equation~\eqref{eq:B_contravariant} gives $d\theta/d\zeta=\iota$.
+\item Explain why $\rho=\sqrt{s}$ should not automatically be interpreted as geometric distance from the magnetic axis.
+\item Describe the difference between fixed-boundary and free-boundary equilibrium.
+\item Explain why a vacuum coil field is not necessarily the same as a finite-beta plasma equilibrium.
+\item What physics is excluded when globally nested surfaces are imposed?
+\item Why can accurate interpolation of $B$ still produce inaccurate guiding-center orbits if $\nabla B$ is noisy?
+\item Write the Fourier phase for a mode with poloidal number $m=3$, toroidal number $n=2$, and $N_{\mathrm{fp}}=4$ under the convention in Equation~\eqref{eq:R_fourier}.
+\item Explain the distinction between stellarator symmetry and quasisymmetry.
+\item Give three quantities from Module 1 that Module 4 needs and explain why.
+\item Construct a convergence table for $\iota(0.5)$ as $m_{\max}$, $n_{\max}$, and $N_s$ are increased. What pattern would support numerical convergence?
+\item Propose a divergence-free neural representation for $\mathbf B$ and identify one disadvantage.
+\item Explain why a low mean-square error in $B$ does not guarantee a useful equilibrium surrogate.
+\item State the most important assumptions that must accompany any claim based on this Module 1 model.
+\end{enumerate}
+

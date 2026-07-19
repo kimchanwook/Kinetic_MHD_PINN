@@ -1,0 +1,126 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Toroidal geometry, Fourier harmonics, and the parallel wave number}
+\label{sec:parallel_structure}
+
+\subsection{Magnetic coordinates inherited from Module 1}
+Assume that the equilibrium possesses nested magnetic surfaces labeled by a normalized toroidal-flux coordinate $s\in[0,1]$. The magnetic axis corresponds to $s=0$ and the selected plasma boundary to $s=1$. Two periodic angles locate a point on each surface: poloidal angle $\theta$ and toroidal angle $\zeta$. A field line lies on constant $s$ and advances through both angles.
+
+In straight-field-line coordinates, the rotational transform is
+\begin{equation}
+\iota(s)=\frac{d\theta}{d\zeta}
+\end{equation}
+in an averaged or straight-line sense. Thus a field line makes $\iota$ poloidal turns per toroidal turn. The tokamak safety factor is $q=1/\iota$ in the convention adopted by this project.
+
+A useful contravariant representation is
+\begin{equation}
+\mathbf B_0=\nabla\psi\times\nabla\theta+\iota(\psi)\nabla\zeta\times\nabla\psi,
+\label{eq:b_contravariant_straight}
+\end{equation}
+where $\psi$ is a toroidal-flux label. The precise normalization of $\psi$ does not affect the phase argument below.
+
+\subsection{Fourier convention}
+Write one perturbation harmonic as
+\begin{equation}
+\widehat Q_{mn}(s,\theta,\zeta)
+=Q_{mn}(s)e^{i(m\theta-n\zeta)}.
+\label{eq:fourier_convention_mod4}
+\end{equation}
+The full time dependence is $e^{-i\omega t}$. Under this convention, positive integer $m$ counts poloidal variation and integer $n$ counts toroidal variation. Some literature instead uses $e^{i(m\theta+n\zeta)}$ or reverses the definition of $\zeta$. A sign in $k_\parallel$ is therefore meaningful only together with the stated phase convention. Frequencies based on $k_\parallel^2$ are unaffected by an overall sign reversal.
+
+\subsection{Phase change along a field line}
+Along a field line,
+\begin{equation}
+\frac{d}{d\zeta}(m\theta-n\zeta)=m\frac{d\theta}{d\zeta}-n=m\iota-n.
+\end{equation}
+If the distance traveled along the field during a toroidal-angle increment is approximated by $d\ell_\parallel\approx R_0d\zeta$, then
+\begin{equation}
+\frac{d}{d\ell_\parallel}(m\theta-n\zeta)
+\approx\frac{m\iota-n}{R_0}.
+\end{equation}
+The benchmark defines
+\begin{equation}
+\boxed{k_{\parallel,m}(s)=\frac{n-m\iota(s)}{R_0}.}
+\label{eq:kparallel_benchmark}
+\end{equation}
+This differs by a minus sign from the derivative written above; the sign corresponds to the selected propagation direction. Since the local ideal-MHD frequency uses $k_\parallel^2$, the benchmark continuum is
+\begin{equation}
+\omega_m(s)=|k_{\parallel,m}(s)|v_A(s).
+\end{equation}
+
+\subsection{More exact geometric meaning}
+In a general equilibrium, the field-parallel derivative is
+\begin{equation}
+\nabla_\parallel=\mathbf b_0\cdot\nabla.
+\end{equation}
+Acting on a Fourier harmonic gives
+\begin{equation}
+\nabla_\parallel\widehat Q_{mn}
+=i\left[m\mathbf b_0\cdot\nabla\theta-n\mathbf b_0\cdot\nabla\zeta\right]\widehat Q_{mn}.
+\label{eq:exact_parallel_derivative}
+\end{equation}
+The quantity in brackets is a position-dependent geometric $k_\parallel$. Equation~\eqref{eq:kparallel_benchmark} replaces metric variation along the field line by one effective length $R_0$. It is therefore a large-aspect-ratio, single-scale approximation rather than a coordinate identity.
+
+\subsection{Rational surfaces}
+A harmonic has $k_{\parallel,m}=0$ where
+\begin{equation}
+\iota(s_r)=\frac{n}{m},
+\label{eq:rational_surface}
+\end{equation}
+or equivalently $q(s_r)=m/n$. Such a magnetic surface is called rational with respect to the pair $(m,n)$. A field line closes on itself after a finite number of toroidal and poloidal circuits in the idealized straight-field-line description. For the uncoupled shear-Alfv\'en relation, the frequency approaches zero at this surface.
+
+A zero of the reduced branch does not automatically imply a physical zero-frequency global mode. Pressure, compressibility, geodesic curvature, coupling to other branches, boundary conditions, and nonideal physics can modify the spectrum. It does identify a surface at which the selected Fourier phase varies very slowly along the field.
+
+\subsection{Magnetic shear}
+Because $\iota$ varies radially,
+\begin{equation}
+\frac{dk_{\parallel,m}}{ds}=-\frac{m}{R_0}\frac{d\iota}{ds}.
+\label{eq:kparallel_shear}
+\end{equation}
+This radial variation is magnetic shear in its most direct wave-physics manifestation. Nearby surfaces have different parallel phase rates and therefore different Alfv\'en frequencies. Stronger shear generally makes a continuum branch sweep more rapidly through frequency as radius changes.
+
+Near a rational surface $s_r$, expand
+\begin{equation}
+\iota(s)\approx\frac{n}{m}+\iota'(s_r)(s-s_r).
+\end{equation}
+Then
+\begin{equation}
+k_{\parallel,m}(s)\approx-\frac{m\iota'(s_r)}{R_0}(s-s_r),
+\end{equation}
+and, for slowly varying $v_A$,
+\begin{equation}
+\omega_m(s)\approx\frac{|m\iota'(s_r)|v_A(s_r)}{R_0}|s-s_r|.
+\end{equation}
+Thus an uncoupled continuum branch forms a local V shape around a rational surface in a plot of positive frequency versus radius.
+
+\subsection{Stellarator field periods and mode labels}
+A stellarator with $N_{\mathrm{fp}}$ field periods is invariant under a toroidal rotation $\zeta\rightarrow\zeta+2\pi/N_{\mathrm{fp}}$ only when accompanied by the appropriate geometric periodicity. Equilibrium quantities are commonly expanded as
+\begin{equation}
+G(s,\theta,\zeta)=\sum_{M,N}G_{MN}(s)
+\cos\!\left(M\theta-NN_{\mathrm{fp}}\zeta\right)
+\end{equation}
+plus sine components as needed. Multiplication of a perturbation harmonic by an equilibrium harmonic produces sidebands with
+\begin{equation}
+(m,n)\longrightarrow(m\pm M,\ n\pm NN_{\mathrm{fp}}).
+\label{eq:stellarator_selection_rule}
+\end{equation}
+Therefore, unlike an axisymmetric equilibrium in which one toroidal mode number $n$ may remain independent, a fully three-dimensional stellarator can couple multiple toroidal as well as poloidal harmonics. The two-harmonic benchmark retains only $(m,n)$ and $(m+1,n)$ so that the gap mechanism can be verified without the complexity of a large harmonic network.
+
+\subsection{Local frequency scale}
+Combining the uniform-plasma relation and the reduced parallel wave number gives
+\begin{equation}
+\boxed{
+\omega_m(s)=|n-m\iota(s)|\frac{B_0}{R_0\sqrt{\mu_0\rho(s)}}.}
+\label{eq:uncoupled_continuum_full}
+\end{equation}
+This compact equation carries the principal Module 1 dependencies:
+\begin{itemize}[leftmargin=1.6em]
+\item $\iota(s)$ sets field-line pitch and rational surfaces;
+\item $\rho(s)$ sets plasma inertia;
+\item $B_0$ sets magnetic tension;
+\item $R_0$ sets an effective parallel connection length;
+\item $m$ and $n$ select the Fourier phase.
+\end{itemize}
+
+\begin{physicsbox}
+\textbf{Interpretation.} A Fourier pattern is stationary along a field line when $n=m\iota$. Away from that condition, the field line cuts through successive crests and troughs. The faster the phase changes along the line, the larger $|k_\parallel|$ and the higher the local shear-Alfv\'en frequency.
+\end{physicsbox}

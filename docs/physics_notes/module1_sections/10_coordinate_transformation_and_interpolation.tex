@@ -1,0 +1,60 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Coordinate transformation and interpolation}
+\label{sec:transform_interpolation}
+
+\subsection{Why transformations are unavoidable}
+Different calculations prefer different representations:
+\begin{itemize}[leftmargin=1.6em]
+\item coil and wall geometry are naturally expressed in Cartesian or cylindrical coordinates;
+\item equilibrium solvers use internal flux coordinates and spectral coefficients;
+\item guiding-center solvers often prefer Boozer coordinates or direct Cartesian fields;
+\item wave solvers require metric coefficients and parallel derivatives;
+\item transport solvers frequently use a one-dimensional normalized flux coordinate.
+\end{itemize}
+Module 1 must therefore define transformations, not only raw field values.
+
+\subsection{Forward and inverse mappings}
+The forward mapping
+\begin{equation}
+(s,\theta,\zeta)\mapsto\mathbf x
+\end{equation}
+is evaluated from the surface representation. The inverse mapping
+\begin{equation}
+\mathbf x\mapsto(s,\theta,\zeta)
+\end{equation}
+is generally nonlinear and may require root finding. The inverse can be nonunique outside the nested-surface region or near self-intersections, so its domain must be restricted.
+
+A Newton inverse solves
+\begin{equation}
+\mathbf r(s,\theta,\zeta)
+=\mathbf x(s,\theta,\zeta)-\mathbf x_{\mathrm{target}}
+=\mathbf 0.
+\end{equation}
+The update uses the coordinate-basis matrix
+\begin{equation}
+\begin{bmatrix}
+\partial_s\mathbf x & \partial_\theta\mathbf x & \partial_\zeta\mathbf x
+\end{bmatrix}.
+\end{equation}
+Near a coordinate singularity or a poorly shaped surface, this matrix can be ill-conditioned.
+
+\subsection{Interpolation requirements}
+A downstream solver may evaluate geometry at points not present on the equilibrium grid. Interpolation should preserve:
+\begin{itemize}[leftmargin=1.6em]
+\item periodicity in angular coordinates;
+\item continuity across field-period boundaries;
+\item regularity at the magnetic axis;
+\item stated order of accuracy;
+\item consistency between a field and its derivatives.
+\end{itemize}
+Interpolating $B$, $\nabla B$, and $\boldsymbol\kappa$ independently can violate derivative identities. A differentiable spectral representation is preferable when practical.
+
+\subsection{Conservative remapping of flux functions}
+When a profile such as density or pressure is transferred from one radial grid to another, pointwise interpolation does not necessarily conserve integrated particle number or energy. A conservative remap should preserve an integral such as
+\begin{equation}
+\mathcal N
+=\int_0^1 n(s)V'(s)\,ds.
+\label{eq:particle_integral}
+\end{equation}
+For cell averages, this is accomplished by matching integrals over overlapping radial cells rather than simply matching values at cell centers.
+

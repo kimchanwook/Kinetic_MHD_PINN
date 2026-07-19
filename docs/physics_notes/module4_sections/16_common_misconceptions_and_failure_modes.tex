@@ -1,0 +1,67 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Common misconceptions and failure modes}
+\label{sec:misconceptions}
+
+\subsection{``Kinetic MHD should not use fluid MHD''}
+Incorrect. Kinetic MHD is commonly a hybrid theory. The bulk plasma can be described by MHD while energetic or resonant populations are treated kinetically. Module 4 supplies the fluid restoring-force structure; Module 5 supplies kinetic energy exchange.
+
+\subsection{``Every particle moves at the fluid velocity''}
+Incorrect. Fluid velocity is a velocity moment of a distribution function. It is not assigned to every particle. A Maxwellian or non-Maxwellian distribution contains many individual velocities even when the bulk velocity is zero.
+
+\subsection{``The Alfv\'en continuum is one curve''}
+Usually incorrect. Each Fourier harmonic and wave family can produce a branch, and three-dimensional coupling produces many interacting branches. A plotted pair in the benchmark is a deliberately truncated subset.
+
+\subsection{``A rational surface always means an instability''}
+Incorrect. A rational surface means a selected Fourier phase has $k_\parallel=0$ under the adopted approximation. Stability depends on the full energy balance, gradients, currents, pressure, coupling, and nonideal effects.
+
+\subsection{``A local gap automatically contains a global TAE''}
+Incorrect. A local avoided crossing is obtained by diagonalizing a small matrix independently at each radius. A global mode requires a radial differential solution and appropriate boundary conditions. It may fail to localize or may intersect another continuum branch elsewhere.
+
+\subsection{``Any eigenfrequency in the gap proves the mode is gap localized''}
+Incorrect. The baseline mode-2 result is a direct counterexample to using frequency alone. Harmonic weights, radial localization, convergence, and continuum intersections must also be examined.
+
+\subsection{``The absolute sign of an eigenvector is physical''}
+Incorrect for a homogeneous linear eigenproblem. $\mathbf x$ and $-\mathbf x$ represent the same real mode. For complex vectors, an arbitrary global phase is also unphysical.
+
+\subsection{``Small residual means correct physics''}
+Incorrect. A residual tests the discrete algebraic equation. Model-form error, incorrect coefficients, inadequate geometry, and spatial discretization error can remain large.
+
+\subsection{``Python--MATLAB agreement validates the plasma model''}
+Incorrect. Cross-code parity is strong implementation verification, but both codes may solve the same reduced or mistaken model. Validation requires comparison with trusted physical calculations or experiment.
+
+\subsection{``A finite matrix literally contains a mathematical continuum''}
+Incorrect. A finite matrix contains discrete eigenvalues. It approximates a continuum through a resolution-dependent collection of states. Grid behavior is part of the physical interpretation.
+
+\subsection{``The edge Dirichlet condition is universal''}
+Incorrect. It is a benchmark choice. Real modes may require plasma-vacuum matching, conducting-wall conditions, radiative conditions, or regularity constraints in variables different from the reduced envelope.
+
+\subsection{``The minor radius in the JSON determines the radial derivative''}
+Not in the current implementation. The operator differentiates with respect to dimensionless $s$ and uses $D$ with units of frequency squared. The stored minor radius is metadata for future models.
+
+\subsection{``The two-harmonic coupling coefficient is a measured toroidicity coefficient''}
+Incorrect. $C(s)$ is a prescribed Gaussian surrogate. It reproduces the mathematics of avoided crossing and harmonic mixing but is not extracted from a VMEC, DESC, or other equilibrium.
+
+\subsection{``The lowest sorted mode remains the same physical mode during a scan''}
+Not necessarily. Global avoided crossings can exchange eigenfunction character. Mode tracking should use overlaps and subspace methods.
+
+\subsection{``Clipping negative eigenvalues before the square root is harmless''}
+Potentially dangerous. Tiny negative values caused solely by floating-point roundoff in a locally positive expression may be clipped defensively. A negative global eigenvalue from the eigensolver must be investigated because it may indicate instability or a defective operator.
+
+\subsection{``A larger neural network guarantees a better eigenvalue PINN''}
+Incorrect. Eigenvalue PINNs have structural difficulties: the zero solution, mode collapse, orthogonality, sharp layers, spectral bias, and loss imbalance. Architecture size alone does not solve these problems.
+
+\subsection{Numerical failure modes checklist}
+Before accepting a result, check for:
+\begin{itemize}[leftmargin=1.6em]
+\item inconsistent Fourier signs between equilibrium, solver, and diagnostic code;
+\item confusion between angular frequency $\omega$ and ordinary frequency $f$;
+\item confusion between mass density and number density;
+\item missing factor $2\pi$ in frequency conversion;
+\item wrong half-cell distance at the edge boundary;
+\item face coefficients evaluated inconsistently on opposite matrix rows;
+\item Euclidean normalization mistaken for grid-weight normalization;
+\item sorted-index mode matching across a crossing;
+\item unresolved radial localization or continuum layers;
+\item reference files regenerated without documenting the reason;
+\item physical claims exceeding the fidelity stated in metadata.
+\end{itemize}

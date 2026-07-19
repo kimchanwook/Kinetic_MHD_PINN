@@ -1,0 +1,132 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Numerical solution of three-dimensional equilibrium}
+\label{sec:equilibrium_solvers}
+
+\subsection{Unknowns and input choices}
+A nested-surface equilibrium calculation typically represents the position of each surface by spectral coefficients such as $R_{mn}(s)$ and $Z_{mn}(s)$. Depending on formulation, it also solves for angular mappings, magnetic-field components, current-related flux functions, and the rotational-transform profile.
+
+Typical fixed-boundary inputs include:
+\begin{itemize}[leftmargin=1.6em]
+\item plasma boundary Fourier coefficients;
+\item toroidal magnetic flux;
+\item pressure profile;
+\item either current information or rotational-transform constraints;
+\item radial and angular resolution;
+\item symmetry and sign conventions.
+\end{itemize}
+Typical free-boundary inputs additionally include coil geometry, coil currents, conducting structures, and vacuum-region settings.
+
+\subsection{Variational principle}
+Many ideal-MHD equilibrium methods use an energy principle. A representative total energy is
+\begin{equation}
+W=\int_V\left[
+\frac{B^2}{2\mu_0}
++\frac{p}{\gamma_{\mathrm{ad}}-1}
+\right]dV,
+\label{eq:equilibrium_energy}
+\end{equation}
+subject to constraints such as conservation of magnetic flux and an equation of state. A stationary point of this constrained functional satisfies ideal-MHD force balance.
+
+The phrase \textbf{variational} means that the solver changes the surface representation to reduce a residual or energy gradient derived from $W$. It does not mean that every stationary point is automatically stable; the second variation is relevant to stability.
+
+\subsection{VMEC concept}
+The Variational Moments Equilibrium Code, abbreviated VMEC, represents nested flux surfaces spectrally and seeks a three-dimensional ideal-MHD equilibrium by minimizing force residuals associated with a variational formulation. The radial direction is discretized, and angular dependence is represented using Fourier series.
+
+Important modeling assumptions include:
+\begin{enumerate}[leftmargin=1.6em]
+\item nested toroidal flux surfaces are imposed;
+\item pressure is a flux function;
+\item magnetic islands and stochastic regions are not directly represented;
+\item convergence depends on radial and spectral resolution, initial guess, profiles, and boundary shape.
+\end{enumerate}
+VMEC output is often transformed into Boozer coordinates using a separate post-processing step because the coordinates used internally by the equilibrium solver are not automatically the coordinates best suited for orbit and neoclassical calculations. The foundational variational moment method is described by Hirshman and Whitson~\cite{hirshmanWhitson1983}.
+
+\subsection{Alternative equilibrium formulations}
+Other formulations include force-balance Newton solvers, near-axis expansions, free-boundary integral methods, and multi-region relaxed MHD. Multi-region models can represent interfaces between relaxed plasma volumes and can accommodate magnetic islands or stochastic regions more naturally than a globally nested-surface model~\cite{hudson2012}. The appropriate formulation depends on the physics question.
+
+\subsection{Discretization}
+A typical numerical representation uses:
+\begin{itemize}[leftmargin=1.6em]
+\item a radial grid $s_j$, with index $j=0,\ldots,N_s-1$ for $N_s$ stored radial points;
+\item Fourier modes $(m,n)$ up to selected truncations;
+\item numerical quadrature in the angular directions;
+\item finite differences, finite elements, splines, or spectral bases in radius.
+\end{itemize}
+The unknown coefficient vector may be written abstractly as
+\begin{equation}
+\mathbf a=
+\{R_{mn}(s_j),Z_{mn}(s_j),\ldots\}.
+\end{equation}
+The discrete nonlinear equilibrium equations are
+\begin{equation}
+\mathbf F(\mathbf a)=\mathbf 0,
+\label{eq:nonlinear_equilibrium_discrete}
+\end{equation}
+where $\mathbf F$ is a vector of force-balance and constraint residuals.
+
+\subsection{Nonlinear iteration}
+A Newton method updates
+\begin{equation}
+\mathbf a^{(k+1)}
+=\mathbf a^{(k)}+\delta\mathbf a^{(k)},
+\end{equation}
+where
+\begin{equation}
+\mathbf J_F(\mathbf a^{(k)})\delta\mathbf a^{(k)}
+=-\mathbf F(\mathbf a^{(k)}),
+\end{equation}
+and $\mathbf J_F$ is the Jacobian matrix of the residual. Variational descent methods instead move along a preconditioned negative energy gradient. Practical codes use damping, preconditioning, continuation in pressure or boundary deformation, and problem-specific regularization.
+
+\subsection{Continuation}
+A difficult finite-beta equilibrium may be reached gradually. Introduce a continuation parameter $0\leq\lambda\leq1$ and solve a sequence
+\begin{equation}
+p_\lambda(s)=\lambda p_{\mathrm{target}}(s).
+\end{equation}
+The converged solution at one $\lambda$ becomes the initial guess for the next. Continuation can also be applied to boundary shaping, plasma current, or coil perturbations.
+
+\subsection{Convergence criteria}
+A solver should not declare convergence from iteration count alone. Useful criteria include:
+\begin{align}
+\epsilon_F&=\frac{\|\nabla p-\mathbf J\times\mathbf B\|}{F_{\mathrm{ref}}},\\
+\epsilon_B&=\frac{\|\nabla\cdot\mathbf B\|}{B_{\mathrm{ref}}/L_{\mathrm{ref}}},\\
+\epsilon_a&=\frac{\|\mathbf a^{(k+1)}-\mathbf a^{(k)}\|}{\|\mathbf a^{(k)}\|+a_{\mathrm{floor}}}.
+\end{align}
+Here $F_{\mathrm{ref}}$, $B_{\mathrm{ref}}$, $L_{\mathrm{ref}}$, and $a_{\mathrm{floor}}$ are explicitly chosen scaling quantities. Norm type, quadrature weighting, and excluded singular points must be documented.
+
+\subsection{Force residuals in curvilinear coordinates}
+A small scalar residual does not guarantee that every physical component is small. The force residual
+\begin{equation}
+\mathbf f=\mathbf J\times\mathbf B-\nabla p
+\end{equation}
+should be examined in radial, poloidal, and toroidal directions, or decomposed into components parallel and perpendicular to $\mathbf B$. Surface-localized residuals can be hidden by a global average.
+
+\subsection{Resolution studies}
+Convergence must be checked with respect to:
+\begin{itemize}[leftmargin=1.6em]
+\item radial grid size $N_s$;
+\item maximum poloidal mode $m_{\max}$;
+\item maximum toroidal mode $n_{\max}$;
+\item angular quadrature grid;
+\item nonlinear tolerance.
+\end{itemize}
+A geometry quantity $Q$ should approach a stable value as resolution increases. A useful relative difference is
+\begin{equation}
+\delta_Q^{(h)}
+=\frac{|Q_h-Q_{h/2}|}{|Q_{h/2}|+Q_{\mathrm{floor}}},
+\end{equation}
+where $h$ denotes an effective discretization scale and $Q_{\mathrm{floor}}$ prevents division by a negligible number.
+
+\subsection{Failure modes}
+Common equilibrium-solver failures include:
+\begin{itemize}[leftmargin=1.6em]
+\item self-intersecting or poorly parameterized surfaces;
+\item loss of nested surfaces in the physical configuration;
+\item insufficient spectral resolution;
+\item excessive pressure gradient or incompatible profiles;
+\item coordinate singularities and negative Jacobian values;
+\item convergence to an unintended branch;
+\item sensitivity to initial guess;
+\item free-boundary mismatch between plasma and vacuum fields.
+\end{itemize}
+A failed solve must produce explicit flags and diagnostics rather than silently exporting geometry.
+

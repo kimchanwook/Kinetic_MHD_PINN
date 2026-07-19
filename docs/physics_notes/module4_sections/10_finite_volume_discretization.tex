@@ -1,0 +1,166 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Cell-centered finite-volume discretization}
+\label{sec:fvm}
+
+\subsection{Why use a finite-volume method}
+The radial differential term is in conservative divergence form:
+\begin{equation}
+-\frac{d}{ds}\left(D\frac{du}{ds}\right).
+\end{equation}
+A finite-volume method integrates this expression over each control volume and represents the result through fluxes at cell faces. This directly preserves the conservative structure and gives a transparent treatment of the zero-flux axis boundary.
+
+\subsection{Uniform cell-centered grid}
+Divide $[0,1]$ into $N$ cells of width
+\begin{equation}
+h=\frac{1}{N}.
+\end{equation}
+Cell centers are
+\begin{equation}
+s_i=\left(i+\frac{1}{2}\right)h,
+\qquad i=0,1,\ldots,N-1.
+\label{eq:cell_centers}
+\end{equation}
+Cell faces are $s_{i+1/2}=(i+1)h$. The first face is $s_{-1/2}=0$ and the last is $s_{N-1/2}=1$ if face indices are interpreted geometrically; the code uses array-oriented indexing but the physical locations are unambiguous.
+
+Let $u_i$ approximate the cell-average or center value of $u$ in cell $i$.
+
+\subsection{Control-volume integration}
+Integrate over cell $i$:
+\begin{align}
+\frac{1}{h}\int_{s_{i-1/2}}^{s_{i+1/2}}
+-\frac{d}{ds}\left(D\frac{du}{ds}\right)ds
+&=-\frac{1}{h}\left[F_{i+1/2}-F_{i-1/2}\right],
+\label{eq:fvm_balance}
+\end{align}
+where
+\begin{equation}
+F=D\frac{du}{ds}
+\end{equation}
+is the radial gradient flux. For an interior face,
+\begin{equation}
+F_{i+1/2}\approx D_{i+1/2}\frac{u_{i+1}-u_i}{h}.
+\label{eq:interior_face_flux}
+\end{equation}
+The benchmark uses the arithmetic face average
+\begin{equation}
+D_{i+1/2}=\frac{D_i+D_{i+1}}{2}.
+\label{eq:arithmetic_face_D}
+\end{equation}
+For a smooth coefficient this is second-order accurate. For discontinuous diffusion coefficients, a harmonic average may be more physically appropriate, but discontinuities are absent here.
+
+\subsection{Interior stencil}
+Substituting Eq.~\eqref{eq:interior_face_flux} into Eq.~\eqref{eq:fvm_balance} gives, for $1\le i\le N-2$,
+\begin{align}
+(Ku)_i={}&
+-\frac{D_{i+1/2}}{h^2}u_{i+1}
++\frac{D_{i-1/2}+D_{i+1/2}}{h^2}u_i
+-\frac{D_{i-1/2}}{h^2}u_{i-1}.
+\label{eq:interior_stencil}
+\end{align}
+The off-diagonal entries are negative and the diagonal is the sum of outgoing face coefficients.
+
+\subsection{Axis zero-flux boundary}
+At $s=0$,
+\begin{equation}
+F(0)=D(0)u'(0)=0.
+\end{equation}
+For the first cell,
+\begin{equation}
+(Ku)_0=-\frac{F_{1/2}-0}{h}
+=\frac{D_{1/2}}{h^2}(u_0-u_1).
+\label{eq:left_boundary_stencil}
+\end{equation}
+Thus
+\begin{equation}
+K_{00}=\frac{D_{1/2}}{h^2},
+\qquad
+K_{01}=-\frac{D_{1/2}}{h^2}.
+\end{equation}
+No ghost-cell value is required.
+
+\subsection{Edge zero-value boundary}
+The last cell center is a distance $h/2$ from the boundary face. The Dirichlet value is $u(1)=0$, so the edge flux is
+\begin{equation}
+F_{\mathrm{edge}}
+=D(1)\frac{0-u_{N-1}}{h/2}
+=-\frac{2D(1)}{h}u_{N-1}.
+\label{eq:edge_face_flux}
+\end{equation}
+For the last cell,
+\begin{align}
+(Ku)_{N-1}
+&=-\frac{F_{\mathrm{edge}}-F_{N-3/2}}{h}\\
+&=-\frac{D_{N-3/2}}{h^2}u_{N-2}
++\frac{D_{N-3/2}+2D(1)}{h^2}u_{N-1}.
+\label{eq:right_boundary_stencil}
+\end{align}
+The factor of two is essential because the boundary is half a cell width from the final center. Treating it as a full cell width would impose the wrong discrete boundary condition and alter convergence.
+
+\subsection{Symmetric radial matrix}
+Collecting the stencils produces a tridiagonal matrix $\mathbf K$. For every interior face, the coefficient connecting cells $i$ and $i+1$ is
+\begin{equation}
+K_{i,i+1}=K_{i+1,i}=-\frac{D_{i+1/2}}{h^2}.
+\end{equation}
+Therefore $\mathbf K=\mathbf K^{\mathsf T}$. The boundary modifications change only diagonal terms and preserve symmetry.
+
+The discrete quadratic form is
+\begin{align}
+\mathbf u^{\mathsf T}\mathbf K\mathbf u
+={}&\sum_{i=0}^{N-2}\frac{D_{i+1/2}}{h^2}(u_{i+1}-u_i)^2
++\frac{2D(1)}{h^2}u_{N-1}^2,
+\label{eq:discrete_K_positive}
+\end{align}
+up to the common grid-weight convention. It is nonnegative and is zero only for a constant vector satisfying the edge penalty, which forces the vector to zero. Hence the mixed boundary conditions make $\mathbf K$ positive definite for positive $D$.
+
+\subsection{Two-harmonic block matrix}
+Let
+\begin{align}
+\mathbf W_m&=\operatorname{diag}\left(\omega_m^2(s_i)\right),\\
+\mathbf W_{m+1}&=\operatorname{diag}\left(\omega_{m+1}^2(s_i)\right),\\
+\mathbf C&=\operatorname{diag}\left(C(s_i)\right).
+\end{align}
+The full $2N\times2N$ matrix is
+\begin{equation}
+\boxed{
+\mathbf A=
+\begin{bmatrix}
+\mathbf K+\mathbf W_m&\mathbf C\\
+\mathbf C&\mathbf K+\mathbf W_{m+1}
+\end{bmatrix}.}
+\label{eq:discrete_block_A}
+\end{equation}
+With
+\begin{equation}
+\mathbf x=
+\begin{bmatrix}
+\boldsymbol\xi_m\\
+\boldsymbol\xi_{m+1}
+\end{bmatrix},
+\end{equation}
+the matrix eigenproblem is
+\begin{equation}
+\boxed{\mathbf A\mathbf x=\omega^2\mathbf x.}
+\label{eq:discrete_eigenproblem}
+\end{equation}
+All blocks are sparse. $\mathbf K$ is tridiagonal and the local terms are diagonal, so the number of nonzero entries grows linearly with $N$ rather than quadratically.
+
+\subsection{Discrete normalization}
+The midpoint approximation to Eq.~\eqref{eq:benchmark_normalization} is
+\begin{equation}
+h\sum_{i=0}^{N-1}\left[(\xi_m)_i^2+(\xi_{m+1})_i^2\right]=1.
+\label{eq:discrete_normalization}
+\end{equation}
+If an eigensolver returns a Euclidean-normalized vector with $\mathbf x^{\mathsf T}\mathbf x=1$, the physical grid-weighted norm is $h$, not one. The code therefore rescales each vector by
+\begin{equation}
+\mathbf x\leftarrow\frac{\mathbf x}{\sqrt{h\mathbf x^{\mathsf T}\mathbf x}}.
+\end{equation}
+
+\subsection{Expected truncation error}
+Centered face gradients and arithmetic face coefficients are second-order accurate for smooth $u$ and $D$. The boundary treatment is also consistent with second-order reconstruction to the face. Therefore, sufficiently smooth isolated eigenvalues are expected to converge approximately as
+\begin{equation}
+|\omega_h-\omega|\sim Ch^2
+\end{equation}
+in an asymptotic regime. Observing this rate requires multiple grids fine enough that higher-order terms and reference-solution error are subdominant.
+
+\subsection{Finite volume versus finite difference}
+On a uniform grid with smooth coefficients, the resulting stencil resembles a centered finite-difference discretization. The conceptual distinction is that the FVM begins from integrated flux balance. This makes the boundary flux and variable coefficient placement explicit and provides a natural path to nonuniform grids or conservation-law extensions.

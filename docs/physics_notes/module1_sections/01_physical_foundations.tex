@@ -1,0 +1,220 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{The physical problem: confining a hot plasma}
+\label{sec:physical_picture}
+
+\subsection{What is being confined?}
+A plasma is an ionized gas containing positively charged ions, negatively charged electrons, and sometimes neutral particles. In a fusion plasma the temperature is so high that ordinary material walls cannot directly contain the central plasma without being rapidly cooled or damaged. Magnetic confinement instead uses the Lorentz force
+\begin{equation}
+\mathbf F_s=q_s\left(\mathbf E+\mathbf v_s\times\mathbf B\right)
+\label{eq:lorentz_force}
+\end{equation}
+to influence charged-particle motion. Here $\mathbf F_s$ is the force on a particle of species $s$, $q_s$ is its charge, $\mathbf v_s$ is its velocity, $\mathbf E$ is the electric field, and $\mathbf B$ is the magnetic flux density.
+
+The magnetic part of the Lorentz force is perpendicular to the instantaneous particle velocity. It therefore bends a charged particle's path without directly changing its kinetic energy. In a sufficiently strong and slowly varying magnetic field, a particle executes rapid gyromotion around a magnetic field line while moving more freely along the field. This anisotropy is the basic reason magnetic fields can reduce transport across the field.
+
+\begin{physicsbox}
+\textbf{Central confinement idea.} A strong magnetic field does not place particles at fixed points. It organizes their trajectories so that cross-field motion is much slower than motion along the field. Successful confinement therefore requires field lines themselves to remain inside the device for long distances and, ideally, to lie on closed toroidal surfaces.
+\end{physicsbox}
+
+\subsection{Why close the magnetic field into a torus?}
+If a magnetic field line ends on a material wall, particles streaming along it can be lost rapidly. A straight magnetic bottle can reflect some particles using stronger magnetic fields at its ends, but end losses remain a major challenge. Toroidal devices bend the plasma and magnetic field into a ring so that field lines need not terminate at physical end plates.
+
+A torus has two natural directions:
+\begin{itemize}[leftmargin=1.6em]
+\item the \textbf{toroidal direction}, which goes the long way around the ring;
+\item the \textbf{poloidal direction}, which goes the short way around a cross-section of the ring.
+\end{itemize}
+A useful confining field contains both toroidal and poloidal components. Their combination makes a field line wind helically around the torus instead of repeatedly sampling only one side of the device.
+
+\subsection{Tokamak and stellarator strategies}
+A \textbf{tokamak} produces most of its toroidal field using external coils and a substantial part of its poloidal field using a large toroidal plasma current. A \textbf{stellarator} produces the required three-dimensional field-line twist primarily through external coils and shaped magnetic geometry. The stellarator therefore does not require a large transformer-driven plasma current for its fundamental confinement geometry.
+
+This difference has several consequences.
+\begin{enumerate}[leftmargin=1.6em]
+\item A stellarator equilibrium is intrinsically three-dimensional: magnetic quantities generally depend on both poloidal and toroidal angles.
+\item The rotational transform can be sustained in steady state by external coils.
+\item Coil and boundary shape become direct design variables for confinement, stability, and energetic-particle behavior.
+\item Numerical representation is more demanding because axisymmetry cannot usually reduce the problem to two dimensions.
+\end{enumerate}
+
+\begin{notebox}
+\textbf{Equilibrium is not confinement quality.} A magnetic configuration may satisfy force balance yet have poor particle confinement, undesirable neoclassical transport, large fast-ion losses, or unstable waves. Module~1 determines the equilibrium geometry. Modules~3--7 determine important consequences of that geometry.
+\end{notebox}
+
+\section{From particles to magnetohydrodynamics}
+\label{sec:mhd_model}
+
+\subsection{Why use a fluid model?}
+A kinetic description follows distribution functions in six-dimensional phase space: three position coordinates and three velocity coordinates. That description is essential for resonant energetic particles and is developed later in the project. The bulk thermal plasma, however, can often be represented on large spatial and temporal scales using fluid variables such as mass density $\rho_m(\mathbf x,t)$, flow velocity $\mathbf u(\mathbf x,t)$, and pressure $p(\mathbf x,t)$.
+
+Magnetohydrodynamics, abbreviated MHD, combines fluid dynamics with Maxwell's equations. The ideal-MHD model assumes, among other approximations, high electrical conductivity, a single bulk fluid velocity, and usually an isotropic scalar pressure. These assumptions are not universally valid, but they provide the standard starting point for macroscopic equilibrium and stability; a systematic development is given by Freidberg~\cite{freidberg2014}.
+
+\subsection{Ideal-MHD equations before taking the equilibrium limit}
+A common ideal-MHD system is
+\begin{align}
+\frac{\partial \rho_m}{\partial t}+\nabla\cdot(\rho_m\mathbf u)&=0,
+\label{eq:mass_conservation}\\
+\rho_m\left(\frac{\partial \mathbf u}{\partial t}+\mathbf u\cdot\nabla\mathbf u\right)&=-\nabla p+\mathbf J\times\mathbf B,
+\label{eq:mhd_momentum}\\
+\frac{\partial \mathbf B}{\partial t}&=\nabla\times(\mathbf u\times\mathbf B),
+\label{eq:induction}\\
+\nabla\cdot\mathbf B&=0,
+\label{eq:divB}\\
+\nabla\times\mathbf B&=\mu_0\mathbf J,
+\label{eq:ampere_mhd}\\
+\frac{d}{dt}\left(\frac{p}{\rho_m^{\gamma_{\mathrm{ad}}}}\right)&=0.
+\label{eq:adiabatic_closure}
+\end{align}
+Equation~\eqref{eq:mass_conservation} conserves mass. Equation~\eqref{eq:mhd_momentum} is Newton's second law for the fluid. Equation~\eqref{eq:induction} evolves the magnetic field in an ideal conductor. Equation~\eqref{eq:divB} states that magnetic monopoles are absent. Equation~\eqref{eq:ampere_mhd} is Amp\`ere's law without the displacement-current term, appropriate when characteristic speeds are much smaller than the speed of light. Equation~\eqref{eq:adiabatic_closure} is one possible pressure closure, with $\gamma_{\mathrm{ad}}$ the adiabatic index.
+
+The material derivative is
+\begin{equation}
+\frac{d}{dt}=\frac{\partial}{\partial t}+\mathbf u\cdot\nabla.
+\end{equation}
+It measures the rate of change experienced by a fluid element moving with velocity $\mathbf u$.
+
+\subsection{Assumptions used for the baseline equilibrium}
+The baseline Module~1 equilibrium adopts the following conceptual model unless a future implementation explicitly states otherwise:
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{Time independence:} $\partial/\partial t=0$.
+\item \textbf{No equilibrium bulk flow:} $\mathbf u=\mathbf 0$.
+\item \textbf{Scalar pressure:} the pressure is represented by one scalar field $p$, rather than separate parallel and perpendicular pressures.
+\item \textbf{Ideal magnetostatic force balance:} inertia, viscosity, and resistive electric-field effects are neglected in the equilibrium equation.
+\item \textbf{Nested surfaces for the primary model:} the confined region is represented by smooth, nonintersecting magnetic surfaces. Islands and stochastic regions are discussed as limitations rather than included in the baseline representation.
+\end{enumerate}
+With these assumptions, Equation~\eqref{eq:mhd_momentum} reduces to the static equilibrium equation developed next.
+
+\section{Magnetostatic equilibrium equations}
+\label{sec:equilibrium_equations}
+
+\subsection{The three governing relations}
+The mathematical anchor for Module~1 is
+\begin{align}
+\nabla p&=\mathbf J\times\mathbf B,
+\label{eq:force_balance}\\
+\nabla\times\mathbf B&=\mu_0\mathbf J,
+\label{eq:ampere}\\
+\nabla\cdot\mathbf B&=0.
+\label{eq:solenoidal}
+\end{align}
+Equation~\eqref{eq:force_balance} balances the pressure-gradient force against the magnetic Lorentz force density. Equation~\eqref{eq:ampere} relates current density to magnetic-field curl. Equation~\eqref{eq:solenoidal} requires the magnetic field to be divergence free.
+
+The units provide an immediate check. Pressure gradient has units
+\begin{equation}
+[\nabla p]=\mathrm{Pa\,m^{-1}}=\mathrm{N\,m^{-3}}.
+\end{equation}
+The Lorentz force density has units
+\begin{equation}
+[\mathbf J\times\mathbf B]
+=\left(\mathrm{A\,m^{-2}}\right)\left(\mathrm{T}\right)
+=\mathrm{N\,m^{-3}},
+\end{equation}
+so the two sides of Equation~\eqref{eq:force_balance} are dimensionally consistent.
+
+\subsection{Pressure is constant along a magnetic field line}
+Take the dot product of Equation~\eqref{eq:force_balance} with $\mathbf B$:
+\begin{equation}
+\mathbf B\cdot\nabla p
+=\mathbf B\cdot(\mathbf J\times\mathbf B)=0.
+\label{eq:Bgradp_zero}
+\end{equation}
+A scalar field changes along a field line at a rate proportional to $\mathbf B\cdot\nabla p$. Therefore Equation~\eqref{eq:Bgradp_zero} states that pressure is constant along each magnetic field line.
+
+If a field line densely covers a smooth magnetic surface, continuity implies that pressure is constant over the entire surface. We may then write
+\begin{equation}
+p=p(\psi),
+\label{eq:p_flux_function}
+\end{equation}
+where $\psi$ labels magnetic surfaces. A quantity that depends only on the surface label is called a \textbf{flux function}.
+
+Taking the dot product of Equation~\eqref{eq:force_balance} with $\mathbf J$ similarly gives
+\begin{equation}
+\mathbf J\cdot\nabla p=0.
+\end{equation}
+Thus both magnetic field lines and current lines lie tangent to constant-pressure surfaces in this ideal nested-surface equilibrium.
+
+\subsection{Perpendicular and parallel current}
+Decompose current density into components perpendicular and parallel to $\mathbf B$:
+\begin{equation}
+\mathbf J=\mathbf J_\perp+\mathbf J_\parallel,
+\qquad
+\mathbf J_\parallel=\frac{\mathbf J\cdot\mathbf B}{B^2}\mathbf B.
+\end{equation}
+Cross Equation~\eqref{eq:force_balance} with $\mathbf B$:
+\begin{equation}
+\mathbf B\times\nabla p
+=\mathbf B\times(\mathbf J\times\mathbf B).
+\end{equation}
+Using the vector identity
+\begin{equation}
+\mathbf A\times(\mathbf C\times\mathbf D)
+=\mathbf C(\mathbf A\cdot\mathbf D)-\mathbf D(\mathbf A\cdot\mathbf C),
+\end{equation}
+we obtain
+\begin{equation}
+\mathbf B\times(\mathbf J\times\mathbf B)
+=B^2\mathbf J-(\mathbf B\cdot\mathbf J)\mathbf B
+=B^2\mathbf J_\perp.
+\end{equation}
+Therefore
+\begin{equation}
+\boxed{\mathbf J_\perp=\frac{\mathbf B\times\nabla p}{B^2}.}
+\label{eq:Jperp}
+\end{equation}
+The perpendicular current is directly fixed by pressure gradients and magnetic geometry. The parallel current is not determined by Equation~\eqref{eq:force_balance} alone; it is constrained together with geometry by Amp\`ere's law and charge conservation.
+
+\subsection{Magnetic pressure and magnetic tension}
+Substitute Equation~\eqref{eq:ampere} into the magnetic force density:
+\begin{equation}
+\mathbf J\times\mathbf B
+=\frac{1}{\mu_0}(\nabla\times\mathbf B)\times\mathbf B.
+\end{equation}
+Using $\nabla\cdot\mathbf B=0$, this can be written as
+\begin{equation}
+\mathbf J\times\mathbf B
+=-\nabla\left(\frac{B^2}{2\mu_0}\right)
++\frac{1}{\mu_0}(\mathbf B\cdot\nabla)\mathbf B.
+\label{eq:magnetic_force_decomposition}
+\end{equation}
+The first term is the gradient of \textbf{magnetic pressure}, $B^2/(2\mu_0)$. The second term is \textbf{magnetic tension}, associated with bending field lines.
+
+Writing $\mathbf B=B\mathbf b$ gives
+\begin{equation}
+(\mathbf B\cdot\nabla)\mathbf B
+=B(\mathbf b\cdot\nabla B)\mathbf b+B^2\boldsymbol\kappa,
+\end{equation}
+where
+\begin{equation}
+\boldsymbol\kappa=\mathbf b\cdot\nabla\mathbf b
+\label{eq:curvature}
+\end{equation}
+is the magnetic curvature vector. Perpendicular force balance can consequently be interpreted as a competition among plasma pressure, magnetic-pressure variation, and field-line tension.
+
+\begin{physicsbox}
+\textbf{Physical picture of equilibrium.} Plasma pressure tends to expand the plasma. Magnetic-pressure gradients and the tension of curved field lines provide restoring forces. A valid equilibrium is a three-dimensional arrangement in which these forces cancel at every point inside the plasma.
+\end{physicsbox}
+
+\subsection{Plasma beta}
+A local pressure-to-magnetic-pressure ratio is
+\begin{equation}
+\beta(\mathbf x)=\frac{p(\mathbf x)}{B^2(\mathbf x)/(2\mu_0)}
+=\frac{2\mu_0p(\mathbf x)}{B^2(\mathbf x)}.
+\label{eq:local_beta}
+\end{equation}
+A volume-averaged beta may be defined by
+\begin{equation}
+\langle\beta\rangle_V
+=\frac{2\mu_0\int_V p\,dV}{\int_V B^2\,dV}.
+\label{eq:volume_beta}
+\end{equation}
+Different communities use slightly different averages, so a reported beta value must include its definition. Increasing beta strengthens the influence of plasma pressure on the magnetic geometry and can shift the magnetic axis, rotational transform, and stability properties.
+
+\subsection{Equilibrium does not guarantee stability}
+Equation~\eqref{eq:force_balance} states only that the net force vanishes for the chosen state. It does not state that a displaced plasma element experiences a restoring force. Stability requires perturbing the equilibrium and determining whether perturbations oscillate, decay, or grow. Module~4 begins that process for reduced shear-Alfv\'en waves. In symbols,
+\begin{equation}
+\text{equilibrium: }\mathbf F(\mathbf U_0)=0,
+\qquad
+\text{stability: behavior of }\delta\mathbf U\text{ near }\mathbf U_0.
+\end{equation}
+Here $\mathbf U_0$ denotes the equilibrium state and $\delta\mathbf U$ denotes a small perturbation.
+

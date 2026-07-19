@@ -1,0 +1,108 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Coordinate systems for a toroidal plasma}
+\label{sec:coordinates}
+
+\subsection{Cartesian and cylindrical coordinates}
+Cartesian coordinates $(x,y,z)$ use fixed orthonormal basis vectors. For a toroidal device, cylindrical coordinates $(R,\phi,Z)$ are more natural:
+\begin{equation}
+x=R\cos\phi,
+\qquad
+y=R\sin\phi,
+\qquad z=Z.
+\end{equation}
+The coordinate $R\geq 0$ is distance from the vertical symmetry axis, $\phi$ is the geometric toroidal angle, and $Z$ is vertical position.
+
+The cylindrical basis vectors $\mathbf e_R$, $\mathbf e_\phi$, and $\mathbf e_Z$ vary with $\phi$. A vector field may be written
+\begin{equation}
+\mathbf B=B_R\mathbf e_R+B_\phi\mathbf e_\phi+B_Z\mathbf e_Z.
+\end{equation}
+In an axisymmetric device, scalar quantities are independent of $\phi$. In a stellarator, this simplification generally does not hold.
+
+\subsection{Major radius, minor radius, and aspect ratio}
+The \textbf{magnetic axis} is the central closed field line around which nested magnetic surfaces are organized. A characteristic major radius $R_0$ measures the distance from the device's central axis to the magnetic axis. A characteristic minor radius $a$ measures the radial size of the plasma cross-section. The aspect ratio is
+\begin{equation}
+A=\frac{R_0}{a}.
+\end{equation}
+Large aspect ratio means the torus is relatively thin compared with its major radius. Reduced analytic models often exploit $a/R_0\ll1$, but realistic stellarator equilibria need not be accurately represented by this limit.
+
+\subsection{Poloidal and toroidal angles}
+A geometric poloidal angle may be introduced around a chosen cross-sectional center, while the geometric toroidal angle is $\phi$. Magnetic calculations often use modified angles $(\theta,\zeta)$ chosen to simplify field-line equations rather than to match geometric angles exactly. It is therefore essential to state whether an angle is geometric, computational, or a straight-field-line magnetic angle.
+
+Both angular coordinates are periodic:
+\begin{equation}
+\theta\equiv\theta+2\pi,
+\qquad
+\zeta\equiv\zeta+2\pi.
+\end{equation}
+If the device has $N_{\mathrm{fp}}$ identical field periods, physical geometry repeats after
+\begin{equation}
+\Delta\zeta=\frac{2\pi}{N_{\mathrm{fp}}}.
+\end{equation}
+
+\section{Magnetic field lines and flux surfaces}
+\label{sec:flux_surfaces}
+
+\subsection{Definition of a magnetic field line}
+A magnetic field line is a curve $\mathbf x(\ell)$ whose tangent is parallel to $\mathbf B$. One convenient parameter is arc length $\ell$, for which
+\begin{equation}
+\frac{d\mathbf x}{d\ell}=\mathbf b(\mathbf x)=\frac{\mathbf B(\mathbf x)}{B(\mathbf x)}.
+\label{eq:field_line_arclength}
+\end{equation}
+An alternative parameter $\tau$ may be used:
+\begin{equation}
+\frac{d\mathbf x}{d\tau}=\mathbf B(\mathbf x).
+\label{eq:field_line_B}
+\end{equation}
+Changing the parameter changes how quickly the curve is traversed, not the geometric path.
+
+Field lines are mathematical integral curves. They are not material strings, although the magnetic-tension analogy is often useful. In ideal MHD, flux freezing gives them a strong dynamical connection to the plasma motion.
+
+\subsection{Definition of a magnetic surface}
+A magnetic surface is a surface labeled by a scalar $\psi(\mathbf x)$ such that
+\begin{equation}
+\mathbf B\cdot\nabla\psi=0.
+\label{eq:B_tangent_surface}
+\end{equation}
+The gradient $\nabla\psi$ is normal to a constant-$\psi$ surface. Equation~\eqref{eq:B_tangent_surface} therefore says that $\mathbf B$ is tangent to the surface at every point. A field line that begins on the surface remains on it.
+
+For nested surfaces, the plasma region resembles a collection of nonintersecting toroidal shells:
+\begin{equation}
+0\leq s\leq1,
+\end{equation}
+where $s=0$ labels the magnetic axis and $s=1$ labels the chosen plasma boundary, commonly the last closed flux surface.
+
+\subsection{Toroidal and poloidal magnetic flux}
+Magnetic flux through an oriented surface $S$ is
+\begin{equation}
+\Psi=\int_S\mathbf B\cdot d\mathbf S,
+\end{equation}
+where $d\mathbf S=\mathbf n\,dS$ and $\mathbf n$ is the surface normal.
+
+For a toroidal magnetic surface, two fluxes are useful:
+\begin{itemize}[leftmargin=1.6em]
+\item The \textbf{toroidal flux} $\Psi_t$ passes through a poloidal cross-section of the torus.
+\item The \textbf{poloidal flux} $\Psi_p$ passes through a toroidal ribbon extending around the long direction.
+\end{itemize}
+Sign conventions vary. This project will always store the convention explicitly rather than inferring it from a variable name.
+
+A common normalized surface coordinate is
+\begin{equation}
+s=\frac{\Psi_t}{\Psi_{t,a}},
+\label{eq:s_normalized_flux}
+\end{equation}
+where $\Psi_{t,a}$ is the toroidal flux at the selected plasma boundary. Another common radial coordinate is
+\begin{equation}
+\rho=\sqrt{s}.
+\label{eq:rho_sqrt_s}
+\end{equation}
+For a simple circular plasma with nearly uniform toroidal field, toroidal flux scales approximately with the square of minor radius, so $\rho$ behaves approximately like a normalized geometric radius. In shaped three-dimensional geometry, $\rho$ remains a flux label rather than a literal Euclidean distance.
+
+\subsection{Closed, islanded, and stochastic field-line regions}
+The nested-surface picture is powerful but not universal.
+\begin{itemize}[leftmargin=1.6em]
+\item On an \textbf{irrational surface}, a field line generally does not close after a finite number of turns and can densely cover the surface.
+\item On a \textbf{rational surface}, the field-line winding ratio is rational; perturbations can generate magnetic islands.
+\item In a \textbf{stochastic region}, neighboring field lines separate chaotically and a single smooth global surface label may not exist.
+\end{itemize}
+A nested-surface equilibrium code such as standard VMEC represents the first category and idealized rational surfaces through smooth surfaces, but does not directly resolve magnetic islands or stochastic volumes. Other equilibrium formulations are needed when those structures are essential.
+

@@ -1,0 +1,109 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{From local branches to global Alfv\'en eigenmodes}
+\label{sec:global_modes}
+
+\subsection{Why radial coupling is needed}
+The local continuum model treats each surface independently. A global mode must communicate across surfaces. In the full ideal-MHD operator, this communication arises through radial derivatives, magnetic geometry, pressure and compressibility terms, and coupling among Fourier harmonics. The benchmark represents all radial communication through a positive stiffness coefficient $D(s)$.
+
+For one scalar envelope, the schematic equation is
+\begin{equation}
+-\frac{d}{ds}\left[D(s)\frac{d\xi}{ds}\right]+V(s)\xi=\omega^2\xi,
+\label{eq:schrodinger_like_envelope}
+\end{equation}
+where $V(s)$ has units of squared frequency and is analogous to an effective potential. The derivative term penalizes rapid radial variation. Equation~\eqref{eq:schrodinger_like_envelope} resembles a one-dimensional Schr\"odinger eigenproblem, but $s$ is a magnetic-surface coordinate, $\omega^2$ is a classical wave eigenvalue, and $D$ is not a quantum constant.
+
+\subsection{Classically allowed and evanescent regions}
+If $D$ varies slowly, a local radial-wave-number estimate follows from $\xi\sim e^{ik_ss}$:
+\begin{equation}
+Dk_s^2+V(s)\approx\omega^2.
+\end{equation}
+Thus
+\begin{equation}
+k_s^2\approx\frac{\omega^2-V(s)}{D(s)}.
+\label{eq:radial_wkb}
+\end{equation}
+Where $\omega^2>V$, $k_s^2>0$ and the envelope can oscillate. Where $\omega^2<V$, $k_s^2<0$ and the envelope is evanescent. Turning points satisfy $\omega^2=V(s)$. In a coupled problem, the eigenvalues of the local harmonic matrix play the role of multiple effective potentials.
+
+This WKB interpretation explains localization near a spectral gap. A mode frequency may lie between the lower and upper local branches near the crossing, while surrounding regions are less favorable for radial propagation. The envelope can then be concentrated around the gap region.
+
+\subsection{Two coupled global envelopes}
+For harmonics $m$ and $m+1$, define
+\begin{equation}
+\boldsymbol\xi(s)=
+\begin{bmatrix}
+\xi_m(s)\\
+\xi_{m+1}(s)
+\end{bmatrix}.
+\end{equation}
+The reduced global equation is
+\begin{equation}
+-\frac{d}{ds}\left[D(s)\frac{d\boldsymbol\xi}{ds}\right]
++\mathbf H_{\mathrm{loc}}(s)\boldsymbol\xi
+=\omega^2\boldsymbol\xi,
+\label{eq:vector_global_envelope}
+\end{equation}
+where $D$ multiplies both components in the baseline model and
+\begin{equation}
+\mathbf H_{\mathrm{loc}}=
+\begin{bmatrix}
+\omega_m^2&C\\
+C&\omega_{m+1}^2
+\end{bmatrix}.
+\end{equation}
+Written componentwise, Eq.~\eqref{eq:vector_global_envelope} is
+\begin{align}
+-\frac{d}{ds}\left(D\frac{d\xi_m}{ds}\right)
++\omega_m^2\xi_m+C\xi_{m+1}&=\omega^2\xi_m,
+\label{eq:global_m_textbook}\\
+-\frac{d}{ds}\left(D\frac{d\xi_{m+1}}{ds}\right)
++C\xi_m+\omega_{m+1}^2\xi_{m+1}&=\omega^2\xi_{m+1}.
+\label{eq:global_mp1_textbook}
+\end{align}
+
+\subsection{Role of radial stiffness}
+Suppose $D$ is multiplied by a factor $\alpha_D$. Larger $D$ makes radial gradients more energetically expensive. Eigenfunctions tend to become broader and eigenvalue spacing associated with radial nodes tends to increase. Smaller $D$ permits narrower localization and more closely spaced radial structure. In the limit $D\rightarrow0$, the model approaches uncoupled local oscillators and loses a well-behaved smooth global spectrum.
+
+The benchmark parameterizes
+\begin{equation}
+D(s)=\epsilon_r\left(\frac{v_A(s)}{R_0}\right)^2,
+\end{equation}
+where $\epsilon_r$ is dimensionless. This choice preserves exact Alfv\'en scaling with $B_0$ and $\rho^{-1/2}$.
+
+\subsection{Boundary conditions}
+At the magnetic axis, physical perturbations must be regular. In a full cylindrical derivation, a harmonic often behaves as $r^{|m|}$ or another regular power. The reduced coordinate and scalar envelopes do not retain the exact axis geometry, so the benchmark adopts zero radial flux:
+\begin{equation}
+D(0)\xi_m'(0)=D(0)\xi_{m+1}'(0)=0.
+\label{eq:global_axis_bc_textbook}
+\end{equation}
+At the edge, the benchmark sets the envelopes to zero:
+\begin{equation}
+\xi_m(1)=\xi_{m+1}(1)=0.
+\label{eq:global_edge_bc_textbook}
+\end{equation}
+This is a homogeneous Dirichlet condition representing a fixed edge for the reduced variables. A realistic plasma-vacuum problem would require matching to an exterior magnetic solution and possibly a conducting wall.
+
+\subsection{Radial node number and mode ordering}
+For a scalar Sturm--Liouville problem, eigenfunctions can be ordered by increasing eigenvalue, and the $j$th mode has a predictable number of nodes. In a coupled system, the total nodal pattern and harmonic mixing complicate this simple rule, but low eigenvalues generally correspond to smoother envelopes while higher eigenvalues support more radial oscillations.
+
+Sorted mode index is not a universal physical label. When parameters vary, avoided crossings can occur between global modes as well as local harmonics. Reliable tracking should use eigenfunction overlap, frequency continuity, localization, parity, and harmonic content.
+
+\subsection{Orthogonality}
+For a self-adjoint operator with distinct eigenvalues and the ordinary norm used by the benchmark,
+\begin{equation}
+\int_0^1\boldsymbol\xi_i^{\mathsf T}(s)\boldsymbol\xi_j(s)\,ds=0,
+\qquad i\neq j.
+\label{eq:continuous_orthogonality}
+\end{equation}
+A full ideal-MHD problem uses a density-weighted inner product, typically $\int\rho_0\boldsymbol\xi_i^*\cdot\boldsymbol\xi_jdV$. The benchmark's simplified envelopes and identity mass matrix make the unweighted radial norm appropriate for its own operator.
+
+\subsection{Gap mode, continuum mode, and boundary mode}
+A computed eigenfunction should be interpreted from its structure, not only its frequency.
+\begin{itemize}[leftmargin=1.6em]
+\item A \textbf{gap-associated mode} is localized near a coupling region and has mixed harmonic content.
+\item A \textbf{continuum-like discretized state} tends to localize increasingly near a resonant surface as resolution changes.
+\item A \textbf{boundary-dominated mode} is strongly controlled by the imposed edge condition or a sharp edge coefficient.
+\end{itemize}
+The baseline representative mode is chosen nearest the center of the local avoided-crossing interval and exhibits both retained harmonic components. That is evidence that it is useful as a coupled-harmonic verification target, not evidence that it is a quantitatively predictive TAE for a particular device.
+
+\subsection{Amplitude is not determined by a linear eigenproblem}
+If $\boldsymbol\xi$ solves the homogeneous eigenproblem, then $A\boldsymbol\xi$ also solves it for any nonzero constant $A$. Linear eigenanalysis determines shape and frequency but not physical saturation amplitude. A normalization convention is therefore required for comparison. Physical amplitude would require an initial-value problem, external drive, or nonlinear saturation model.

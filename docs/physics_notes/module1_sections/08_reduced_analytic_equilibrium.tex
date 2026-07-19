@@ -1,0 +1,58 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{A reduced analytic equilibrium for intuition}
+\label{sec:analytic_model}
+
+\subsection{Circular nested surfaces}
+Before using a three-dimensional equilibrium, it is useful to define a manufactured geometry with circular concentric surfaces:
+\begin{align}
+R(r,\theta)&=R_0+r\cos\theta,\\
+Z(r,\theta)&=r\sin\theta,
+\end{align}
+where $0\leq r\leq a$. Let
+\begin{equation}
+s=\left(\frac{r}{a}\right)^2,
+\qquad
+r=a\sqrt{s}.
+\end{equation}
+This model is axisymmetric and therefore not a stellarator, but it provides an interpretable verification limit for coordinate mappings, Jacobians, volume, and interpolation.
+
+The enclosed volume is approximately
+\begin{equation}
+V(r)=2\pi^2R_0r^2,
+\end{equation}
+and hence
+\begin{equation}
+V(s)=2\pi^2R_0a^2s,
+\qquad
+V'(s)=2\pi^2R_0a^2.
+\end{equation}
+These relations give exact or near-exact checks for a large-aspect-ratio circular implementation.
+
+\subsection{Prescribed rotational transform}
+A simple transform profile is
+\begin{equation}
+\iota(s)=\iota_0+\iota_1s,
+\label{eq:iota_linear}
+\end{equation}
+where $\iota_0$ is the on-axis transform and $\iota_1$ is the total edge-minus-axis change. The shear measure becomes
+\begin{equation}
+\hat s_\iota(s)
+=\frac{s\iota_1}{\iota_0+\iota_1s}.
+\end{equation}
+This profile is not derived from force balance; it is a manufactured geometry input suitable for checking downstream equations.
+
+\subsection{Simple helical field-line tracing}
+In straight-field-line coordinates,
+\begin{equation}
+\frac{d\theta}{d\zeta}=\iota(s).
+\end{equation}
+For constant $s$ and constant $\iota$,
+\begin{equation}
+\theta(\zeta)=\theta_0+\iota\zeta,
+\label{eq:field_line_solution}
+\end{equation}
+where $\theta_0$ is the initial poloidal angle. This exact solution is a basic field-line tracer test.
+
+\subsection{What the analytic model omits}
+The circular manufactured model omits three-dimensional shaping, finite-beta equilibrium shifts, realistic current distributions, magnetic wells, coil ripple, islands, and stochasticity. It is a verification case, not a predictive stellarator equilibrium.
+

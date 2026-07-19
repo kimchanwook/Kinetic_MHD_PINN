@@ -1,0 +1,187 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Verification and validation}
+\label{sec:verification}
+
+\subsection{Definitions}
+\textbf{Verification} asks whether the equations were solved correctly. \textbf{Validation} asks whether those equations and inputs adequately represent the physical system for the intended use. A solver can be verified but invalid for a given experiment, or physically appropriate but implemented incorrectly.
+
+\subsection{Code verification tests}
+A Module 1 implementation should include at least the following tests.
+
+\subsubsection{Dimensional and convention tests}
+Every exported quantity must carry units or an explicit normalization. Tests should check angle ranges, coordinate orientation, flux signs, and the relation $q=1/\iota$ under the project convention.
+
+\subsubsection{Divergence-free test}
+Evaluate
+\begin{equation}
+\epsilon_{\nabla\cdot B}
+=\frac{L_{\mathrm{ref}}\|\nabla\cdot\mathbf B\|_2}{\|\mathbf B\|_2}.
+\end{equation}
+The norm should decrease with increased numerical resolution until limited by solver tolerance or interpolation error.
+
+\subsubsection{Surface-tangency test}
+Evaluate
+\begin{equation}
+\epsilon_{B\cdot\nabla s}
+=\frac{\|\mathbf B\cdot\nabla s\|_2}
+{\|\mathbf B\|_\infty\|\nabla s\|_2+\epsilon_{\mathrm{floor}}}.
+\end{equation}
+A nested-surface equilibrium should make this small throughout the valid domain.
+
+\subsubsection{Force-balance test}
+Evaluate
+\begin{equation}
+\epsilon_{\mathrm{force}}
+=\frac{\|\mathbf J\times\mathbf B-\nabla p\|_2}
+{\|\nabla p\|_2+\|\mathbf J\times\mathbf B\|_2+\epsilon_{\mathrm{floor}}}.
+\end{equation}
+The test should also inspect maximum and surface-resolved residuals.
+
+\subsubsection{Field-line transform test}
+Trace field lines independently and estimate
+\begin{equation}
+\iota_{\mathrm{trace}}(s)
+=\frac{\Delta\theta}{\Delta\zeta}
+\end{equation}
+over many turns. Compare with the exported $\iota(s)$. The discrepancy should decrease with tracing tolerance and interpolation resolution.
+
+\subsubsection{Flux conservation test}
+Compute magnetic flux through equivalent cross-sections of the same flux tube. Because $\nabla\cdot\mathbf B=0$, the flux should be independent of cross-section up to numerical error.
+
+\subsubsection{Coordinate round-trip test}
+For points inside the valid domain, apply
+\begin{equation}
+(s,\theta,\zeta)\rightarrow\mathbf x
+\rightarrow(\tilde s,\tilde\theta,\tilde\zeta).
+\end{equation}
+Compare $s$ directly and compare angles modulo $2\pi$. Failures near the axis should be treated with coordinate-aware tolerances.
+
+\subsubsection{Manufactured circular-torus test}
+Recover the analytic mappings, volume, $V'$, and field-line solution of Section~\ref{sec:analytic_model}. This separates geometry-interface errors from the complexity of a full equilibrium code.
+
+\subsection{Solution verification}
+Even a verified code requires case-specific convergence studies. For each equilibrium, report changes in quantities such as
+\begin{itemize}[leftmargin=1.6em]
+\item magnetic-axis location;
+\item $\iota(s)$;
+\item volume-averaged beta;
+\item minimum Jacobian;
+\item selected $B_{mn}$ coefficients;
+\item $B_{\min}$ and $B_{\max}$;
+\item force residual;
+\item derived Module 4 continuum frequencies.
+\end{itemize}
+The last item is a cross-module sensitivity test: a geometry may appear visually converged while small transform or metric errors still shift resonant frequencies.
+
+\subsection{Validation sources}
+Possible validation sources include:
+\begin{itemize}[leftmargin=1.6em]
+\item comparison with an independently implemented equilibrium code;
+\item comparison with published benchmark equilibria;
+\item magnetic-diagnostic reconstruction from an experiment;
+\item pressure-profile and plasma-boundary measurements;
+\item vacuum-field mapping before plasma operation;
+\item cross-checks with coil-current perturbation experiments.
+\end{itemize}
+Validation must be tied to an intended prediction. Agreement in boundary shape does not automatically validate energetic-particle orbit confinement.
+
+\subsection{Uncertainty sources}
+Important uncertainties include:
+\begin{itemize}[leftmargin=1.6em]
+\item coil-position and coil-current errors;
+\item plasma-pressure and current-profile uncertainty;
+\item diagnostic reconstruction error;
+\item finite spectral and radial resolution;
+\item coordinate-transformation error;
+\item model-form error from scalar-pressure ideal MHD;
+\item omitted islands, stochasticity, flow, or anisotropy.
+\end{itemize}
+Uncertainty should be propagated to quantities actually used by downstream modules, such as $\iota$, orbit-loss fraction, or eigenfrequency.
+
+\section{Equilibrium surrogates and physics constraints}
+\label{sec:surrogates}
+
+\subsection{Why build a surrogate?}
+A high-fidelity equilibrium solve inside a large parameter scan, control loop, uncertainty analysis, or digital twin can be expensive. A surrogate seeks a rapid approximation
+\begin{equation}
+\mathcal G:
+\left(\text{boundary, coils, profiles, controls}\right)
+\mapsto
+\left(\mathbf B,\iota,\text{geometry, diagnostics}\right).
+\end{equation}
+Possible models include neural operators, reduced-basis methods, Gaussian processes, and physics-informed neural networks.
+
+\subsection{Physical constraints}
+A useful equilibrium surrogate should be checked against
+\begin{align}
+\nabla\cdot\mathbf B&=0,\\
+\mathbf B\cdot\nabla s&=0,\\
+\mathbf J-\frac{1}{\mu_0}\nabla\times\mathbf B&=0,\\
+\mathbf J\times\mathbf B-\nabla p&=0,
+\end{align}
+in the domain where these equations apply. It should also respect periodicity, stellarator symmetry when imposed, boundary conditions, and positive Jacobian orientation.
+
+\subsection{Representation choices}
+Predicting Cartesian components of $\mathbf B$ independently can violate $\nabla\cdot\mathbf B=0$. Better choices may include:
+\begin{itemize}[leftmargin=1.6em]
+\item predicting a vector potential $\mathbf A$ and setting $\mathbf B=\nabla\times\mathbf A$;
+\item predicting flux-surface coordinates and using a divergence-free contravariant representation;
+\item predicting spectral coefficients constrained by symmetry;
+\item learning corrections to a reduced conventional equilibrium rather than the full field.
+\end{itemize}
+Each representation moves some physical constraints from the loss function into the architecture.
+
+\subsection{Validation requirements}
+Low average data error is insufficient. A surrogate should be tested for:
+\begin{enumerate}[leftmargin=1.6em]
+\item in-distribution interpolation;
+\item out-of-distribution boundary and profile changes;
+\item force and divergence residuals;
+\item topology preservation and positive Jacobian;
+\item accuracy of derived quantities such as $\iota$, $k_\parallel$, curvature, and orbit invariants;
+\item uncertainty calibration;
+\item graceful failure or rejection outside the training domain.
+\end{enumerate}
+
+\subsection{Do not replace the reference solver}
+The conventional equilibrium solver remains the reference for generating training data, checking residuals, and identifying surrogate failure. The surrogate accelerates selected workflows; it does not eliminate the need for conventional physics verification.
+
+\section{Limitations of the baseline Module 1 model}
+\label{sec:limitations}
+
+The textbook description and planned interface are broader than the current executable repository capability. The baseline does not yet implement a validated three-dimensional equilibrium solver. Furthermore, the primary physical model described here has the following limitations unless explicitly extended:
+\begin{enumerate}[leftmargin=1.6em]
+\item scalar, isotropic pressure rather than an anisotropic pressure tensor;
+\item static equilibrium without strong bulk flow;
+\item ideal MHD rather than resistive, two-fluid, or kinetic equilibrium;
+\item globally nested flux surfaces;
+\item no self-consistent magnetic islands or stochastic regions;
+\item no scrape-off-layer or open-field-line equilibrium;
+\item no direct engineering stress, thermal, or structural coil calculation;
+\item no guarantee of MHD stability or good particle confinement;
+\item no automatic electrostatic-potential solution;
+\item no uncertainty-calibrated experimental reconstruction.
+\end{enumerate}
+These boundaries are not defects when stated clearly. They define the domain in which Module 1 outputs may be trusted.
+
+\section{Conceptual map for interview-level explanation}
+\label{sec:interview_map}
+
+A concise but technically correct explanation is:
+
+\begin{physicsbox}
+A stellarator equilibrium is a three-dimensional arrangement of magnetic field, plasma current, and pressure that satisfies $\nabla p=\mathbf J\times\mathbf B$, $\nabla\times\mathbf B=\mu_0\mathbf J$, and $\nabla\cdot\mathbf B=0$. The field is organized into nested toroidal magnetic surfaces. Field lines wind poloidally and toroidally on each surface, with average pitch measured by the rotational transform $\iota$. Surface shape, field-strength variation, metric coefficients, curvature, and $\iota$ determine particle orbits, Alfven-wave propagation, resonances, and transport. A stellarator obtains this geometry primarily from three-dimensional external coils, so equilibrium computation and coordinate transformation are foundational inputs to every later kinetic-MHD module.
+\end{physicsbox}
+
+The following distinctions should remain explicit:
+\begin{itemize}[leftmargin=1.6em]
+\item equilibrium versus stability;
+\item vacuum field versus finite-pressure plasma equilibrium;
+\item geometric angles versus straight-field-line angles;
+\item magnetic surface label versus physical radius;
+\item rotational transform $\iota$ versus safety factor $q$;
+\item accurate field values versus accurate derivatives;
+\item a nested-surface representation versus a field containing islands or stochasticity;
+\item a surrogate prediction versus a verified conventional solution.
+\end{itemize}
+

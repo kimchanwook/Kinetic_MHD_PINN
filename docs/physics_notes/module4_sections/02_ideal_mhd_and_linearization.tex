@@ -1,0 +1,153 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{From ideal MHD equilibrium to a linear wave equation}
+\label{sec:linear_mhd}
+
+\subsection{Ideal-MHD equations used by the fluid wave model}
+Ideal MHD describes a conducting plasma through macroscopic fields. In the absence of explicit viscosity, resistivity, external particle sources, and equilibrium flow, the governing equations are
+\begin{align}
+\frac{\partial\rho}{\partial t}+\nabla\cdot(\rho\mathbf v)&=0,
+\label{eq:mhd_continuity}\\
+\rho\left(\frac{\partial\mathbf v}{\partial t}+\mathbf v\cdot\nabla\mathbf v\right)
+&=-\nabla p+\mathbf J\times\mathbf B,
+\label{eq:mhd_momentum}\\
+\frac{\partial\mathbf B}{\partial t}&=\nabla\times(\mathbf v\times\mathbf B),
+\label{eq:mhd_induction}\\
+\nabla\cdot\mathbf B&=0,
+\label{eq:divb}\\
+\mu_0\mathbf J&=\nabla\times\mathbf B,
+\label{eq:ampere_mhd}\\
+\frac{D}{Dt}\left(\frac{p}{\rho^{\gamma_{\mathrm{ad}}}}\right)&=0,
+\qquad
+\frac{D}{Dt}=\frac{\partial}{\partial t}+\mathbf v\cdot\nabla.
+\label{eq:adiabatic_mhd}
+\end{align}
+Equation~\eqref{eq:mhd_continuity} conserves mass. Equation~\eqref{eq:mhd_momentum} balances inertia against pressure and Lorentz force. Equation~\eqref{eq:mhd_induction} is the ideal flux-freezing law, obtained from Faraday's law and ideal Ohm's law $\mathbf E+\mathbf v\times\mathbf B=0$. Equation~\eqref{eq:ampere_mhd} neglects displacement current, appropriate when characteristic speeds are much smaller than the speed of light. Equation~\eqref{eq:adiabatic_mhd} closes the fluid system with an adiabatic scalar-pressure model.
+
+The magnetic force may be rewritten using $\nabla\cdot\mathbf B=0$:
+\begin{equation}
+\mathbf J\times\mathbf B
+=\frac{1}{\mu_0}(\nabla\times\mathbf B)\times\mathbf B
+=-\nabla\left(\frac{B^2}{2\mu_0}\right)
++\frac{1}{\mu_0}(\mathbf B\cdot\nabla)\mathbf B.
+\label{eq:magnetic_pressure_tension}
+\end{equation}
+The first term is magnetic-pressure force. The second is magnetic tension. A shear-Alfv\'en wave is dominated by the tension associated with bending field lines.
+
+\subsection{Static equilibrium}
+Write every field as equilibrium plus perturbation:
+\begin{align}
+\rho&=\rho_0+\rho_1+O(\epsilon^2),&
+ p&=p_0+p_1+O(\epsilon^2),\\
+\mathbf B&=\mathbf B_0+\mathbf B_1+O(\epsilon^2),&
+\mathbf J&=\mathbf J_0+\mathbf J_1+O(\epsilon^2),\\
+\mathbf v&=\mathbf 0+\mathbf v_1+O(\epsilon^2).
+\end{align}
+The formal parameter $\epsilon\ll1$ measures perturbation amplitude and is set to one after terms are sorted by order. The equilibrium is static, so the zeroth-order momentum equation is
+\begin{equation}
+\boxed{\nabla p_0=\mathbf J_0\times\mathbf B_0.}
+\label{eq:equilibrium_force_balance_mod4}
+\end{equation}
+This is the equilibrium solved conceptually by Module 1. It states that pressure gradients perpendicular to a magnetic surface are balanced by magnetic forces. Dotting with $\mathbf B_0$ gives $\mathbf B_0\cdot\nabla p_0=0$, so scalar pressure is constant along an equilibrium field line and, for nested ergodic surfaces, is a flux function.
+
+\subsection{First-order equations}
+Retaining only terms linear in the perturbations gives
+\begin{align}
+\frac{\partial\rho_1}{\partial t}+\nabla\cdot(\rho_0\mathbf v_1)&=0,
+\label{eq:lin_continuity}\\
+\rho_0\frac{\partial\mathbf v_1}{\partial t}
+&=-\nabla p_1+\mathbf J_1\times\mathbf B_0+\mathbf J_0\times\mathbf B_1,
+\label{eq:lin_momentum}\\
+\frac{\partial\mathbf B_1}{\partial t}
+&=\nabla\times(\mathbf v_1\times\mathbf B_0),
+\label{eq:lin_induction}\\
+\mu_0\mathbf J_1&=\nabla\times\mathbf B_1,
+\label{eq:lin_ampere}
+\end{align}
+with $\nabla\cdot\mathbf B_1=0$. The pressure law becomes
+\begin{equation}
+\frac{\partial p_1}{\partial t}+\mathbf v_1\cdot\nabla p_0
++\gamma_{\mathrm{ad}}p_0\nabla\cdot\mathbf v_1=0.
+\label{eq:lin_pressure}
+\end{equation}
+Products such as $\rho_1\partial_t\mathbf v_1$ and $\mathbf J_1\times\mathbf B_1$ are second order and are omitted from a linear calculation.
+
+\subsection{Lagrangian displacement}
+Introduce the displacement $\boldsymbol\xi$ by
+\begin{equation}
+\mathbf v_1=\frac{\partial\boldsymbol\xi}{\partial t}.
+\label{eq:v_xi}
+\end{equation}
+Integrating Eqs.~\eqref{eq:lin_induction} and \eqref{eq:lin_pressure} in time, with no independent initial magnetic or pressure perturbation, gives
+\begin{align}
+\mathbf B_1&=\nabla\times(\boldsymbol\xi\times\mathbf B_0),
+\label{eq:b1_xi}\\
+p_1&=-\boldsymbol\xi\cdot\nabla p_0-\gamma_{\mathrm{ad}}p_0\nabla\cdot\boldsymbol\xi,
+\label{eq:p1_xi}\\
+\rho_1&=-\nabla\cdot(\rho_0\boldsymbol\xi).
+\label{eq:rho1_xi}
+\end{align}
+These relations are important because they express every first-order quantity in terms of one vector field, $\boldsymbol\xi$.
+
+Substitution into the momentum equation yields
+\begin{equation}
+\rho_0\frac{\partial^2\boldsymbol\xi}{\partial t^2}=\mathbf F[\boldsymbol\xi],
+\label{eq:linear_force_operator}
+\end{equation}
+where the ideal-MHD force operator is
+\begin{align}
+\mathbf F[\boldsymbol\xi]
+={}&-\nabla p_1
++\frac{1}{\mu_0}\left(\nabla\times\mathbf B_1\right)\times\mathbf B_0
++\frac{1}{\mu_0}\left(\nabla\times\mathbf B_0\right)\times\mathbf B_1,
+\label{eq:force_operator_explicit}
+\end{align}
+with $p_1$ and $\mathbf B_1$ given by Eqs.~\eqref{eq:p1_xi} and \eqref{eq:b1_xi}. The operator contains pressure-compression, equilibrium-pressure-gradient, magnetic-bending, and equilibrium-current terms.
+
+\subsection{Normal modes and the generalized eigenproblem}
+For a time-independent equilibrium, seek a normal mode
+\begin{equation}
+\boldsymbol\xi(\mathbf x,t)=\widehat{\boldsymbol\xi}(\mathbf x)e^{-i\omega t}.
+\label{eq:normal_mode_ansatz}
+\end{equation}
+Then $\partial_t^2\boldsymbol\xi=-\omega^2\boldsymbol\xi$, so Eq.~\eqref{eq:linear_force_operator} becomes
+\begin{equation}
+-\mathbf F[\widehat{\boldsymbol\xi}]=\omega^2\rho_0\widehat{\boldsymbol\xi}.
+\label{eq:full_mhd_eigenproblem}
+\end{equation}
+The left side is a stiffness-like operator and the right side contains the inertia or mass operator. A realistic discretization therefore often has the generalized form
+\begin{equation}
+\mathbf K\mathbf x=\omega^2\mathbf M\mathbf x,
+\label{eq:generalized_discrete_mhd}
+\end{equation}
+where $\mathbf K$ is a stiffness matrix and $\mathbf M$ is a positive mass matrix. The present reduced benchmark absorbs its simplified weight into the variable definition, so $\mathbf M$ becomes the identity matrix.
+
+\subsection{Self-adjointness and the ideal-MHD energy principle}
+Under suitable boundary conditions, the static ideal-MHD force operator satisfies
+\begin{equation}
+\int_V\boldsymbol\eta^*\cdot\mathbf F[\boldsymbol\xi]dV
+=
+\int_V\boldsymbol\xi\cdot\mathbf F[\boldsymbol\eta]^*dV.
+\label{eq:self_adjoint_force}
+\end{equation}
+The asterisk denotes complex conjugation. This symmetry leads to the potential-energy variation
+\begin{equation}
+\delta W[\boldsymbol\xi]
+=-\frac{1}{2}\int_V\boldsymbol\xi^*\cdot\mathbf F[\boldsymbol\xi]dV
+\end{equation}
+and kinetic-energy norm
+\begin{equation}
+K[\boldsymbol\xi]=\frac{1}{2}\int_V\rho_0|\boldsymbol\xi|^2dV.
+\end{equation}
+For a stable ideal-MHD normal mode,
+\begin{equation}
+\omega^2=\frac{\delta W}{K}>0.
+\label{eq:full_rayleigh}
+\end{equation}
+If some admissible displacement gives $\delta W<0$, then $\omega^2<0$ and $\omega=i\gamma$ is purely imaginary in the idealized model, indicating exponential instability. Module 4 focuses on the stable shear-Alfv\'en branch and real positive $\omega^2$.
+
+\begin{notebox}
+\textbf{Why real frequency is not the final kinetic result.} Self-adjoint ideal MHD produces real $\omega^2$ for stable modes. Kinetic resonances and dissipative effects generally make the operator non-self-adjoint and the frequency complex, $\omega=\omega_r+i\gamma$. Module 5 introduces those effects rather than hiding them inside the Module 4 reference operator.
+\end{notebox}
+
+\subsection{Assumptions made in the principal derivation}
+The derivation above assumes a static equilibrium, scalar pressure, ideal conductivity, nonrelativistic dynamics, and linear perturbations. It does not assume that every plasma phenomenon is fluid-like. It isolates the macroscopic field-line restoring force that provides the baseline structure to which kinetic corrections are later added.

@@ -1,0 +1,99 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Flux-surface averages and radial geometry}
+\label{sec:surface_averages}
+
+\subsection{Surface average}
+For a scalar field $A(s,\theta,\zeta)$, a common flux-surface average is
+\begin{equation}
+\langle A\rangle_s
+=\frac{\displaystyle\int_0^{2\pi}\int_0^{2\pi}A\sqrt{g}\,d\theta\,d\zeta}
+{\displaystyle\int_0^{2\pi}\int_0^{2\pi}\sqrt{g}\,d\theta\,d\zeta}.
+\label{eq:flux_surface_average}
+\end{equation}
+The Jacobian appears because equal increments of $(\theta,\zeta)$ do not generally correspond to equal physical surface or volume weighting.
+
+\subsection{Enclosed volume and differential volume}
+The volume inside surface $s$ is
+\begin{equation}
+V(s)=\int_0^s ds'\int_0^{2\pi}d\theta\int_0^{2\pi}d\zeta\,\sqrt{g}(s',\theta,\zeta).
+\label{eq:enclosed_volume}
+\end{equation}
+Its derivative is
+\begin{equation}
+V'(s)=\frac{dV}{ds}
+=\int_0^{2\pi}\int_0^{2\pi}\sqrt{g}\,d\theta\,d\zeta.
+\label{eq:Vprime}
+\end{equation}
+The function $V'(s)$ appears in one-dimensional transport equations. For example, a conservative radial balance often contains
+\begin{equation}
+\frac{1}{V'}\frac{\partial}{\partial s}\left(V'\Gamma_s\right),
+\end{equation}
+where $\Gamma_s$ is a radial flux measured per appropriate surface area and coordinate normalization.
+
+\subsection{Effective minor radius}
+A coordinate-independent size measure may be defined from volume:
+\begin{equation}
+a_{\mathrm{eff}}(s)=\sqrt{\frac{V(s)}{2\pi^2R_{\mathrm{ref}}}},
+\end{equation}
+where $R_{\mathrm{ref}}$ is a stated reference major radius. This definition is motivated by the volume $2\pi^2R_0a^2$ of a circular torus. Other effective-radius definitions exist, so the formula must accompany the value.
+
+\section{Three-dimensional stellarator surface geometry}
+\label{sec:fourier_geometry}
+
+\subsection{Why use Fourier series?}
+The angles $\theta$ and $\zeta$ are periodic. Any sufficiently smooth periodic surface shape can therefore be expanded in Fourier modes. A common representation in cylindrical coordinates is
+\begin{align}
+R(s,\theta,\zeta)
+&=\sum_{m,n}R_{mn}(s)
+\cos\left(m\theta-nN_{\mathrm{fp}}\zeta\right),
+\label{eq:R_fourier}\\
+Z(s,\theta,\zeta)
+&=\sum_{m,n}Z_{mn}(s)
+\sin\left(m\theta-nN_{\mathrm{fp}}\zeta\right).
+\label{eq:Z_fourier}
+\end{align}
+Here $m$ is a poloidal integer, $n$ is a toroidal Fourier integer per field period, and $N_{\mathrm{fp}}$ is the number of field periods. The coefficients $R_{mn}(s)$ and $Z_{mn}(s)$ determine the shape of every flux surface.
+
+The physical position is then
+\begin{equation}
+\mathbf x(s,\theta,\zeta)
+=R\cos\zeta\,\mathbf e_x
++R\sin\zeta\,\mathbf e_y
++Z\,\mathbf e_z,
+\label{eq:x_from_RZ}
+\end{equation}
+when $\zeta$ is chosen as the geometric toroidal angle. If $\zeta$ is a magnetic toroidal angle, an additional mapping to the geometric angle is required.
+
+\subsection{Meaning of selected Fourier modes}
+The coefficient $R_{00}$ largely sets a major-radius offset. The $m=1,n=0$ terms describe a basic circular or elliptical cross-sectional displacement. Higher poloidal mode numbers describe triangularity, squareness, and finer shaping. Nonzero toroidal mode numbers introduce variation from one toroidal location to another and are essential to a stellarator.
+
+A Fourier coefficient should not be interpreted in isolation without knowing the angular convention. The same physical surface can have different coefficients after a change of poloidal angle.
+
+\subsection{Stellarator symmetry}
+A common discrete symmetry is stellarator symmetry. Under an appropriate choice of angular origins, the configuration is invariant under
+\begin{equation}
+(\theta,\zeta)\rightarrow(-\theta,-\zeta)
+\end{equation}
+combined with a reflection in physical space. This symmetry motivates cosine terms for $R$ and sine terms for $Z$ in Equations~\eqref{eq:R_fourier}--\eqref{eq:Z_fourier}. Configurations without stellarator symmetry require both sine and cosine coefficients in both coordinates.
+
+\subsection{Magnetic-field-strength spectrum}
+The magnetic-field magnitude can also be expanded:
+\begin{equation}
+B(s,\theta,\zeta)
+=\sum_{m,n}B_{mn}(s)
+\cos\left(m\theta-nN_{\mathrm{fp}}\zeta+\delta_{mn}(s)\right),
+\label{eq:B_spectrum_general}
+\end{equation}
+where $\delta_{mn}$ is a phase. With suitable symmetry and angle conventions, the phases can be absorbed into sine/cosine parity choices.
+
+The surface shape spectrum and magnetic-strength spectrum are related through Maxwell's equations and equilibrium, but they are not identical. Particle trapping depends strongly on variation of $B$ along a field line, so the $B_{mn}$ spectrum is a critical Module~3 input.
+
+\subsection{Spectral resolution and aliasing}
+A numerical representation retains finite ranges
+\begin{equation}
+0\leq m\leq m_{\max},
+\qquad
+-n_{\max}\leq n\leq n_{\max}.
+\end{equation}
+Increasing $m_{\max}$ and $n_{\max}$ resolves finer structure but increases computational cost and can amplify sensitivity to noisy input. Nonlinear products generate sums of mode numbers, so evaluation on an insufficient angular grid can cause aliasing: unresolved high-frequency content appears incorrectly as lower-frequency content. Production workflows should document spectral truncation and quadrature resolution.
+

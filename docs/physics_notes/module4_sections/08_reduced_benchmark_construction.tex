@@ -1,0 +1,196 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Construction of the reduced coupled-harmonic benchmark}
+\label{sec:benchmark_construction}
+
+\subsection{Design philosophy}
+A verification benchmark should be complicated enough to exercise the intended algorithms but simple enough that its scaling, symmetry, limits, and expected behavior can be derived independently. The Module 4 benchmark therefore does not import a numerical equilibrium. It prescribes smooth analytic profiles and constructs a real two-harmonic operator with controlled coupling.
+
+The design requirements are:
+\begin{enumerate}[leftmargin=1.6em]
+\item all coefficients have explicit SI dimensions or are explicitly dimensionless;
+\item the uncoupled limit is analytically known;
+\item the local coupling opens a finite avoided crossing;
+\item the global operator is self-adjoint and positive for the baseline case;
+\item the Alfv\'en scaling with $B_0$ and density is exact;
+\item the finite-volume matrix is real and symmetric;
+\item Python and MATLAB can implement the same mathematical contract independently.
+\end{enumerate}
+
+\subsection{Normalized radial coordinate}
+The coordinate $s\in[0,1]$ is described in the case metadata as a normalized toroidal-flux radius. In the benchmark equations it is a dimensionless monotonic surface label. It should not be assumed identical to geometric minor radius $r/a$ or to the square root of normalized toroidal flux unless a future imported equilibrium defines that mapping explicitly.
+
+The practical interpretation is:
+\begin{equation}
+s=0\quad\text{axis surrogate},
+\qquad
+s=1\quad\text{edge surrogate}.
+\end{equation}
+All radial derivatives in the implemented model are derivatives with respect to this dimensionless coordinate.
+
+\subsection{Mass-density profile}
+The prescribed mass density is
+\begin{equation}
+\boxed{
+\rho(s)=\rho_0\left[1-(1-f_\rho)s^{a_\rho}\right].}
+\label{eq:benchmark_density}
+\end{equation}
+Here:
+\begin{itemize}[leftmargin=1.6em]
+\item $\rho_0>0$ is the axis density;
+\item $f_\rho=\rho(1)/\rho_0$ is the edge-to-axis density fraction;
+\item $a_\rho>0$ controls profile shape.
+\end{itemize}
+At $s=0$, $\rho=\rho_0$. At $s=1$, $\rho=f_\rho\rho_0$. If $0<f_\rho\le1$, density remains positive. Its derivative is
+\begin{equation}
+\rho'(s)=-\rho_0(1-f_\rho)a_\rho s^{a_\rho-1}.
+\end{equation}
+For the baseline $a_\rho=2$ and $f_\rho=0.2$, density decreases smoothly toward the edge, so $v_A$ increases outward.
+
+\subsection{Rotational-transform profile}
+The prescribed transform is
+\begin{equation}
+\boxed{
+\iota(s)=\iota_0+(\iota_1-\iota_0)s^{a_\iota}.}
+\label{eq:benchmark_iota}
+\end{equation}
+The parameters $\iota_0$ and $\iota_1$ are the axis and edge values, and $a_\iota>0$ controls radial shape. Its derivative is
+\begin{equation}
+\iota'(s)=(\iota_1-\iota_0)a_\iota s^{a_\iota-1}.
+\end{equation}
+For the baseline $a_\iota=1$, the transform varies linearly.
+
+If a target transform $\iota_*$ lies between $\iota_0$ and $\iota_1$, the inverse profile is
+\begin{equation}
+\boxed{
+s(\iota_*)=
+\left(\frac{\iota_*-\iota_0}{\iota_1-\iota_0}\right)^{1/a_\iota}.}
+\label{eq:iota_inverse}
+\end{equation}
+The code clips the fraction to $[0,1]$ as a defensive operation, but a physically meaningful intended crossing should lie within the prescribed transform range.
+
+\subsection{Alfv\'en speed and frequency scale}
+Using a constant reference magnetic-field magnitude $B_0$,
+\begin{equation}
+\boxed{v_A(s)=\frac{B_0}{\sqrt{\mu_0\rho(s)}}.}
+\label{eq:benchmark_va}
+\end{equation}
+Define
+\begin{equation}
+\omega_0(s)=\frac{v_A(s)}{R_0}.
+\label{eq:benchmark_omega_scale}
+\end{equation}
+The quantity $\omega_0$ has units $\mathrm{s^{-1}}$. Every term in the benchmark operator is proportional to $\omega_0^2$, ensuring exact frequency scaling with $B_0$ and $\rho^{-1/2}$.
+
+\subsection{Uncoupled branches}
+For fixed $n$ and neighboring poloidal harmonics $m$ and $m+1$,
+\begin{align}
+\omega_m(s)&=|n-m\iota(s)|\omega_0(s),
+\label{eq:benchmark_branch_m}\\
+\omega_{m+1}(s)&=|n-(m+1)\iota(s)|\omega_0(s).
+\label{eq:benchmark_branch_mp1}
+\end{align}
+These are local positive angular frequencies. The corresponding signed parallel wave numbers retain propagation direction, but only their squares enter the real symmetric benchmark.
+
+\subsection{Analytic crossing location}
+The TAE-like equal-magnitude opposite-sign condition gives Eq.~\eqref{eq:tae_crossing_iota}:
+\begin{equation}
+\iota_c=\frac{2n}{2m+1}.
+\end{equation}
+Substitution into Eq.~\eqref{eq:iota_inverse} gives
+\begin{equation}
+\boxed{
+s_c=
+\left[
+\frac{2n/(2m+1)-\iota_0}{\iota_1-\iota_0}
+\right]^{1/a_\iota}.}
+\label{eq:benchmark_crossing_s}
+\end{equation}
+This formula is valid when the bracketed fraction lies in $[0,1]$.
+
+\subsection{Localized coupling}
+The benchmark coupling is
+\begin{equation}
+\boxed{
+C(s)=\epsilon_c\omega_m(s)\omega_{m+1}(s)
+\exp\left[-\left(\frac{s-s_c}{w_c}\right)^2\right].}
+\label{eq:benchmark_coupling}
+\end{equation}
+The dimensionless parameter $\epsilon_c\in[0,1)$ controls coupling strength, and $w_c>0$ controls radial width. The Gaussian is centered at the analytic crossing because that is where neighboring harmonics are expected to mix most strongly in the illustrative model.
+
+The coupling is a surrogate. It is not derived from an equilibrium Fourier coefficient. Its value is positive in the baseline. A negative coupling would change the relative sign of mixed eigenvectors but not the two local eigenvalues because Eq.~\eqref{eq:two_mode_eigenvalues} depends on $C^2$.
+
+\subsection{Local coupled branches}
+At each grid coordinate, define
+\begin{equation}
+\mathbf H_{\mathrm{loc}}(s)=
+\begin{bmatrix}
+\omega_m^2(s)&C(s)\\
+C(s)&\omega_{m+1}^2(s)
+\end{bmatrix}.
+\end{equation}
+The coupled local frequencies are
+\begin{equation}
+\boxed{
+\Omega_\pm^2(s)=
+\frac{\omega_m^2+\omega_{m+1}^2}{2}
+\pm
+\sqrt{
+\left(\frac{\omega_m^2-\omega_{m+1}^2}{2}\right)^2+C^2
+}.}
+\label{eq:benchmark_local_branches}
+\end{equation}
+The code uses $\sqrt{\max(\Omega_\pm^2,0)}$ to protect against tiny negative roundoff before taking a square root. For valid baseline parameters, the analytic positivity condition should already keep $\Omega_\pm^2>0$.
+
+\subsection{Radial stiffness}
+The radial coefficient is
+\begin{equation}
+\boxed{
+D(s)=\epsilon_r\left(\frac{v_A(s)}{R_0}\right)^2,}
+\label{eq:benchmark_D}
+\end{equation}
+where $\epsilon_r>0$ is dimensionless. Since $s$ is dimensionless, $d/ds$ carries no physical length unit, so $D$ must have units of squared angular frequency. This is why a factor $a^{-2}$ does not appear in the implemented equation. A model using geometric radius $r$ instead would require a coefficient with units of speed squared.
+
+\subsection{Dimensionless form}
+Choose an axis frequency scale
+\begin{equation}
+\omega_{00}=\frac{B_0}{R_0\sqrt{\mu_0\rho_0}}.
+\end{equation}
+Define
+\begin{equation}
+\widehat\omega=\frac{\omega}{\omega_{00}},
+\qquad
+\widehat\rho=\frac{\rho}{\rho_0},
+\qquad
+\widehat D=\frac{D}{\omega_{00}^2}.
+\end{equation}
+Then
+\begin{align}
+\frac{v_A/R_0}{\omega_{00}}&=\widehat\rho^{-1/2},\\
+\widehat\omega_m&=|n-m\iota|\widehat\rho^{-1/2},\\
+\widehat D&=\epsilon_r\widehat\rho^{-1}.
+\end{align}
+The entire dimensionless spectrum depends only on profile shapes, mode numbers, $\epsilon_c$, $w_c$, $\epsilon_r$, and boundary conditions. Multiplying $B_0$ or $R_0^{-1}$ rescales all dimensional frequencies without changing dimensionless eigenvectors.
+
+\subsection{Exact scaling relations}
+If $B_0\rightarrow\alpha B_0$ with density unchanged, then
+\begin{equation}
+v_A\rightarrow\alpha v_A,
+\quad
+\omega_m^2,C,D\rightarrow\alpha^2(\omega_m^2,C,D),
+\quad
+\omega_j\rightarrow\alpha\omega_j.
+\label{eq:B_scaling}
+\end{equation}
+If $\rho(s)\rightarrow\beta\rho(s)$ uniformly, then
+\begin{equation}
+v_A\rightarrow\beta^{-1/2}v_A,
+\quad
+\omega_j\rightarrow\beta^{-1/2}\omega_j.
+\label{eq:rho_scaling}
+\end{equation}
+If $R_0\rightarrow\chi R_0$ with all dimensionless profiles unchanged, then
+\begin{equation}
+\omega_j\rightarrow\chi^{-1}\omega_j.
+\label{eq:R_scaling}
+\end{equation}
+These are stronger tests than merely reproducing one numerical table because they interrogate every matrix block simultaneously.

@@ -1,0 +1,82 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Orientation: what Module 4 solves and why it comes before kinetic drive}
+\label{sec:orientation}
+
+\subsection{The central physical question}
+A confined plasma is not merely a static cloud held by a magnetic field. It is an elastic electromagnetic medium that can support waves. One of the most important wave families is the shear-Alfv\'en family, in which magnetic-field lines are bent sideways and magnetic tension attempts to straighten them. In a fusion plasma, these waves matter because energetic ions can exchange energy resonantly with them. If the particles give the wave more energy than all damping mechanisms remove, the wave grows and may redistribute or eject the energetic particles.
+
+Module 4 addresses the fluid-wave part of that chain:
+\begin{equation}
+\boxed{\begin{aligned}
+\text{equilibrium geometry and density}
+&\longrightarrow \text{Alfv\'en continuum}\\
+&\longrightarrow \text{spectral gaps}
+\longrightarrow \text{global fluid-MHD eigenmodes}
+\end{aligned}}
+\end{equation}
+Module 5 later asks whether an energetic-particle distribution drives or damps those fluid-MHD modes. Therefore, Module 4 must supply at least the real mode frequency, spatial eigenfunction, Fourier content, and parallel wave number before a kinetic resonance calculation can be meaningful.
+
+\subsection{Why a fluid model appears inside a kinetic-MHD project}
+The term \emph{kinetic MHD} does not mean that every plasma species and every scale is always evolved with the full six-dimensional distribution function. A common hybrid hierarchy is:
+\begin{enumerate}[leftmargin=1.6em]
+\item represent the thermal bulk plasma by MHD variables such as mass density, pressure, velocity, and magnetic field;
+\item represent energetic particles kinetically through a phase-space distribution or through guiding-center markers;
+\item couple the energetic-particle pressure or current response back into the MHD wave equation.
+\end{enumerate}
+This separation is useful when the bulk plasma behaves collectively on macroscopic scales while a minority energetic population has orbit and resonance physics that cannot be captured by a scalar fluid pressure. In the present project, Module 4 deliberately begins with the fluid operator alone. That produces a controlled reference spectrum. Module 5 then adds kinetic drive and damping, and Module 6 uses the resulting mode activity to model fast-ion redistribution.
+
+\begin{physicsbox}
+\textbf{Key distinction.} Fluid MHD determines the large-scale restoring forces and the baseline wave structure. Kinetic theory determines how particles with different velocities and orbits exchange energy with that structure. A kinetic-MHD model combines these descriptions; it does not discard fluid MHD.
+\end{physicsbox}
+
+\subsection{Three levels of description used in this chapter}
+The chapter moves through three related but distinct models.
+
+\paragraph{Level 1: local uniform-plasma wave.}
+The simplest derivation assumes constant $\rho_0$ and $\mathbf B_0$. It gives
+\begin{equation}
+\omega^2=k_\parallel^2v_A^2.
+\end{equation}
+This relation explains the magnetic-tension restoring force and establishes dimensional scaling.
+
+\paragraph{Level 2: local continuum in a nonuniform torus.}
+In a toroidal equilibrium, $v_A$ and $k_\parallel$ vary from one magnetic surface to another. Each surface can therefore have a different local natural frequency:
+\begin{equation}
+\omega_A(s)=|k_\parallel(s)|v_A(s).
+\end{equation}
+Because $s$ varies continuously, these frequencies form a continuum rather than one isolated number.
+
+\paragraph{Level 3: global coupled-harmonic eigenproblem.}
+Toroidal or three-dimensional geometry couples Fourier harmonics, opens gaps in the local continuum, and permits radially extended global modes. The project's executable benchmark represents this level with two coupled radial envelopes and a real symmetric eigenvalue problem.
+
+\subsection{What is implemented and what is not}
+The implemented benchmark contains:
+\begin{itemize}[leftmargin=1.6em]
+\item analytic density and rotational-transform profiles;
+\item two neighboring poloidal harmonics at fixed toroidal mode number;
+\item exact uncoupled continuum branches for the adopted approximation;
+\item a controlled real coupling coefficient and avoided crossing;
+\item a self-adjoint radial stiffness operator;
+\item mixed Neumann--Dirichlet boundary conditions;
+\item a finite-volume discretization and sparse eigensolution;
+\item frozen reference outputs and verification tests.
+\end{itemize}
+It does not contain a full three-dimensional ideal-MHD operator, continuum singularity treatment, kinetic damping, energetic-particle drive, finite-Larmor-radius corrections, or complex eigenfrequency. Those omissions are not accidental. They keep the first solver transparent enough that analytic limits and two independent implementations can be compared.
+
+\subsection{Learning objectives}
+After completing this chapter, the reader should be able to:
+\begin{enumerate}[leftmargin=1.6em]
+\item derive the shear-Alfv\'en wave equation from ideal MHD;
+\item explain magnetic tension and distinguish shear from compressional polarization;
+\item derive $k_\parallel$ from a stated Fourier and rotational-transform convention;
+\item explain why nonuniform magnetic surfaces produce an Alfv\'en continuum;
+\item distinguish a continuum branch, a continuum resonance, a spectral gap, and a global eigenmode;
+\item solve the local two-harmonic avoided-crossing problem analytically;
+\item derive the project's radial envelope equations from a Rayleigh quotient;
+\item discretize the radial operator conservatively with a cell-centered FVM;
+\item interpret sparse eigenvalues, eigenvectors, residuals, normalization, and grid convergence;
+\item state precisely which conclusions the reduced benchmark does and does not support.
+\end{enumerate}
+
+\subsection{Reading strategy}
+On a first reading, focus on the physical chain and the boxed results. On a second reading, reproduce the derivations in Sections~\ref{sec:linear_mhd}--\ref{sec:gaps}. On a third reading, compare the continuous operator with the finite-volume matrix and then inspect the Python or MATLAB implementation. The numerical result should never be treated as a black box: each array and matrix block has a direct counterpart in the equations developed below.

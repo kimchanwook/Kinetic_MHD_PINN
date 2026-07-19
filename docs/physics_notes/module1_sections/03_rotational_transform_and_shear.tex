@@ -1,0 +1,75 @@
+% Module 1 section file. Included by ../module1_stellarator_equilibrium_geometry.tex.
+\section{Rotational transform, safety factor, and magnetic shear}
+\label{sec:iota}
+
+\subsection{Rotational transform}
+Follow a field line and count how its poloidal angle changes as the toroidal angle increases. In straight-field-line coordinates, the rotational transform is
+\begin{equation}
+\iota(s)=\frac{d\theta}{d\zeta}
+\label{eq:iota_dtheta_dzeta}
+\end{equation}
+along a field line, with the derivative understood as an average winding rate on the surface. Equivalently,
+\begin{equation}
+\iota(s)=\lim_{N\rightarrow\infty}\frac{\Delta\theta}{\Delta\zeta}
+\end{equation}
+for a trajectory followed through many toroidal turns.
+
+If $\iota=0.4$, the field line advances on average $0.4$ poloidal turns per toroidal turn. After five toroidal turns it advances two poloidal turns. If $\iota=2/5$ exactly, the field line is rational in the idealized straight-field-line representation and closes after a finite number of turns.
+
+\subsection{Safety factor}
+Tokamak literature often uses the safety factor
+\begin{equation}
+q(s)=\frac{1}{\iota(s)}.
+\label{eq:q_inverse_iota}
+\end{equation}
+With this convention, $q$ counts toroidal turns per poloidal turn. Some sign conventions include a minus sign depending on angle orientation and magnetic-field direction. This project uses Equation~\eqref{eq:q_inverse_iota} unless a data source documents a different convention.
+
+\subsection{Rational surfaces}
+A rational surface satisfies
+\begin{equation}
+\iota(s_r)=\frac{n}{m},
+\label{eq:rational_iota}
+\end{equation}
+where $m$ and $n$ are nonzero integers with no common factor and $s_r$ is the rational surface location. A field line then closes after $m$ toroidal-angle periods and $n$ poloidal-angle periods under the stated convention. The same integers appear in Fourier perturbations, resonances, and Alfv\'en-continuum conditions.
+
+\subsection{Magnetic shear}
+Magnetic shear describes radial change in field-line pitch. Several definitions are used. A common dimensionless form in terms of $\iota$ is
+\begin{equation}
+\hat s_\iota(s)=\frac{s}{\iota(s)}\frac{d\iota}{ds}.
+\label{eq:shear_iota}
+\end{equation}
+In terms of safety factor,
+\begin{equation}
+\hat s_q(s)=\frac{s}{q(s)}\frac{dq}{ds}=-\hat s_\iota(s).
+\label{eq:shear_q}
+\end{equation}
+The sign difference follows from $q=1/\iota$. One must therefore report the definition, not only the phrase ``magnetic shear.''
+
+Shear matters because nearby field lines accumulate different angular phases. It affects magnetic-island overlap, wave continua, resonant surfaces, and radial mode structure.
+
+\subsection{Connection to the Module 4 parallel wave number}
+Consider a perturbation with phase
+\begin{equation}
+S=m\theta-n\zeta-\omega t,
+\label{eq:mode_phase}
+\end{equation}
+where $m$ is the poloidal mode number, $n$ is the toroidal mode number, and $\omega$ is angular frequency. Along a field line,
+\begin{equation}
+\frac{dS}{d\zeta}=m\frac{d\theta}{d\zeta}-n=m\iota-n.
+\end{equation}
+The parallel wave number is the phase gradient along the field:
+\begin{equation}
+k_\parallel=\mathbf b\cdot\nabla S.
+\label{eq:kparallel_general}
+\end{equation}
+In a simple large-aspect-ratio approximation, $\mathbf b\cdot\nabla\zeta\approx1/R_0$, so
+\begin{equation}
+k_{\parallel,mn}(s)\approx\frac{m\iota(s)-n}{R_0}.
+\label{eq:kparallel_simple}
+\end{equation}
+Module~4 may use the algebraically equivalent opposite sign $(n-m\iota)/R_0$ because its eigenfrequency depends on $k_\parallel^2$. The sign becomes important when propagation direction and resonant particle motion are retained.
+
+\begin{physicsbox}
+\textbf{Why Module 1 controls Module 4.} The equilibrium supplies $B(s,\theta,\zeta)$, mass density, metric information, and $\iota(s)$. These determine the local Alfv\'en speed and the parallel wavelength of each harmonic. Consequently, changing the equilibrium changes the Alfv\'en continuum and the locations at which energetic particles can resonate with waves.
+\end{physicsbox}
+

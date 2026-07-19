@@ -1,0 +1,142 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Variational formulation, self-adjointness, and boundary conditions}
+\label{sec:variational_reduced}
+
+\subsection{Quadratic functional}
+Let
+\begin{equation}
+\boldsymbol\xi(s)=\begin{bmatrix}\xi_m(s)\\\xi_{m+1}(s)\end{bmatrix}
+\end{equation}
+be real for the present self-adjoint problem. Define
+\begin{align}
+\mathcal E[\boldsymbol\xi]
+=\int_0^1\Bigg\{
+&D(s)\left[\left(\frac{d\xi_m}{ds}\right)^2
++\left(\frac{d\xi_{m+1}}{ds}\right)^2\right]
++\omega_m^2(s)\xi_m^2
++\omega_{m+1}^2(s)\xi_{m+1}^2
++2C(s)\xi_m\xi_{m+1}
+\Bigg\}ds.
+\label{eq:reduced_energy}
+\end{align}
+Define the norm
+\begin{equation}
+\mathcal N[\boldsymbol\xi]
+=\int_0^1\left(\xi_m^2+\xi_{m+1}^2\right)ds.
+\label{eq:reduced_norm}
+\end{equation}
+The Rayleigh quotient is
+\begin{equation}
+\mathcal R[\boldsymbol\xi]=\frac{\mathcal E[\boldsymbol\xi]}{\mathcal N[\boldsymbol\xi]}.
+\label{eq:reduced_rayleigh}
+\end{equation}
+Stationary values of $\mathcal R$ are eigenvalues $\omega^2$.
+
+\subsection{Euler--Lagrange derivation}
+Impose normalization with a Lagrange multiplier $\lambda$ and vary
+\begin{equation}
+\mathcal F=\mathcal E-\lambda\mathcal N.
+\end{equation}
+For the first component, let $\xi_m\rightarrow\xi_m+\varepsilon\eta_m$. The first variation is
+\begin{align}
+\frac{1}{2}\frac{d\mathcal F}{d\varepsilon}\bigg|_{\varepsilon=0}
+={}&\int_0^1\left[
+D\xi_m'\eta_m'
++\omega_m^2\xi_m\eta_m
++C\xi_{m+1}\eta_m
+-\lambda\xi_m\eta_m
+\right]ds.
+\end{align}
+Integrate the gradient term by parts:
+\begin{equation}
+\int_0^1D\xi_m'\eta_m'ds
+=\left[D\xi_m'\eta_m\right]_0^1
+-\int_0^1\frac{d}{ds}(D\xi_m')\eta_mds.
+\end{equation}
+If the boundary term vanishes for all admissible variations, stationarity requires
+\begin{equation}
+-\frac{d}{ds}\left(D\frac{d\xi_m}{ds}\right)
++\omega_m^2\xi_m+C\xi_{m+1}=\lambda\xi_m.
+\end{equation}
+Repeating for the second component gives
+\begin{equation}
+-\frac{d}{ds}\left(D\frac{d\xi_{m+1}}{ds}\right)
++C\xi_m+\omega_{m+1}^2\xi_{m+1}=\lambda\xi_{m+1}.
+\end{equation}
+Therefore $\lambda=\omega^2$ and the equations are exactly Eqs.~\eqref{eq:global_m_textbook}--\eqref{eq:global_mp1_textbook}.
+
+\subsection{Natural and essential boundary conditions}
+A Dirichlet condition fixes the value of a variable and is called an essential boundary condition in variational language. A Neumann or flux condition arises from the boundary term and is called natural.
+
+At $s=0$, the benchmark permits arbitrary variation $\eta(0)$ but imposes
+\begin{equation}
+D(0)\xi_m'(0)=D(0)\xi_{m+1}'(0)=0.
+\end{equation}
+This makes the left boundary term vanish naturally.
+
+At $s=1$, the benchmark imposes
+\begin{equation}
+\xi_m(1)=\xi_{m+1}(1)=0.
+\end{equation}
+Admissible variations also satisfy $\eta_m(1)=\eta_{m+1}(1)=0$, so the right boundary term vanishes.
+
+\subsection{Self-adjoint operator}
+Define
+\begin{equation}
+\mathcal L\boldsymbol\xi
+=-\frac{d}{ds}\left(D\frac{d\boldsymbol\xi}{ds}\right)
++\mathbf H_{\mathrm{loc}}\boldsymbol\xi.
+\end{equation}
+For admissible vector functions $\boldsymbol\eta$ and $\boldsymbol\xi$,
+\begin{align}
+\int_0^1\boldsymbol\eta^{\mathsf T}\mathcal L\boldsymbol\xi\,ds
+={}&\int_0^1
+D\boldsymbol\eta'^{\mathsf T}\boldsymbol\xi' ds
++\int_0^1\boldsymbol\eta^{\mathsf T}\mathbf H_{\mathrm{loc}}\boldsymbol\xi ds,
+\end{align}
+where the boundary term has vanished. Because $D$ is real and $\mathbf H_{\mathrm{loc}}$ is symmetric,
+\begin{equation}
+\int_0^1\boldsymbol\eta^{\mathsf T}\mathcal L\boldsymbol\xi ds
+=\int_0^1\boldsymbol\xi^{\mathsf T}\mathcal L\boldsymbol\eta ds.
+\label{eq:reduced_self_adjoint}
+\end{equation}
+Consequences include real eigenvalues, orthogonality of distinct eigenmodes, and a variational upper-bound property for approximate subspaces under appropriate conditions.
+
+\subsection{Positivity}
+The gradient contribution is nonnegative if $D(s)>0$. The local quadratic form is
+\begin{equation}
+\begin{bmatrix}\xi_m&\xi_{m+1}\end{bmatrix}
+\mathbf H_{\mathrm{loc}}
+\begin{bmatrix}\xi_m\\\xi_{m+1}\end{bmatrix}.
+\end{equation}
+If $\mathbf H_{\mathrm{loc}}(s)$ is positive definite at every $s$, then $\mathcal E>0$ for every nonzero admissible function and every eigenvalue satisfies $\omega^2>0$. The coupling restriction $0\le\epsilon_c<1$ is chosen to support this property.
+
+\subsection{Normalization}
+The continuous convention is
+\begin{equation}
+\boxed{
+\int_0^1\left(\xi_m^2+\xi_{m+1}^2\right)ds=1.}
+\label{eq:benchmark_normalization}
+\end{equation}
+This normalization has units of one because $s$ and the reduced envelopes are treated as dimensionless. It does not assign a physical displacement amplitude. Its purpose is to make mode shapes comparable across implementations and grids.
+
+\subsection{Sign and phase ambiguity}
+If $\boldsymbol\xi$ is an eigenfunction, so is $-\boldsymbol\xi$. For complex formulations, $e^{i\varphi}\boldsymbol\xi$ is equally valid for any constant phase $\varphi$. Direct pointwise subtraction of two valid eigenvectors can therefore report a large error when they differ only by sign or phase.
+
+The benchmark resolves the real sign ambiguity by finding the largest-magnitude discrete component and requiring it to be positive. For cross-code comparisons, a sign-invariant correlation is still preferable:
+\begin{equation}
+\mathcal C_{ab}=\frac{|\mathbf x_a^{\mathsf T}\mathbf x_b|}
+{\|\mathbf x_a\|_2\|\mathbf x_b\|_2}.
+\label{eq:mode_correlation}
+\end{equation}
+A value near one indicates the same one-dimensional eigenspace.
+
+\subsection{Degenerate or nearly degenerate eigenvalues}
+When two eigenvalues are equal, any orthonormal linear combination of their eigenvectors is valid. When they are very close, different solvers may return different rotations within the nearly degenerate subspace. Individual-vector correlation can then be misleading even if the subspaces agree. A robust comparison uses the singular values of the overlap matrix between the two mode subspaces.
+
+\subsection{Why the benchmark uses an identity mass matrix}
+The full ideal-MHD equation has a density-weighted inertia operator. In the reduced model, density dependence has been inserted into the Alfv\'en-speed coefficients and the envelope variable is defined so that the right side is simply $\omega^2\boldsymbol\xi$. This is a modeling choice, not a derivation from the exact MHD mass operator. A future geometry-derived model may instead require
+\begin{equation}
+\mathcal L\boldsymbol\xi=\omega^2\mathbf W(s)\boldsymbol\xi
+\end{equation}
+with a positive weight matrix $\mathbf W$, leading to a generalized matrix eigenproblem.

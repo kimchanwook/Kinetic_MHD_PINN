@@ -1,0 +1,149 @@
+% Module 4 section file. Included by ../module4_alfven_continuum_eigenmodes.tex.
+\section{Interfaces to equilibrium, kinetic drive, transport, and PINN modules}
+\label{sec:interfaces}
+
+\subsection{Module 1 to Module 4: equilibrium data contract}
+A realistic fluid-MHD eigenmode solver requires far more information than the analytic benchmark. Module 1 should provide, at minimum:
+\begin{itemize}[leftmargin=1.6em]
+\item magnetic-surface coordinates and the mapping $\mathbf x(s,\theta,\zeta)$;
+\item magnetic field $\mathbf B_0$ and magnitude $B_0$;
+\item rotational transform $\iota(s)$ and magnetic shear;
+\item density and pressure profiles;
+\item Jacobian $\sqrt g$, metric tensors, and field-parallel derivative coefficients;
+\item equilibrium current or covariant magnetic components when required;
+\item plasma boundary and any vacuum or conducting-wall geometry;
+\item Fourier conventions, field-period convention, and coordinate normalization.
+\end{itemize}
+The reduced benchmark uses only $R_0$, constant $B_0$, $\rho(s)$, and $\iota(s)$. It should therefore be regarded as an interface prototype, not a complete consumer of Module 1 output.
+
+\subsection{Module 4 outputs needed by Module 5}
+A kinetic energetic-particle calculation needs more than a scalar frequency. The desired Module 4 output for each mode includes
+\begin{equation}
+\mathcal M_j=
+\left\{
+\omega_{r,j},
+\boldsymbol\xi_j(\mathbf x),
+\delta\mathbf B_j(\mathbf x),
+\delta\mathbf E_j(\mathbf x),
+\{m,n\}\text{ spectrum},
+\text{normalization},
+\text{continuum relation}
+\right\}.
+\end{equation}
+The fields follow from the displacement in ideal MHD:
+\begin{align}
+\delta\mathbf B_j&=\nabla\times(\boldsymbol\xi_j\times\mathbf B_0),\\
+\delta\mathbf E_j&=-\mathbf v_{1,j}\times\mathbf B_0
+=i\omega_{r,j}\boldsymbol\xi_j\times\mathbf B_0
+\end{align}
+for the $e^{-i\omega t}$ convention. Module 5 then evaluates resonance conditions and power transfer along energetic-particle orbits.
+
+The current benchmark outputs only reduced radial envelopes, not full three-dimensional fields. It can validate an eigenvalue PINN but cannot yet support a quantitative orbit-wave coupling integral.
+
+\subsection{Kinetic resonance condition}
+A general orbit resonance has the form
+\begin{equation}
+\omega_r-n\Omega_\zeta-\ell\Omega_\theta-p\Omega_b\approx0,
+\label{eq:general_orbit_resonance}
+\end{equation}
+where $\Omega_\zeta$, $\Omega_\theta$, and $\Omega_b$ denote toroidal, poloidal, and bounce or transit frequencies according to the orbit representation, and $\ell,p$ are integers. The exact notation varies between passing and trapped particles and between coordinate systems.
+
+The kinetic module computes a contribution to the complex frequency,
+\begin{equation}
+\omega=\omega_r+i\gamma,
+\end{equation}
+with
+\begin{equation}
+\gamma_{\mathrm{net}}=
+\gamma_{\mathrm{EP}}
+-\gamma_{\mathrm{continuum}}
+-\gamma_{\mathrm{Landau}}
+-\gamma_{\mathrm{FLR}}
+-\gamma_{\mathrm{collisional}}
+-\cdots.
+\end{equation}
+Module 4 supplies the real baseline mode. Module 5 supplies drive and damping corrections or a more complete non-self-adjoint eigenproblem.
+
+\subsection{Module 4 to Module 6: transport closure}
+If a mode is unstable, it can perturb energetic-particle invariants and cause phase-space transport. A reduced transport model may use a mode-dependent diffusion coefficient
+\begin{equation}
+D_{\mathrm{AE}}=D_{\mathrm{AE}}
+\left(|A_j|^2,\omega_j,\gamma_j,\boldsymbol\xi_j,f_f,\text{resonances}\right).
+\end{equation}
+The linear Module 4 eigenproblem does not determine amplitude $A_j$. A saturation model, nonlinear simulation, or empirical closure is required before Module 6 can compute a physical transport rate.
+
+\subsection{Module 9 eigenvalue PINN target}
+The conventional benchmark supplies a well-defined target for an eigenvalue PINN. A neural network may represent
+\begin{equation}
+\widehat{\boldsymbol\xi}(s;\boldsymbol\theta)
+=\begin{bmatrix}
+\widehat\xi_m(s;\boldsymbol\theta)\\
+\widehat\xi_{m+1}(s;\boldsymbol\theta)
+\end{bmatrix},
+\end{equation}
+with trainable parameters $\boldsymbol\theta$ and a trainable or inferred $\widehat\omega^2$. The differential residual is
+\begin{equation}
+\mathbf r_{\mathrm{PDE}}(s)=
+-\frac{d}{ds}\left(D\frac{d\widehat{\boldsymbol\xi}}{ds}\right)
++\mathbf H_{\mathrm{loc}}\widehat{\boldsymbol\xi}
+-\widehat\omega^2\widehat{\boldsymbol\xi}.
+\end{equation}
+A schematic loss is
+\begin{equation}
+\mathcal L=
+\lambda_r\langle\|\mathbf r_{\mathrm{PDE}}\|^2\rangle
++\lambda_{\mathrm{BC}}\mathcal L_{\mathrm{BC}}
++\lambda_N\left(\widehat{\mathcal N}-1\right)^2
++\lambda_O\mathcal L_{\mathrm{orth}}
++\lambda_D\mathcal L_{\mathrm{data}}.
+\label{eq:eigen_pinn_loss}
+\end{equation}
+The normalization term prevents the trivial zero solution. For multiple modes, orthogonality or deflation is required. Boundary conditions can be imposed softly through loss terms or exactly through a trial-function transformation.
+
+\subsection{PINN failure modes specific to eigenproblems}
+An eigenvalue PINN may:
+\begin{itemize}[leftmargin=1.6em]
+\item converge to the zero function if normalization is weak;
+\item repeatedly learn the lowest mode instead of higher modes;
+\item satisfy pointwise residuals poorly near sharp layers;
+\item return a plausible eigenvalue with an incorrect eigenfunction;
+\item mix nearly degenerate modes differently from the reference;
+\item minimize a biased collocation loss while violating the variational structure;
+\item learn a discretized continuum state rather than the intended global mode.
+\end{itemize}
+Success criteria must include frequency error, residual, boundary error, normalization, eigenfunction correlation, harmonic weights, orthogonality, and performance under parameter variation.
+
+\subsection{Variational neural alternative}
+Instead of minimizing the strong-form residual, one may minimize the Rayleigh quotient
+\begin{equation}
+\widehat\omega^2(\boldsymbol\theta)
+=\frac{\mathcal E[\widehat{\boldsymbol\xi}]}
+{\mathcal N[\widehat{\boldsymbol\xi}]}
+\end{equation}
+subject to boundary conditions and orthogonality to previously found modes. This respects self-adjoint structure and can reduce the order of derivatives appearing in the loss. However, it can still collapse to the lowest eigenmode and requires accurate quadrature.
+
+\subsection{Language-neutral output contract}
+The benchmark writes:
+\begin{itemize}[leftmargin=1.6em]
+\item \texttt{profiles\_and\_continuum.csv}: $s$, density, transform, $v_A$, uncoupled branches, coupling, and local coupled branches;
+\item \texttt{eigenvalues.csv}: mode index, $\omega^2$, $\omega$, $f$, and residual;
+\item \texttt{eigenmodes.csv}: both harmonic envelopes for every requested mode;
+\item \texttt{convergence.csv}: grid-refinement frequencies and errors;
+\item \texttt{metadata.json}: crossing, local gap, boundary conditions, normalization, and solver identity;
+\item PDF and PNG visualizations.
+\end{itemize}
+These products permit code parity, regression testing, and machine-learning ingestion without coupling downstream tools to Python-specific or MATLAB-specific binary formats.
+
+\subsection{Fidelity progression}
+A defensible development sequence is
+\begin{equation}
+\begin{aligned}
+\text{two harmonics}
+&\rightarrow \text{many harmonics}
+\rightarrow \text{equilibrium-derived coefficients}\\
+&\rightarrow \text{3D stellarator coupling}
+\rightarrow \text{kinetic corrections}\\
+&\rightarrow \text{surrogates and digital twin}.
+\end{aligned}
+\end{equation}
+At each stage, the lower-fidelity benchmark should remain frozen. Higher fidelity should add new cases and tests rather than silently changing the meaning of an established reference.
