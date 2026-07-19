@@ -1,0 +1,1916 @@
+{
+  "status": "mixed_curriculum_textbook_drafts_and_scaffolds",
+  "count": 100,
+  "notes": [
+    {
+      "number": 1,
+      "slug": "units_dimensions_and_normalization",
+      "title": "Units, Dimensions, and Normalization",
+      "topics": [
+        "SI units",
+        "dimensional analysis",
+        "characteristic scales",
+        "nondimensionalization",
+        "normalized plasma variables",
+        "common unit mistakes"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_01_units_dimensions_and_normalization",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 2,
+      "slug": "vectors_fields_and_coordinate_systems",
+      "title": "Vectors, Fields, and Coordinate Systems",
+      "topics": [
+        "scalars and vectors",
+        "vector fields",
+        "Cartesian coordinates",
+        "cylindrical coordinates",
+        "toroidal coordinates",
+        "basis vectors",
+        "metric factors",
+        "coordinate transformations"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_02_vectors_fields_and_coordinate_systems",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 3,
+      "slug": "vector_calculus_for_plasma_physics",
+      "title": "Vector Calculus for Plasma Physics",
+      "topics": [
+        "gradient",
+        "divergence",
+        "curl",
+        "Laplacian",
+        "divergence theorem",
+        "Stokes theorem",
+        "physical interpretations",
+        "curvilinear-coordinate formulas"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_03_vector_calculus_for_plasma_physics",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 4,
+      "slug": "ordinary_differential_equations",
+      "title": "Ordinary Differential Equations",
+      "topics": [
+        "initial-value problems",
+        "linear systems",
+        "stability",
+        "harmonic oscillators",
+        "phase space",
+        "eigenvalues",
+        "explicit and implicit time stepping"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_04_ordinary_differential_equations",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 5,
+      "slug": "partial_differential_equations",
+      "title": "Partial Differential Equations",
+      "topics": [
+        "elliptic equations",
+        "parabolic equations",
+        "hyperbolic equations",
+        "characteristics",
+        "boundary conditions",
+        "initial conditions",
+        "conservation-law form"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_05_partial_differential_equations",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 6,
+      "slug": "linear_algebra_and_eigenvalue_problems",
+      "title": "Linear Algebra and Eigenvalue Problems",
+      "topics": [
+        "vectors and matrices",
+        "bases",
+        "orthogonality",
+        "symmetric operators",
+        "generalized eigenproblems",
+        "modal expansions",
+        "physical interpretation of eigenpairs"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_06_linear_algebra_and_eigenvalue_problems",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 7,
+      "slug": "fourier_analysis_and_normal_modes",
+      "title": "Fourier Analysis and Normal Modes",
+      "topics": [
+        "Fourier series",
+        "Fourier transforms",
+        "normal modes",
+        "poloidal and toroidal mode numbers",
+        "dispersion relations",
+        "spectral decomposition",
+        "coupled harmonics"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_07_fourier_analysis_and_normal_modes",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 8,
+      "slug": "complex_numbers_phasors_and_wave_notation",
+      "title": "Complex Numbers, Phasors, and Wave Notation",
+      "topics": [
+        "complex arithmetic",
+        "Euler's formula",
+        "phasors",
+        "wave notation",
+        "complex frequency",
+        "growth and damping rates",
+        "phase relations"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_08_complex_numbers_phasors_and_wave_notation",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 9,
+      "slug": "variational_principles_and_energy_methods",
+      "title": "Variational Principles and Energy Methods",
+      "topics": [
+        "functionals",
+        "stationary action",
+        "Euler-Lagrange equations",
+        "Rayleigh quotients",
+        "energy stability",
+        "weak formulations",
+        "eigenvalue bounds"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_09_variational_principles_and_energy_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 10,
+      "slug": "probability_statistics_and_monte_carlo",
+      "title": "Probability, Statistics, and Monte Carlo",
+      "topics": [
+        "probability distributions",
+        "expectation values",
+        "variance",
+        "sampling",
+        "uncertainty",
+        "particle ensembles",
+        "Monte Carlo convergence",
+        "error bars"
+      ],
+      "part": "I - Mathematical and computational foundations",
+      "modules": "All modules, especially Modules 4, 8, 9, and 11",
+      "filename": "basics_10_probability_statistics_and_monte_carlo",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 11,
+      "slug": "electric_and_magnetic_fields",
+      "title": "Electric and Magnetic Fields",
+      "topics": [
+        "Coulomb force",
+        "electric field",
+        "electric potential",
+        "magnetic field",
+        "magnetic flux",
+        "field lines",
+        "physical units"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_11_electric_and_magnetic_fields",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 12,
+      "slug": "maxwell_equations",
+      "title": "Maxwell Equations",
+      "topics": [
+        "integral forms",
+        "differential forms",
+        "Gauss laws",
+        "Faraday induction",
+        "Ampere-Maxwell law",
+        "displacement current",
+        "electromagnetic waves",
+        "quasistatic limits"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_12_maxwell_equations",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 13,
+      "slug": "lorentz_force_and_charged_particle_motion",
+      "title": "Lorentz Force and Charged-Particle Motion",
+      "topics": [
+        "Lorentz force",
+        "motion in uniform electric fields",
+        "motion in uniform magnetic fields",
+        "gyrofrequency",
+        "Larmor radius",
+        "helical trajectories",
+        "E-cross-B drift"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_13_lorentz_force_and_charged_particle_motion",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 14,
+      "slug": "electromagnetic_energy_and_poynting_theorem",
+      "title": "Electromagnetic Energy and Poynting Theorem",
+      "topics": [
+        "electric-field energy",
+        "magnetic-field energy",
+        "Poynting vector",
+        "work on charges",
+        "local energy conservation",
+        "integral energy balance"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_14_electromagnetic_energy_and_poynting_theorem",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 15,
+      "slug": "magnetic_pressure_tension_and_flux",
+      "title": "Magnetic Pressure, Tension, and Flux",
+      "topics": [
+        "magnetic pressure",
+        "magnetic tension",
+        "Maxwell stress",
+        "magnetic flux",
+        "field-line intuition",
+        "force balance"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_15_magnetic_pressure_tension_and_flux",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 16,
+      "slug": "gauge_fields_and_electromagnetic_potentials",
+      "title": "Gauge Fields and Electromagnetic Potentials",
+      "topics": [
+        "scalar potential",
+        "vector potential",
+        "gauge freedom",
+        "canonical momentum",
+        "magnetic flux",
+        "potentials in particle dynamics"
+      ],
+      "part": "II - Electromagnetism foundations",
+      "modules": "Modules 1, 3, 4, 5, and 8",
+      "filename": "basics_16_gauge_fields_and_electromagnetic_potentials",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 17,
+      "slug": "what_is_a_plasma",
+      "title": "What Is a Plasma?",
+      "topics": [
+        "ionization",
+        "quasineutrality",
+        "collective behavior",
+        "plasma parameter",
+        "weak and strong coupling",
+        "laboratory and astrophysical examples"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_17_what_is_a_plasma",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 18,
+      "slug": "debye_shielding_and_plasma_frequency",
+      "title": "Debye Shielding and Plasma Frequency",
+      "topics": [
+        "Boltzmann response",
+        "Debye length derivation",
+        "plasma oscillations",
+        "electron plasma frequency",
+        "shielding criteria",
+        "plasma-behavior criteria"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_18_debye_shielding_and_plasma_frequency",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 19,
+      "slug": "plasma_distributions_and_temperature",
+      "title": "Plasma Distributions and Temperature",
+      "topics": [
+        "distribution functions",
+        "Maxwellian distributions",
+        "thermal speed",
+        "kinetic temperature",
+        "pressure moments",
+        "anisotropy",
+        "nonthermal tails"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_19_plasma_distributions_and_temperature",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 20,
+      "slug": "collisions_in_plasmas",
+      "title": "Collisions in Plasmas",
+      "topics": [
+        "Coulomb scattering",
+        "impact parameters",
+        "Coulomb logarithm",
+        "collision frequency",
+        "mean free path",
+        "slowing down",
+        "pitch-angle scattering",
+        "collisionality"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_20_collisions_in_plasmas",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 21,
+      "slug": "single_fluid_and_multifluid_descriptions",
+      "title": "Single-Fluid and Multifluid Descriptions",
+      "topics": [
+        "electron fluid",
+        "ion fluid",
+        "center-of-mass variables",
+        "current density",
+        "charge density",
+        "closure assumptions",
+        "model-validity regimes"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_21_single_fluid_and_multifluid_descriptions",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 22,
+      "slug": "moments_of_the_kinetic_equation",
+      "title": "Moments of the Kinetic Equation",
+      "topics": [
+        "velocity moments",
+        "number density",
+        "flow velocity",
+        "pressure tensor",
+        "heat flux",
+        "continuity equation",
+        "momentum equation",
+        "energy equation",
+        "closure hierarchy"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_22_moments_of_the_kinetic_equation",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 23,
+      "slug": "plasma_beta_and_dimensionless_parameters",
+      "title": "Plasma Beta and Dimensionless Parameters",
+      "topics": [
+        "plasma beta",
+        "magnetic Reynolds number",
+        "Lundquist number",
+        "Alfvén Mach number",
+        "sonic Mach number",
+        "Knudsen number",
+        "gyroradius ratios",
+        "ordering arguments"
+      ],
+      "part": "III - Elementary plasma physics",
+      "modules": "Modules 1 through 8",
+      "filename": "basics_23_plasma_beta_and_dimensionless_parameters",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 24,
+      "slug": "derivation_of_ideal_magnetohydrodynamics",
+      "title": "Derivation of Ideal Magnetohydrodynamics",
+      "topics": [
+        "multifluid starting equations",
+        "quasineutrality",
+        "low-frequency ordering",
+        "one-fluid variables",
+        "ideal Ohm law",
+        "mass conservation",
+        "momentum equation",
+        "induction equation",
+        "energy closure"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_24_derivation_of_ideal_magnetohydrodynamics",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 25,
+      "slug": "conservation_laws_in_mhd",
+      "title": "Conservation Laws in MHD",
+      "topics": [
+        "mass conservation",
+        "momentum conservation",
+        "total energy conservation",
+        "magnetic flux",
+        "magnetic helicity",
+        "cross helicity",
+        "conservative forms"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_25_conservation_laws_in_mhd",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 26,
+      "slug": "ideal_ohms_law_and_flux_freezing",
+      "title": "Ideal Ohm's Law and Flux Freezing",
+      "topics": [
+        "electron momentum balance",
+        "ideal Ohm law",
+        "induction equation",
+        "Alfvén frozen-flux theorem",
+        "material surfaces",
+        "topology",
+        "limitations"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_26_ideal_ohms_law_and_flux_freezing",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 27,
+      "slug": "resistive_and_nonideal_mhd",
+      "title": "Resistive and Nonideal MHD",
+      "topics": [
+        "resistivity",
+        "magnetic diffusion",
+        "reconnection",
+        "Hall term",
+        "electron pressure",
+        "electron inertia",
+        "generalized Ohm law",
+        "regime ordering"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_27_resistive_and_nonideal_mhd",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 28,
+      "slug": "mhd_force_balance_and_equilibrium",
+      "title": "MHD Force Balance and Equilibrium",
+      "topics": [
+        "static equilibrium",
+        "J-cross-B force",
+        "pressure balance",
+        "force-free fields",
+        "magnetic surfaces",
+        "Grad-Shafranov concepts",
+        "three-dimensional equilibrium"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_28_mhd_force_balance_and_equilibrium",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 29,
+      "slug": "linearization_of_mhd_equations",
+      "title": "Linearization of MHD Equations",
+      "topics": [
+        "equilibrium-plus-perturbation decomposition",
+        "first-order expansions",
+        "displacement formulation",
+        "normal-mode assumptions",
+        "linear operators",
+        "boundary conditions"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_29_linearization_of_mhd_equations",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 30,
+      "slug": "mhd_energy_principle_and_stability",
+      "title": "MHD Energy Principle and Stability",
+      "topics": [
+        "plasma displacement",
+        "perturbed kinetic energy",
+        "perturbed potential energy",
+        "stable and unstable variations",
+        "ideal-MHD stability",
+        "eigenmode interpretation"
+      ],
+      "part": "IV - Magnetohydrodynamics",
+      "modules": "Modules 1, 4, 5, and 8",
+      "filename": "basics_30_mhd_energy_principle_and_stability",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 31,
+      "slug": "introduction_to_waves_in_plasmas",
+      "title": "Introduction to Waves in Plasmas",
+      "topics": [
+        "wave variables",
+        "restoring forces",
+        "polarization",
+        "phase velocity",
+        "group velocity",
+        "dispersion",
+        "damping",
+        "instability",
+        "normal-mode analysis"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_31_introduction_to_waves_in_plasmas",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 32,
+      "slug": "alfven_waves_from_first_principles",
+      "title": "Alfvén Waves from First Principles",
+      "topics": [
+        "linearized ideal MHD",
+        "magnetic-tension restoring force",
+        "shear polarization",
+        "Alfvén speed",
+        "dispersion relation",
+        "energy transport",
+        "limiting assumptions"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_32_alfven_waves_from_first_principles",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 33,
+      "slug": "fast_and_slow_magnetosonic_waves",
+      "title": "Fast and Slow Magnetosonic Waves",
+      "topics": [
+        "compressibility",
+        "sound speed",
+        "propagation angle",
+        "magnetosonic dispersion relation",
+        "fast branch",
+        "slow branch",
+        "limiting cases"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_33_fast_and_slow_magnetosonic_waves",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 34,
+      "slug": "parallel_wave_number_and_field_line_propagation",
+      "title": "Parallel Wave Number and Field-Line Propagation",
+      "topics": [
+        "field-aligned derivatives",
+        "curved magnetic fields",
+        "poloidal and toroidal harmonics",
+        "rotational transform",
+        "safety factor",
+        "parallel wavelength",
+        "resonant surfaces"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_34_parallel_wave_number_and_field_line_propagation",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 35,
+      "slug": "alfven_continuum",
+      "title": "Alfvén Continuum",
+      "topics": [
+        "radially varying Alfvén frequency",
+        "continuum branches",
+        "resonant surfaces",
+        "singular ideal response",
+        "continuum damping",
+        "numerical representation"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_35_alfven_continuum",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 36,
+      "slug": "coupled_harmonics_and_avoided_crossings",
+      "title": "Coupled Harmonics and Avoided Crossings",
+      "topics": [
+        "two-mode matrices",
+        "harmonic coupling",
+        "frequency splitting",
+        "avoided crossings",
+        "local spectral gaps",
+        "mode mixing",
+        "eigenvector exchange"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_36_coupled_harmonics_and_avoided_crossings",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 37,
+      "slug": "toroidal_alfven_eigenmodes",
+      "title": "Toroidal Alfvén Eigenmodes",
+      "topics": [
+        "toroidal geometry",
+        "neighboring poloidal harmonics",
+        "TAE gap",
+        "discrete gap modes",
+        "radial envelopes",
+        "energetic-particle relevance"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_37_toroidal_alfven_eigenmodes",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 38,
+      "slug": "stellarator_alfven_eigenmodes",
+      "title": "Stellarator Alfvén Eigenmodes",
+      "topics": [
+        "three-dimensional harmonic coupling",
+        "helical gaps",
+        "ellipticity-induced gaps",
+        "noncircular gaps",
+        "HAE",
+        "EAE",
+        "NAE",
+        "stellarator-specific spectra"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_38_stellarator_alfven_eigenmodes",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 39,
+      "slug": "wave_particle_resonance",
+      "title": "Wave-Particle Resonance",
+      "topics": [
+        "phase synchronism",
+        "transit resonance",
+        "bounce resonance",
+        "drift resonance",
+        "cyclotron harmonics",
+        "resonance condition",
+        "energy exchange"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_39_wave_particle_resonance",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 40,
+      "slug": "growth_damping_and_complex_frequency",
+      "title": "Growth, Damping, and Complex Frequency",
+      "topics": [
+        "complex frequency",
+        "exponential growth",
+        "exponential damping",
+        "energetic-particle drive",
+        "Landau damping",
+        "continuum damping",
+        "saturation"
+      ],
+      "part": "V - Plasma waves and Alfvén physics",
+      "modules": "Modules 4, 5, and 6",
+      "filename": "basics_40_growth_damping_and_complex_frequency",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 41,
+      "slug": "phase_space_and_distribution_functions",
+      "title": "Phase Space and Distribution Functions",
+      "topics": [
+        "six-dimensional phase space",
+        "distribution functions",
+        "probability interpretation",
+        "Liouville theorem",
+        "characteristics",
+        "velocity moments"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_41_phase_space_and_distribution_functions",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 42,
+      "slug": "vlasov_equation",
+      "title": "Vlasov Equation",
+      "topics": [
+        "collisionless kinetic equation",
+        "phase-space advection",
+        "characteristic equations",
+        "invariants",
+        "self-consistent fields",
+        "moments"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_42_vlasov_equation",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 43,
+      "slug": "boltzmann_and_fokker_planck_equations",
+      "title": "Boltzmann and Fokker-Planck Equations",
+      "topics": [
+        "collision integrals",
+        "binary collisions",
+        "drag",
+        "diffusion in velocity space",
+        "Fokker-Planck approximation",
+        "slowing down",
+        "pitch-angle scattering"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_43_boltzmann_and_fokker_planck_equations",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 44,
+      "slug": "guiding_center_theory",
+      "title": "Guiding-Center Theory",
+      "topics": [
+        "gyromotion separation",
+        "adiabatic invariants",
+        "magnetic moment",
+        "guiding-center coordinates",
+        "drift ordering",
+        "guiding-center equations"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_44_guiding_center_theory",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 45,
+      "slug": "particle_drifts_in_nonuniform_fields",
+      "title": "Particle Drifts in Nonuniform Fields",
+      "topics": [
+        "E-cross-B drift",
+        "grad-B drift",
+        "curvature drift",
+        "polarization drift",
+        "diamagnetic drift",
+        "charge and energy dependence"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_45_particle_drifts_in_nonuniform_fields",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 46,
+      "slug": "trapped_passing_and_banana_orbits",
+      "title": "Trapped, Passing, and Banana Orbits",
+      "topics": [
+        "magnetic mirrors",
+        "pitch angle",
+        "trapped-passing boundary",
+        "bounce motion",
+        "transit motion",
+        "banana orbits",
+        "orbit frequencies"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_46_trapped_passing_and_banana_orbits",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 47,
+      "slug": "canonical_momentum_and_orbit_invariants",
+      "title": "Canonical Momentum and Orbit Invariants",
+      "topics": [
+        "Lagrangian mechanics",
+        "canonical momentum",
+        "energy invariant",
+        "magnetic moment",
+        "canonical toroidal momentum",
+        "axisymmetry",
+        "three-dimensional symmetry breaking"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_47_canonical_momentum_and_orbit_invariants",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 48,
+      "slug": "energetic_particle_distributions",
+      "title": "Energetic-Particle Distributions",
+      "topics": [
+        "fusion-alpha birth distributions",
+        "slowing-down distributions",
+        "neutral-beam distributions",
+        "pitch anisotropy",
+        "radial gradients",
+        "normalization"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_48_energetic_particle_distributions",
+      "status": "textbook_draft_v1",
+      "version": "1.0"
+    },
+    {
+      "number": 49,
+      "slug": "kinetic_mhd_and_hybrid_models",
+      "title": "Kinetic MHD and Hybrid Models",
+      "topics": [
+        "ideal MHD",
+        "extended MHD",
+        "kinetic MHD",
+        "gyrokinetics",
+        "hybrid particle-fluid models",
+        "kinetic closures",
+        "domain of validity"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_49_kinetic_mhd_and_hybrid_models",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 50,
+      "slug": "delta_f_particle_methods",
+      "title": "Delta-f Particle Methods",
+      "topics": [
+        "full-f methods",
+        "perturbative delta-f representation",
+        "marker particles",
+        "weights",
+        "noise reduction",
+        "field coupling",
+        "conservation issues"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_50_delta_f_particle_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 51,
+      "slug": "quasilinear_transport",
+      "title": "Quasilinear Transport",
+      "topics": [
+        "resonant diffusion",
+        "random phases",
+        "phase averaging",
+        "diffusion tensors",
+        "profile flattening",
+        "saturation models",
+        "limitations"
+      ],
+      "part": "VI - Kinetic theory and energetic particles",
+      "modules": "Modules 2, 3, 5, and 6",
+      "filename": "basics_51_quasilinear_transport",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 52,
+      "slug": "nuclear_fusion_reactions",
+      "title": "Nuclear Fusion Reactions",
+      "topics": [
+        "nuclear binding energy",
+        "reaction cross sections",
+        "D-T fusion",
+        "D-D fusion",
+        "reaction products",
+        "Q values",
+        "center-of-mass energy"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_52_nuclear_fusion_reactions",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 53,
+      "slug": "fusion_reactivity_and_reaction_rates",
+      "title": "Fusion Reactivity and Reaction Rates",
+      "topics": [
+        "relative velocity",
+        "cross-section averaging",
+        "Maxwellian reactivity",
+        "volumetric reaction rates",
+        "temperature dependence",
+        "fusion-power density"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_53_fusion_reactivity_and_reaction_rates",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 54,
+      "slug": "alpha_particle_birth_and_slowing_down",
+      "title": "Alpha-Particle Birth and Slowing Down",
+      "topics": [
+        "3.5-MeV alpha birth",
+        "source profiles",
+        "collisional drag",
+        "electron heating",
+        "ion heating",
+        "critical velocity",
+        "confinement and loss channels"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_54_alpha_particle_birth_and_slowing_down",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 55,
+      "slug": "alpha_heating_and_burning_plasma_feedback",
+      "title": "Alpha Heating and Burning-Plasma Feedback",
+      "topics": [
+        "self-heating",
+        "ignition",
+        "temperature feedback",
+        "pressure evolution",
+        "energetic-particle gradients",
+        "Alfvén-mode feedback",
+        "loss-induced degradation"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_55_alpha_heating_and_burning_plasma_feedback",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 56,
+      "slug": "lawson_criterion_and_fusion_power_balance",
+      "title": "Lawson Criterion and Fusion Power Balance",
+      "topics": [
+        "energy confinement time",
+        "triple product",
+        "radiation losses",
+        "auxiliary heating",
+        "ignition",
+        "fusion gain",
+        "steady power balance"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_56_lawson_criterion_and_fusion_power_balance",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 57,
+      "slug": "neutral_beam_injection",
+      "title": "Neutral Beam Injection",
+      "topics": [
+        "beam production",
+        "neutral penetration",
+        "ionization",
+        "deposition",
+        "fast-ion birth",
+        "current drive",
+        "pitch distributions",
+        "beam-driven modes"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_57_neutral_beam_injection",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 58,
+      "slug": "fast_ion_losses_and_wall_heat_loads",
+      "title": "Fast-Ion Losses and Wall Heat Loads",
+      "topics": [
+        "prompt loss",
+        "orbit loss",
+        "stochastic loss",
+        "resonant loss",
+        "wall strike maps",
+        "power density",
+        "material implications"
+      ],
+      "part": "VII - Fusion and burning-plasma foundations",
+      "modules": "Modules 2, 3, 5, 6, and 7",
+      "filename": "basics_58_fast_ion_losses_and_wall_heat_loads",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 59,
+      "slug": "magnetic_confinement_concepts",
+      "title": "Magnetic-Confinement Concepts",
+      "topics": [
+        "charged-particle confinement",
+        "open and closed field lines",
+        "toroidal confinement",
+        "radial transport",
+        "magnetic surfaces",
+        "loss mechanisms"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_59_magnetic_confinement_concepts",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 60,
+      "slug": "tokamaks_and_stellarators",
+      "title": "Tokamaks and Stellarators",
+      "topics": [
+        "toroidal geometry",
+        "plasma current",
+        "external coils",
+        "steady-state operation",
+        "disruptions",
+        "advantages",
+        "limitations",
+        "comparative design logic"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_60_tokamaks_and_stellarators",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 61,
+      "slug": "toroidal_coordinates_and_magnetic_surfaces",
+      "title": "Toroidal Coordinates and Magnetic Surfaces",
+      "topics": [
+        "toroidal angles",
+        "poloidal angles",
+        "flux coordinates",
+        "magnetic surfaces",
+        "normalized flux",
+        "rotational transform",
+        "safety factor",
+        "field-line equations"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_61_toroidal_coordinates_and_magnetic_surfaces",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 62,
+      "slug": "rotational_transform_magnetic_shear_and_resonances",
+      "title": "Rotational Transform, Magnetic Shear, and Resonances",
+      "topics": [
+        "rotational transform",
+        "safety factor",
+        "rational surfaces",
+        "magnetic shear",
+        "mode localization",
+        "field-line resonance",
+        "profile effects"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_62_rotational_transform_magnetic_shear_and_resonances",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 63,
+      "slug": "stellarator_symmetry_and_fourier_geometry",
+      "title": "Stellarator Symmetry and Fourier Geometry",
+      "topics": [
+        "field periods",
+        "stellarator symmetry",
+        "Fourier surface representation",
+        "helical harmonics",
+        "mode-number conventions",
+        "geometric coefficients"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_63_stellarator_symmetry_and_fourier_geometry",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 64,
+      "slug": "quasisymmetry_and_neoclassical_confinement",
+      "title": "Quasisymmetry and Neoclassical Confinement",
+      "topics": [
+        "quasi-axisymmetry",
+        "quasi-helical symmetry",
+        "approximate invariants",
+        "trapped-particle transport",
+        "neoclassical losses",
+        "optimization objectives"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_64_quasisymmetry_and_neoclassical_confinement",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 65,
+      "slug": "magnetic_field_coils_and_biot_savart_law",
+      "title": "Magnetic-Field Coils and the Biot-Savart Law",
+      "topics": [
+        "current elements",
+        "Biot-Savart integration",
+        "coil curves",
+        "discretization",
+        "field sensitivities",
+        "forces",
+        "engineering constraints"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_65_magnetic_field_coils_and_biot_savart_law",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 66,
+      "slug": "mhd_equilibrium_codes_and_vmec_concepts",
+      "title": "MHD Equilibrium Codes and VMEC Concepts",
+      "topics": [
+        "nested flux surfaces",
+        "energy minimization",
+        "fixed-boundary equilibrium",
+        "free-boundary equilibrium",
+        "Fourier representation",
+        "VMEC inputs and outputs",
+        "limitations"
+      ],
+      "part": "VIII - Stellarator and magnetic-confinement foundations",
+      "modules": "Modules 1, 3, and 4",
+      "filename": "basics_66_mhd_equilibrium_codes_and_vmec_concepts",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 67,
+      "slug": "discretization_and_numerical_error",
+      "title": "Discretization and Numerical Error",
+      "topics": [
+        "continuous versus discrete models",
+        "truncation error",
+        "roundoff error",
+        "consistency",
+        "stability",
+        "convergence",
+        "conditioning",
+        "solution verification"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_67_discretization_and_numerical_error",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 68,
+      "slug": "finite_difference_methods",
+      "title": "Finite-Difference Methods",
+      "topics": [
+        "derivative stencils",
+        "Taylor-series derivation",
+        "boundary conditions",
+        "matrix assembly",
+        "order of accuracy",
+        "nonuniform grids"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_68_finite_difference_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 69,
+      "slug": "finite_volume_methods",
+      "title": "Finite-Volume Methods",
+      "topics": [
+        "integral conservation",
+        "control volumes",
+        "cell-centered variables",
+        "face fluxes",
+        "conservative discretization",
+        "boundary fluxes",
+        "Module 4 radial operator"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_69_finite_volume_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 70,
+      "slug": "finite_element_methods",
+      "title": "Finite-Element Methods",
+      "topics": [
+        "weak forms",
+        "test and trial functions",
+        "basis functions",
+        "element matrices",
+        "mass and stiffness matrices",
+        "assembly",
+        "essential and natural boundary conditions"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_70_finite_element_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 71,
+      "slug": "spectral_and_fourier_methods",
+      "title": "Spectral and Fourier Methods",
+      "topics": [
+        "global basis functions",
+        "Fourier harmonics",
+        "collocation",
+        "Galerkin methods",
+        "aliasing",
+        "spectral convergence",
+        "toroidal applications"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_71_spectral_and_fourier_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 72,
+      "slug": "time_integration_methods",
+      "title": "Time-Integration Methods",
+      "topics": [
+        "forward Euler",
+        "Runge-Kutta methods",
+        "multistep methods",
+        "implicit methods",
+        "stability regions",
+        "stiffness",
+        "adaptivity",
+        "operator splitting"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_72_time_integration_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 73,
+      "slug": "numerical_eigenvalue_solvers",
+      "title": "Numerical Eigenvalue Solvers",
+      "topics": [
+        "standard and generalized eigenproblems",
+        "dense solvers",
+        "Lanczos methods",
+        "Arnoldi methods",
+        "shift-invert",
+        "sparse matrices",
+        "residuals",
+        "normalization"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_73_numerical_eigenvalue_solvers",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 74,
+      "slug": "particle_pushers",
+      "title": "Particle Pushers",
+      "topics": [
+        "Euler and Runge-Kutta integration",
+        "Boris pusher",
+        "guiding-center integration",
+        "symplectic methods",
+        "invariant preservation",
+        "time-step selection"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_74_particle_pushers",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 75,
+      "slug": "particle_in_cell_methods",
+      "title": "Particle-in-Cell Methods",
+      "topics": [
+        "marker particles",
+        "charge and current deposition",
+        "field solves",
+        "interpolation",
+        "shape functions",
+        "numerical noise",
+        "conservation"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_75_particle_in_cell_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 76,
+      "slug": "interpolation_and_conservative_remapping",
+      "title": "Interpolation and Conservative Remapping",
+      "topics": [
+        "grid-to-grid transfer",
+        "interpolation order",
+        "positivity",
+        "conservative remapping",
+        "particle conservation",
+        "energy conservation",
+        "multiphysics interfaces"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_76_interpolation_and_conservative_remapping",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 77,
+      "slug": "verification_validation_and_benchmarking",
+      "title": "Verification, Validation, and Benchmarking",
+      "topics": [
+        "code verification",
+        "solution verification",
+        "validation",
+        "analytic limits",
+        "manufactured solutions",
+        "regression tests",
+        "grid convergence",
+        "benchmark hierarchy"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_77_verification_validation_and_benchmarking",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 78,
+      "slug": "uncertainty_quantification",
+      "title": "Uncertainty Quantification",
+      "topics": [
+        "parameter uncertainty",
+        "initial-condition uncertainty",
+        "model-form uncertainty",
+        "ensembles",
+        "sensitivity analysis",
+        "Bayesian inference",
+        "credible intervals"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_78_uncertainty_quantification",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 79,
+      "slug": "high_performance_computing_for_simulation",
+      "title": "High-Performance Computing for Simulation",
+      "topics": [
+        "vectorization",
+        "threading",
+        "multiprocessing",
+        "GPU acceleration",
+        "domain decomposition",
+        "particle parallelism",
+        "memory hierarchy",
+        "profiling"
+      ],
+      "part": "IX - Computational physics methods",
+      "modules": "All numerical modules, especially Modules 3, 4, 6, 8, and 9",
+      "filename": "basics_79_high_performance_computing_for_simulation",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 80,
+      "slug": "multiphysics_modeling",
+      "title": "Multiphysics Modeling",
+      "topics": [
+        "physics decomposition",
+        "state variables",
+        "coupling operators",
+        "interfaces",
+        "data contracts",
+        "causal dependencies",
+        "model hierarchy"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_80_multiphysics_modeling",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 81,
+      "slug": "explicit_implicit_and_partitioned_coupling",
+      "title": "Explicit, Implicit, and Partitioned Coupling",
+      "topics": [
+        "monolithic solves",
+        "partitioned solves",
+        "explicit exchange",
+        "implicit exchange",
+        "Jacobi ordering",
+        "Gauss-Seidel ordering",
+        "loose and strong coupling"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_81_explicit_implicit_and_partitioned_coupling",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 82,
+      "slug": "fixed_point_and_newton_coupling_methods",
+      "title": "Fixed-Point and Newton Coupling Methods",
+      "topics": [
+        "Picard iteration",
+        "relaxation",
+        "Aitken acceleration",
+        "Anderson acceleration",
+        "Newton methods",
+        "Jacobians",
+        "convergence criteria"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_82_fixed_point_and_newton_coupling_methods",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 83,
+      "slug": "multirate_and_multiscale_time_integration",
+      "title": "Multirate and Multiscale Time Integration",
+      "topics": [
+        "wave timescales",
+        "gyro and orbit timescales",
+        "slowing-down time",
+        "transport time",
+        "profile-evolution time",
+        "subcycling",
+        "nested integration"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_83_multirate_and_multiscale_time_integration",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 84,
+      "slug": "conservation_across_module_interfaces",
+      "title": "Conservation Across Module Interfaces",
+      "topics": [
+        "particle conservation",
+        "energy conservation",
+        "momentum conservation",
+        "magnetic-flux consistency",
+        "transfer errors",
+        "conservative coupling tests"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_84_conservation_across_module_interfaces",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 85,
+      "slug": "dependency_graphs_and_coupling_sequence",
+      "title": "Dependency Graphs and Coupling Sequence",
+      "topics": [
+        "directed graphs",
+        "physical causality",
+        "feedback loops",
+        "strongly connected components",
+        "update order",
+        "solver scheduling",
+        "admissibility constraints"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_85_dependency_graphs_and_coupling_sequence",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 86,
+      "slug": "digital_twins_for_physical_systems",
+      "title": "Digital Twins for Physical Systems",
+      "topics": [
+        "forward simulation",
+        "reduced models",
+        "calibration",
+        "data assimilation",
+        "real-time prediction",
+        "uncertainty",
+        "scope and limitations of digital-twin claims"
+      ],
+      "part": "X - Multiphysics coupling",
+      "modules": "Modules 8 and 11",
+      "filename": "basics_86_digital_twins_for_physical_systems",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 87,
+      "slug": "neural_networks_from_first_principles",
+      "title": "Neural Networks from First Principles",
+      "topics": [
+        "neurons",
+        "affine maps",
+        "activation functions",
+        "multilayer networks",
+        "universal approximation",
+        "loss functions",
+        "optimization",
+        "train-validation-test splits"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_87_neural_networks_from_first_principles",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 88,
+      "slug": "automatic_differentiation",
+      "title": "Automatic Differentiation",
+      "topics": [
+        "computational graphs",
+        "symbolic versus numerical differentiation",
+        "forward mode",
+        "reverse mode",
+        "backpropagation",
+        "higher derivatives",
+        "scientific-computing implications"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_88_automatic_differentiation",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 89,
+      "slug": "physics_informed_neural_networks",
+      "title": "Physics-Informed Neural Networks",
+      "topics": [
+        "neural solution representations",
+        "PDE residual losses",
+        "collocation points",
+        "boundary losses",
+        "initial-condition losses",
+        "normalization",
+        "benchmark workflow"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_89_physics_informed_neural_networks",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 90,
+      "slug": "pinn_loss_design_and_training_pathologies",
+      "title": "PINN Loss Design and Training Pathologies",
+      "topics": [
+        "loss imbalance",
+        "gradient imbalance",
+        "spectral bias",
+        "stiffness",
+        "trivial solutions",
+        "adaptive weights",
+        "curriculum training",
+        "causal training"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_90_pinn_loss_design_and_training_pathologies",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 91,
+      "slug": "eigenvalue_pinns",
+      "title": "Eigenvalue PINNs",
+      "topics": [
+        "trainable eigenvalues",
+        "differential residuals",
+        "boundary constraints",
+        "normalization",
+        "orthogonality",
+        "mode collapse",
+        "comparison with matrix eigensolvers"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_91_eigenvalue_pinns",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 92,
+      "slug": "operator_learning",
+      "title": "Operator Learning",
+      "topics": [
+        "solution maps",
+        "parametric PDEs",
+        "DeepONet",
+        "Fourier neural operators",
+        "physics-informed neural operators",
+        "generalization across functions"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_92_operator_learning",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 93,
+      "slug": "hamiltonian_and_symplectic_neural_networks",
+      "title": "Hamiltonian and Symplectic Neural Networks",
+      "topics": [
+        "Hamiltonian mechanics",
+        "symplectic structure",
+        "conserved quantities",
+        "structure-preserving learning",
+        "long-time trajectory prediction"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_93_hamiltonian_and_symplectic_neural_networks",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 94,
+      "slug": "surrogate_models_for_plasma_simulation",
+      "title": "Surrogate Models for Plasma Simulation",
+      "topics": [
+        "parameter-to-solution maps",
+        "reduced-order models",
+        "training databases",
+        "active learning",
+        "extrapolation",
+        "uncertainty",
+        "deployment"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_94_surrogate_models_for_plasma_simulation",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 95,
+      "slug": "inverse_problems_and_data_assimilation",
+      "title": "Inverse Problems and Data Assimilation",
+      "topics": [
+        "parameter inference",
+        "state reconstruction",
+        "ill-posedness",
+        "regularization",
+        "Bayesian inversion",
+        "filtering",
+        "smoothing",
+        "physics constraints"
+      ],
+      "part": "XI - Physics-informed machine learning",
+      "modules": "Modules 9 and 10",
+      "filename": "basics_95_inverse_problems_and_data_assimilation",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 96,
+      "slug": "graph_theory_for_physical_systems",
+      "title": "Graph Theory for Physical Systems",
+      "topics": [
+        "nodes",
+        "edges",
+        "directed graphs",
+        "weighted graphs",
+        "adjacency matrices",
+        "paths",
+        "cycles",
+        "connectivity",
+        "dependency representations"
+      ],
+      "part": "XII - Graph neural networks and scientific graphs",
+      "modules": "Module 11, with connections to Module 8",
+      "filename": "basics_96_graph_theory_for_physical_systems",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 97,
+      "slug": "graph_neural_networks",
+      "title": "Graph Neural Networks",
+      "topics": [
+        "message passing",
+        "node features",
+        "edge features",
+        "aggregation",
+        "update functions",
+        "graph-level outputs",
+        "training and generalization"
+      ],
+      "part": "XII - Graph neural networks and scientific graphs",
+      "modules": "Module 11, with connections to Module 8",
+      "filename": "basics_97_graph_neural_networks",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 98,
+      "slug": "physical_dependency_graph_learning",
+      "title": "Physical Dependency-Graph Learning",
+      "topics": [
+        "physical variables as nodes",
+        "causal directions",
+        "predictive dependence",
+        "sparsity",
+        "intervention logic",
+        "distinction from mesh graphs"
+      ],
+      "part": "XII - Graph neural networks and scientific graphs",
+      "modules": "Module 11, with connections to Module 8",
+      "filename": "basics_98_physical_dependency_graph_learning",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 99,
+      "slug": "gnns_for_multiphysics_coupling",
+      "title": "GNNs for Multiphysics Coupling",
+      "topics": [
+        "coupling-strength prediction",
+        "update-order prediction",
+        "convergence surrogates",
+        "reduced interaction models",
+        "graph-conditioned solvers"
+      ],
+      "part": "XII - Graph neural networks and scientific graphs",
+      "modules": "Module 11, with connections to Module 8",
+      "filename": "basics_99_gnns_for_multiphysics_coupling",
+      "status": "curriculum_scaffold"
+    },
+    {
+      "number": 100,
+      "slug": "interpretable_and_physics_constrained_graph_learning",
+      "title": "Interpretable and Physics-Constrained Graph Learning",
+      "topics": [
+        "conservation constraints",
+        "dimensional consistency",
+        "directional restrictions",
+        "sparsity",
+        "monotonicity",
+        "interpretability",
+        "scientific validation"
+      ],
+      "part": "XII - Graph neural networks and scientific graphs",
+      "modules": "Module 11, with connections to Module 8",
+      "filename": "basics_100_interpretable_and_physics_constrained_graph_learning",
+      "status": "curriculum_scaffold"
+    }
+  ],
+  "textbook_draft_count": 30,
+  "textbook_draft_numbers": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    11,
+    12,
+    13,
+    17,
+    18,
+    19,
+    21,
+    22,
+    24,
+    25,
+    26,
+    29,
+    31,
+    32,
+    34,
+    35,
+    36,
+    37,
+    39,
+    40,
+    41,
+    42,
+    44,
+    48
+  ],
+  "scaffold_count": 70,
+  "completed_batches": [
+    {
+      "batch": 1,
+      "numbers": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        11,
+        12,
+        13,
+        17
+      ]
+    },
+    {
+      "batch": 2,
+      "numbers": [
+        18,
+        19,
+        21,
+        22,
+        24,
+        25,
+        26,
+        29,
+        31,
+        32
+      ]
+    },
+    {
+      "batch": 3,
+      "numbers": [
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        42,
+        44,
+        48
+      ]
+    }
+  ]
+}
