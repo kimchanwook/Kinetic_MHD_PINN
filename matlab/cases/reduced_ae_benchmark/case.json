@@ -1,0 +1,47 @@
+{
+  "case_name": "reduced_ae_benchmark_v1",
+  "model": {
+    "description": "Self-adjoint two-harmonic shear-Alfven avoided-crossing envelope benchmark",
+    "radial_coordinate": "s = normalized toroidal-flux radius in [0, 1]",
+    "fidelity": "reduced verification model; not a predictive stellarator eigenmode calculation"
+  },
+  "geometry": {
+    "major_radius_m": 3.0,
+    "minor_radius_m": 1.0,
+    "magnetic_field_t": 2.5
+  },
+  "profiles": {
+    "mass_density_axis_kg_m3": 3.3e-08,
+    "mass_density_edge_fraction": 0.2,
+    "mass_density_exponent": 2.0,
+    "iota_axis": 0.35,
+    "iota_edge": 0.65,
+    "iota_exponent": 1.0
+  },
+  "mode": {
+    "toroidal_number": 2,
+    "poloidal_harmonics": [
+      3,
+      4
+    ],
+    "coupling_fraction": 0.45,
+    "coupling_width": 0.22,
+    "radial_stiffness_fraction": 0.0015
+  },
+  "numerics": {
+    "radial_points": 256,
+    "number_of_eigenpairs": 8,
+    "convergence_grids": [
+      64,
+      128,
+      256,
+      512
+    ]
+  },
+  "verification": {
+    "python_matlab_eigenfrequency_relative_tolerance": 1e-05,
+    "regression_eigenfrequency_relative_tolerance": 1e-10,
+    "matrix_symmetry_tolerance": 1e-12,
+    "eigen_residual_tolerance": 1e-09
+  }
+}
