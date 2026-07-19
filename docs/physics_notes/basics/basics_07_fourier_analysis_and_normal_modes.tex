@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 7 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 7: Fourier Analysis and Normal Modes}{I - Mathematical and computational foundations}{Spatial harmonics, wave numbers, dispersion relations, toroidal mode labels, and coupling}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Fourier analysis expresses fields as sums of simple oscillations. In toroidal plasmas, poloidal and toroidal harmonics reveal how geometry couples wave components. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Derive Fourier-series coefficients from orthogonality.
+\item Interpret Fourier transforms and wave number.
+\item Use complex exponentials to represent real fields.
+\item Derive normal-mode dispersion relations.
+\item Interpret poloidal and toroidal mode numbers.
+\item Recognize aliasing, spectral resolution, and harmonic coupling.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 2, 5, and 6.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Fourier series and orthogonality}
+
+For a $2\pi$-periodic field,
+\begin{equation}
+f(\theta)=\sum_{m=-\infty}^{\infty}\hat f_me^{im\theta}.
+\end{equation}
+Orthogonality gives
+\begin{equation}
+\hat f_m=\frac{1}{2\pi}\int_0^{2\pi}f(\theta)e^{-im\theta}\,d\theta.
+\end{equation}
+A real field obeys $\hat f_{-m}=\hat f_m^*$. Parseval relation connects physical-space and spectral energy:
+\begin{equation}
+\frac{1}{2\pi}\int_0^{2\pi}|f|^2d\theta=\sum_m|\hat f_m|^2.
+\end{equation}
+
+
+\section{Fourier transforms and differentiation}
+
+For a nonperiodic coordinate,
+\begin{align}
+\hat f(k)&=\int_{-\infty}^{\infty}f(x)e^{-ikx}\,dx,\\
+f(x)&=\frac{1}{2\pi}\int_{-\infty}^{\infty}\hat f(k)e^{ikx}\,dk.
+\end{align}
+Derivatives become multiplication:
+\begin{equation}
+\widehat{f_x}=ik\hat f,\qquad
+\widehat{f_{xx}}=-k^2\hat f.
+\end{equation}
+This converts constant-coefficient linear PDEs into algebraic equations for each wave number.
+
+
+\section{Normal modes and dispersion}
+
+Assume
+\begin{equation}
+u(\mathbf x,t)=\tilde u\,e^{i(\mathbf k\cdot\mathbf x-\omega t)}.
+\end{equation}
+Then $\partial_t\to-i\omega$ and $\nabla\to i\mathbf k$. A nonzero amplitude requires a dispersion relation
+\begin{equation}
+D(\omega,\mathbf k)=0.
+\end{equation}
+For the wave equation, $\omega^2=c^2k^2$. Phase velocity is $\omega/k$ and group velocity is $d\omega/dk$.
+
+
+\section{Poloidal and toroidal harmonics}
+
+On a torus,
+\begin{equation}
+f(s,\theta,\phi,t)=\sum_{m,n}\hat f_{mn}(s)
+e^{i(m\theta-n\phi-\omega t)}.
+\end{equation}
+$m$ is the poloidal mode number and $n$ toroidal under this convention. Other sign conventions exist. The radial amplitude is not generally sinusoidal because equilibrium quantities and boundaries vary with $s$.
+
+
+\section{Geometric harmonic coupling}
+
+In a uniform medium, Fourier harmonics can evolve independently. A coefficient
+\begin{equation}
+C(\theta)=C_0+\epsilon\cos\theta
+\end{equation}
+multiplied by $e^{im\theta}$ produces $m-1$, $m$, and $m+1$ components. Toroidicity therefore couples neighboring poloidal harmonics. Three-dimensional stellarator geometry contains many equilibrium harmonics and generates broader coupling networks.
+
+
+\section{Sampling, aliasing, and spectral interpretation}
+
+With $N$ samples, only modes below the Nyquist limit are represented uniquely. Higher modes appear as aliases. Nonlinear products generate harmonics above the original bandwidth, motivating dealiasing in spectral solvers.
+
+A physical eigenmode can contain many Fourier harmonics. The labels $(m,n)$ describe components, not necessarily distinct independent modes.
+
+\begin{physicsbox}
+Always record the sign convention and array ordering for Fourier coefficients. A silent convention mismatch can reverse $k_\parallel$ and corrupt resonance analysis.
+\end{physicsbox}
+
+
+\section{Computational laboratory}
+
+Sample a signal containing $m=3$ and $m=7$, compute its discrete Fourier transform, and recover amplitudes and phases. Reduce the grid to demonstrate aliasing. Multiply a pure harmonic by $1+\epsilon\cos\theta$ and verify generation of neighboring harmonics. Compare Python and MATLAB FFT ordering.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Fourier analysis decomposes periodic fields into orthogonal harmonics.
+\item Normal-mode substitution reduces linear PDEs to dispersion or eigenvalue problems.
+\item Toroidal fields use poloidal and toroidal mode numbers.
+\item Geometry couples harmonics through nonuniform coefficients.
+\item Sampling and conventions determine whether spectra are interpreted correctly.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$m,n$ & mode numbers & Poloidal and toroidal indices. \\
+$\hat f_m$ & Fourier coefficient & Complex amplitude of harmonic $m$. \\
+$\mathbf k$ & wave vector & Spatial phase gradient. \\
+$\omega$ & angular frequency & Temporal phase rate. \\
+$v_p,v_g$ & velocities & Phase and group velocity. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the Fourier coefficient formula from orthogonality.
+\item Prove the derivative property of the Fourier transform.
+\item Derive phase and group velocity for $\omega^2=\omega_0^2+c^2k^2$.
+\item Interpret constant-phase surfaces for an $(m,n)$ toroidal harmonic.
+\item Explain the conjugate symmetry of a real field.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref5} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref6} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref7} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref8} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 40 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 40: Growth, Damping, and Complex Frequency}{V - Plasma waves and Alfv\'en physics}{How mode amplitudes evolve, how power balance determines stability, and how linear growth connects to nonlinear saturation}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Real frequency determines oscillation; the imaginary part of frequency determines exponential growth or damping. This chapter establishes the sign convention carefully, derives the relation between power transfer and growth rate, surveys the dominant damping channels of Alfv\'en eigenmodes, and develops the simplest nonlinear amplitude equation used to represent saturation.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Interpret a complex eigenfrequency under a stated Fourier convention.
+\item Distinguish amplitude growth from energy growth.
+\item Derive $\gamma=P/(2W)$ for a weakly growing mode.
+\item Separate energetic-particle drive from continuum, Landau, collisional, and radiative damping.
+\item Extract frequency and growth rate from simulated time traces.
+\item Explain threshold, saturation, and marginal stability.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+Recommended prerequisites are Basics 7, 31, 35, 37, and 39. Always state the time convention before assigning the sign of the imaginary frequency.
+
+\section{Complex frequency and sign convention}
+Use the normal-mode convention
+\begin{equation}
+\widetilde q(\mathbf x,t)=\widehat q(\mathbf x)e^{-i\omega t},
+\qquad \omega=\omega_r+i\gamma.
+\end{equation}
+Then
+\begin{equation}
+e^{-i\omega t}=e^{-i\omega_r t}e^{\gamma t}.
+\end{equation}
+Therefore $\gamma>0$ means growth and $\gamma<0$ means damping. With the alternative convention $e^{+i\omega t}$, the sign interpretation reverses. A technical report that quotes $\Im\omega$ without its convention is incomplete.
+
+If the amplitude is $A(t)=A_0e^{\gamma t}$, any quadratic wave energy behaves as
+\begin{equation}
+W(t)=W_0e^{2\gamma t}.
+\end{equation}
+Thus the energy growth rate is twice the amplitude growth rate.
+
+\section{Power balance and growth rate}
+Let $W$ be the positive wave energy of a weakly perturbed stable branch, and let $P$ be net power transferred \emph{to} the wave. Energy balance gives
+\begin{equation}
+\frac{dW}{dt}=P.
+\end{equation}
+For $W\propto |A|^2$ and $A\propto e^{\gamma t}$,
+\begin{equation}
+\frac{dW}{dt}=2\gamma W.
+\end{equation}
+Therefore
+\begin{equation}
+\boxed{\gamma=\frac{P}{2W}}.
+\end{equation}
+If several weak mechanisms contribute approximately independently,
+\begin{equation}
+\gamma_{\mathrm{net}}=\gamma_{\mathrm{EP}}-
+\gamma_{\mathrm{continuum}}-
+\gamma_{\mathrm{Landau}}-
+\gamma_{\mathrm{coll}}-
+\gamma_{\mathrm{rad}}-\cdots.
+\end{equation}
+This additive decomposition is a first-order perturbative approximation, not an exact identity when mechanisms strongly modify the eigenfunction.
+
+\section{Energetic-particle drive}
+Energetic particles drive a mode when resonant particles lose net energy to the wave. Schematically,
+\begin{equation}
+\gamma_{\mathrm{EP}}\propto
+-\int d\mathbf J\,
+\delta(\omega-\boldsymbol\ell\cdot\boldsymbol\Omega)
+\left(\boldsymbol\ell\cdot\frac{\partial f_0}{\partial\mathbf J}\right)
+|H_{\boldsymbol\ell}|^2.
+\end{equation}
+The coupling coefficient, resonance geometry, and distribution gradients all matter. A larger fast-ion pressure does not automatically imply a larger drive if the resonant gradient is weak or the orbit-mode overlap is poor.
+
+\section{Important damping mechanisms}
+\subsection{Landau damping}
+Particles near a parallel phase velocity exchange energy with the wave. A thermal distribution that decreases with velocity usually absorbs wave energy. Fluid closures can approximate this nonlocal kinetic effect, but ideal MHD alone cannot produce true Landau damping.
+
+\subsection{Continuum damping}
+A discrete global mode can couple to a radial location where its frequency matches the local Alfv\'en continuum. Energy is transferred into increasingly fine radial structure and propagating continuum waves. Numerically, continuum damping is sensitive to geometry, resolution, and the treatment of singular layers.
+
+\subsection{Collisional and resistive damping}
+Collisions dissipate currents and relax nonthermal perturbations. In a hot fusion plasma these mechanisms may be weak for the bulk Alfv\'en oscillation but can matter in boundary regions or in reduced models.
+
+\subsection{Radiative and finite-Larmor-radius damping}
+Coupling to kinetic Alfv\'en waves or short perpendicular scales can radiate energy away from the core mode. Finite gyro-radius effects alter both polarization and resonant coupling.
+
+\section{Marginal stability and thresholds}
+Marginal stability occurs at
+\begin{equation}
+\gamma_{\mathrm{net}}=0.
+\end{equation}
+If a control parameter $\beta_f$ measures energetic-particle pressure, a local approximation may be
+\begin{equation}
+\gamma_{\mathrm{net}}\simeq a(\beta_f-\beta_{f,\mathrm{crit}}).
+\end{equation}
+The threshold is not universal: it changes with profiles, mode structure, damping, and resonance overlap. Stability maps should therefore retain the full parameter context.
+
+\section{Perturbation of an eigenvalue}
+For a generalized eigenproblem
+\begin{equation}
+\mathsf A\mathbf x=\lambda\mathsf B\mathbf x,
+\end{equation}
+a small non-Hermitian kinetic correction $\delta\mathsf A$ produces, to first order,
+\begin{equation}
+\delta\lambda\simeq
+\frac{\mathbf x^\dagger\delta\mathsf A\mathbf x}
+{\mathbf x^\dagger\mathsf B\mathbf x}.
+\end{equation}
+If $\lambda=\omega^2$, then $\delta\omega\simeq\delta\lambda/(2\omega_0)$. The imaginary part yields the growth or damping rate. This relation motivates hybrid workflows in which Module 4 supplies a fluid eigenfunction and Module 5 evaluates a kinetic correction.
+
+\section{Nonlinear saturation}
+The simplest complex amplitude model is
+\begin{equation}
+\frac{dA}{dt}=(\gamma_L+i\Delta\omega)A-\alpha|A|^2A,
+\qquad \Re\alpha>0.
+\end{equation}
+For the magnitude,
+\begin{equation}
+\frac{d|A|}{dt}=\gamma_L|A|-\Re(\alpha)|A|^3.
+\end{equation}
+The nonzero steady amplitude is
+\begin{equation}
+\boxed{|A|_{\mathrm{sat}}=\sqrt{\frac{\gamma_L}{\Re\alpha}}}.
+\end{equation}
+This equation represents saturation but does not identify its mechanism. In energetic-particle systems, saturation may arise from resonant gradient flattening, frequency chirping, mode coupling, orbit loss, or enhanced transport.
+
+\section{Extracting $\omega_r$ and $\gamma$ from data}
+For a clean signal $q(t)=A_0e^{\gamma t}\cos(\omega_rt+\phi)$:
+\begin{enumerate}[leftmargin=1.6em]
+\item Estimate $\omega_r$ from zero crossings, a Fourier peak, or the unwrapped phase of an analytic signal.
+\item Estimate the envelope $A(t)$ and fit $\ln A(t)=\ln A_0+\gamma t$.
+\item Fit only the linear interval before nonlinear saturation or numerical noise dominates.
+\item Repeat at multiple resolutions and time steps.
+\end{enumerate}
+A growth rate smaller than the numerical damping or fitting uncertainty is not resolved.
+
+\section{Connection to the Kinetic MHD-PINN project}
+Module 5 should report separate drive and damping estimates whenever possible, not only a stable/unstable label. Module 6 uses the unstable amplitude to construct fast-ion transport. PINN or surrogate training should include marginal cases because small absolute errors near $\gamma=0$ can reverse the predicted stability class.
+
+\section{Computational laboratory}
+\begin{enumerate}[leftmargin=1.6em]
+\item Generate a synthetic growing sinusoid with known $\omega_r$ and $\gamma$.
+\item Recover both using an envelope fit and Fourier or phase analysis.
+\item Add noise and determine the smallest resolvable $|\gamma|$.
+\item Integrate the cubic amplitude equation and verify the predicted saturation amplitude.
+\item Compare Python and MATLAB results using the same time grid and parameters.
+\end{enumerate}
+
+\section{Summary}
+The real frequency controls oscillation, while the imaginary frequency controls amplitude. Growth follows from positive net power transfer to the mode and damping from negative transfer. The relation $\gamma=P/(2W)$ provides the central bookkeeping identity. Linear growth must eventually be modified by nonlinear redistribution, trapping, or mode coupling.
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.6em]
+\item Re-derive the sign of $\gamma$ for the convention $e^{+i\omega t}$.
+\item If wave energy increases by 20 percent in one millisecond, estimate the amplitude growth rate.
+\item Explain why damping contributions need not remain additive when the eigenfunction changes strongly.
+\item Solve the cubic amplitude equation for $|A(t)|$ with $A(0)>0$.
+\item Design a numerical criterion for declaring a computed mode marginally stable.
+\end{enumerate}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\omega_r$ & Real frequency & Oscillation frequency of a normal mode.\\
+$\gamma$ & Growth or damping rate & Imaginary frequency under the $e^{-i\omega t}$ convention.\\
+$W$ & Wave energy & Quadratic mode energy used in power balance.\\
+$P$ & Net wave power & Rate of energy transfer into the mode.\\
+$A$ & Complex amplitude & Slowly varying mode amplitude.\\
+\end{symtable}
+
+\section{References}
+\begin{enumerate}[leftmargin=1.6em]
+\item T. H. Stix, \emph{Waves in Plasmas}, 1992.
+\item J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press, 2014.
+\item L. Chen and F. Zonca, \emph{Reviews of Modern Physics} 88, 015008 (2016).
+\item B. N. Breizman and S. E. Sharapov, energetic-particle mode review literature.
+\end{enumerate}
+
+\end{document}

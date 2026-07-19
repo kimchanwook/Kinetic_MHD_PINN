@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 3 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 3: Vector Calculus for Plasma Physics}{I - Mathematical and computational foundations}{Gradient, divergence, curl, Laplacian, integral theorems, and physical interpretation}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Vector calculus turns spatial variation into physical statements: gradients drive forces, divergence measures sources and compression, and curl measures circulation and current. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Compute and interpret gradient, divergence, curl, and Laplacian operators.
+\item Derive local conservation laws from integral balances.
+\item Use the divergence theorem and Stokes theorem.
+\item Apply vector identities used in MHD force balance and induction.
+\item Recognize geometric factors in cylindrical coordinates.
+\item Translate continuous operators into conservative numerical forms.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 2 and multivariable differentiation and integration.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Gradient}
+
+For a scalar field $f$,
+\begin{equation}
+df=\nabla f\cdot d\mathbf r.
+\end{equation}
+The gradient points toward steepest increase. Pressure force density is $-\nabla p$, so it points toward decreasing pressure. A vector tangent to a level surface $f=\mathrm{constant}$ obeys $\mathbf t\cdot\nabla f=0$.
+
+In Cartesian coordinates,
+\begin{equation}
+\nabla f=\mathbf e_x f_x+\mathbf e_y f_y+\mathbf e_z f_z.
+\end{equation}
+The directional derivative along unit vector $\mathbf n$ is $\mathbf n\cdot\nabla f$.
+
+
+\section{Divergence and conservation}
+
+Divergence is net outward flux per unit volume:
+\begin{equation}
+\nabla\cdot\mathbf F=
+\lim_{V\to0}\frac{1}{V}\oint_{\partial V}\mathbf F\cdot d\mathbf S.
+\end{equation}
+The divergence theorem,
+\begin{equation}
+\int_V\nabla\cdot\mathbf F\,dV
+=\oint_{\partial V}\mathbf F\cdot d\mathbf S,
+\end{equation}
+converts an integral balance into a local law. If $q$ is a conserved density with flux $\mathbf F$ and source $S$,
+\begin{equation}
+\pdv{q}{t}+\nabla\cdot\mathbf F=S.
+\end{equation}
+This structure is the mathematical basis of finite-volume methods.
+
+
+\section{Curl and circulation}
+
+Stokes theorem states
+\begin{equation}
+\int_S(\nabla\times\mathbf F)\cdot d\mathbf S
+=\oint_{\partial S}\mathbf F\cdot d\boldsymbol\ell.
+\end{equation}
+Curl is therefore circulation per unit area. Maxwell equations use curl to connect current to magnetic field and changing magnetic flux to electric circulation:
+\begin{equation}
+\nabla\times\mathbf B\approx\mu_0\mathbf J,\qquad
+\nabla\times\mathbf E=-\pdv{\mathbf B}{t}.
+\end{equation}
+Fluid vorticity is $\boldsymbol\omega=\nabla\times\mathbf u$.
+
+
+\section{Laplacian and diffusion}
+
+The scalar Laplacian is
+\begin{equation}
+\nabla^2f=\nabla\cdot\nabla f.
+\end{equation}
+In diffusion,
+\begin{equation}
+\pdv{f}{t}=D\nabla^2f,
+\end{equation}
+a local maximum generally has negative Laplacian and decreases, while a local minimum increases. The operator smooths spatial variation. Vector Laplacians require care in curvilinear coordinates because basis vectors also vary.
+
+
+\section{Magnetic pressure and tension identity}
+
+A key identity is
+\begin{equation}
+(\nabla\times\mathbf B)\times\mathbf B
+=(\mathbf B\cdot\nabla)\mathbf B
+-\nabla\left(\frac{B^2}{2}\right)
++\mathbf B(\nabla\cdot\mathbf B).
+\end{equation}
+With $\nabla\cdot\mathbf B=0$,
+\begin{equation}
+\frac{1}{\mu_0}(\nabla\times\mathbf B)\times\mathbf B
+=\frac{1}{\mu_0}(\mathbf B\cdot\nabla)\mathbf B
+-\nabla\left(\frac{B^2}{2\mu_0}\right).
+\end{equation}
+The first term is tension along curved field lines; the second is magnetic-pressure force.
+
+
+\section{Induction identity and geometric operators}
+
+Another central identity is
+\begin{align}
+\nabla\times(\mathbf u\times\mathbf B)
+={}&\mathbf u(\nabla\cdot\mathbf B)-\mathbf B(\nabla\cdot\mathbf u)\\
+&+(\mathbf B\cdot\nabla)\mathbf u-(\mathbf u\cdot\nabla)\mathbf B.
+\end{align}
+It separates compression, stretching, and advection.
+
+For cylindrical $\mathbf A=A_R\mathbf e_R+A_\phi\mathbf e_\phi+A_Z\mathbf e_Z$,
+\begin{equation}
+\nabla\cdot\mathbf A
+=\frac{1}{R}\pdv{}{R}(RA_R)
++\frac{1}{R}\pdv{A_\phi}{\phi}
++\pdv{A_Z}{Z}.
+\end{equation}
+The $R$ factor encodes geometry, not a correction that may be dropped.
+
+\begin{physicsbox}
+A conservative discretization should imitate the integral theorem behind the differential operator. Discrete divergence should be net face flux divided by cell volume.
+\end{physicsbox}
+
+
+\section{Computational laboratory}
+
+On a Cartesian grid, define an analytic vector field and compute its divergence and curl exactly and numerically. Demonstrate second-order convergence. Verify the divergence theorem by comparing volume integral and boundary flux. Repeat for an axisymmetric cylindrical field and show the error from omitting the $1/R$ factor.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Gradient measures directional scalar change.
+\item Divergence is the local operator of conservation laws.
+\item Curl measures circulation and connects currents and induction.
+\item Vector identities reveal magnetic pressure, tension, stretching, and advection.
+\item Geometry must be built into both analytic and discrete operators.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\nabla f$ & gradient & Steepest scalar increase. \\
+$\nabla\cdot\mathbf F$ & divergence & Net outward flux per volume. \\
+$\nabla\times\mathbf F$ & curl & Local circulation density. \\
+$\nabla^2$ & Laplacian & Divergence of gradient. \\
+$d\mathbf S$ & oriented area & Normal direction times surface area. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Use the divergence theorem with $\mathbf F=\mathbf r/3$ to derive the volume of a sphere.
+\item Prove $\nabla\cdot(\nabla\times\mathbf A)=0$ for smooth Cartesian fields.
+\item Derive the magnetic pressure-tension identity using index notation.
+\item Compute divergence and curl of rigid rotation $\mathbf u=(-y,x,0)$.
+\item Write the integral form of the continuity equation for a control volume.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref7} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref8} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

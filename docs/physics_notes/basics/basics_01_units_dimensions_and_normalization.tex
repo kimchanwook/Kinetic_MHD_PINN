@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 1 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 1: Units, Dimensions, and Normalization}{I - Mathematical and computational foundations}{A practical language for checking equations and constructing dimensionless plasma models}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Units specify a measurement convention, dimensions specify the physical type of a quantity, and normalization exposes the dimensionless parameters that organize a model. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Distinguish dimensions from units and convert among common plasma-physics units.
+\item Check dimensional homogeneity of algebraic, differential, and integral equations.
+\item Choose characteristic scales for length, time, velocity, density, pressure, magnetic field, and frequency.
+\item Nondimensionalize conservation laws and identify the resulting control parameters.
+\item Explain how normalization affects numerical conditioning and physics-informed loss functions.
+\item Document units and normalization at every software interface.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Elementary algebra, scientific notation, and differentiation.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Physical quantities, base dimensions, and SI units}
+
+A physical quantity is a numerical value multiplied by a unit. The same magnetic field may be written as
+\begin{equation}
+B=2.5\ \si{T}=2.5\times10^{4}\ \si{G},
+\end{equation}
+but its physical dimension is unchanged. In SI, the base dimensions needed here are mass $M$, length $L$, time $T$, electric current $I$, and thermodynamic temperature $\Theta$. We write
+\begin{equation}
+[Q]=M^aL^bT^cI^d\Theta^e
+\end{equation}
+to classify a quantity $Q$. Dimensions are independent of the human choice of meter, centimeter, second, or microsecond.
+
+Examples are
+\begin{align}
+[\rho]&=ML^{-3},&
+[p]&=ML^{-1}T^{-2},\\
+[\mathbf u]&=LT^{-1},&
+[\mathbf B]&=MT^{-2}I^{-1},\\
+[\mathbf E]&=MLT^{-3}I^{-1},&
+[\mu_0]&=MLT^{-2}I^{-2}.
+\end{align}
+The magnetic-energy density $B^2/(2\mu_0)$ has dimension $ML^{-1}T^{-2}$, which is exactly the dimension of pressure. That equality is the dimensional reason magnetic pressure can enter the MHD momentum equation beside gas pressure.
+
+
+\section{Dimensional homogeneity as an error detector}
+
+Every term that is added to another term must have the same dimension. Consider
+\begin{equation}
+\rho\left(\pdv{\mathbf u}{t}+\mathbf u\cdot\nabla\mathbf u\right)
+=-\nabla p+\frac{1}{\mu_0}(\nabla\times\mathbf B)\times\mathbf B.
+\end{equation}
+The inertial term scales as $\rho U^2/L$, the pressure force as $p/L$, and the magnetic force as $B^2/(\mu_0L)$. All are force per volume. If a derivation accidentally uses $B/\mu_0L$ rather than $B^2/\mu_0L$, dimensional analysis rejects it immediately.
+
+Dimensional consistency is necessary but not sufficient. The expression $mv^2$ and $2mv^2$ have the same dimension, but only one coefficient may be correct. Dimensional analysis also cannot detect a wrong sign or an omitted dimensionless factor such as $2\pi$. It should therefore be the first verification step, not the last.
+
+
+\section{Characteristic scales}
+
+A characteristic scale is a representative magnitude chosen to organize a problem. Introduce
+\begin{equation}
+\mathbf x=L_0\hat{\mathbf x},\quad
+t=t_0\hat t,\quad
+\mathbf u=U_0\hat{\mathbf u},\quad
+\rho=\rho_0\hat\rho,
+\end{equation}
+and similarly
+\begin{equation}
+\mathbf B=B_0\hat{\mathbf B},\quad
+p=p_0\hat p,\quad
+\omega=\omega_0\hat\omega.
+\end{equation}
+For magnetized-fluid dynamics, natural choices include
+\begin{equation}
+V_{A0}=\frac{B_0}{\sqrt{\mu_0\rho_0}},
+\qquad
+t_A=\frac{L_0}{V_{A0}},
+\qquad
+p_{B0}=\frac{B_0^2}{\mu_0}.
+\end{equation}
+An orbit code may instead use a gyroperiod and gyroradius. A transport code may use a confinement time and minor radius. There is no universally correct normalization; there is only a normalization that is explicit, internally consistent, and appropriate to the dominant scales.
+
+
+\section{Nondimensionalizing representative equations}
+
+The continuity equation
+\begin{equation}
+\pdv{\rho}{t}+\nabla\cdot(\rho\mathbf u)=0
+\end{equation}
+becomes
+\begin{equation}
+\frac{\rho_0}{t_0}\pdv{\hat\rho}{\hat t}
++\frac{\rho_0U_0}{L_0}\hat\nabla\cdot(\hat\rho\hat{\mathbf u})=0.
+\end{equation}
+Choosing $t_0=L_0/U_0$ removes the prefactors. For magnetic induction with magnetic diffusivity $\eta_m$,
+\begin{equation}
+\pdv{\mathbf B}{t}
+=\nabla\times(\mathbf u\times\mathbf B)+\eta_m\nabla^2\mathbf B,
+\end{equation}
+the normalized equation is
+\begin{equation}
+\pdv{\hat{\mathbf B}}{\hat t}
+=\hat\nabla\times(\hat{\mathbf u}\times\hat{\mathbf B})
++\frac{1}{R_m}\hat\nabla^2\hat{\mathbf B},
+\qquad
+R_m=\frac{U_0L_0}{\eta_m}.
+\end{equation}
+The magnetic Reynolds number compares field advection with magnetic diffusion. In the momentum equation, the coefficient
+\begin{equation}
+\frac{B_0^2}{\mu_0\rho_0U_0^2}=\frac{1}{M_A^2}
+\end{equation}
+introduces the Alfv\'en Mach number $M_A=U_0/V_A$.
+
+
+\section{Frequency, density, and temperature conventions}
+
+Angular frequency and cyclic frequency satisfy
+\begin{equation}
+\omega=2\pi f.
+\end{equation}
+A value in radians per second is not numerically equal to the value in hertz. Number density and mass density are related by
+\begin{equation}
+\rho=\sum_s m_sn_s.
+\end{equation}
+For an Alfv\'en speed, using electron density alone would omit the dominant ion inertia.
+
+The electron-volt is an energy unit:
+\begin{equation}
+1\ \si{eV}=1.602176634\times10^{-19}\ \si{J}.
+\end{equation}
+Plasma temperature is often reported as $k_BT$ in electron-volts. A field named ``temperature\_eV'' normally stores an energy per particle, not kelvin. The code and the notes must state the convention.
+
+
+\section{Normalization in numerical simulation and PINNs}
+
+Floating-point calculations are more robust when important variables are of comparable magnitude. Normalized variables also make residual tolerances meaningful across modules.
+
+In a PINN, suppose
+\begin{equation}
+\mathcal L=\mathcal L_{\rm mom}+\mathcal L_{\nabla\cdot B}.
+\end{equation}
+If dimensional residuals differ by many orders of magnitude, optimization may effectively ignore one equation. Dimensionless residuals make the relative weights interpretable, although adaptive weighting may still be needed.
+
+\begin{physicsbox}
+A reproducible data product states the physical unit, normalization scale, sign convention, and whether the stored value is dimensional or normalized.
+\end{physicsbox}
+
+
+\section{Computational laboratory}
+
+Create matching Python and MATLAB scripts that read $B_0$, ion number density, ion mass, and major radius from JSON. Compute mass density, Alfv\'en speed, Alfv\'en time, angular frequency, and cyclic frequency. Double $B_0$ and quadruple $\rho_0$ and verify the expected scalings. Add tests that reject negative density and ambiguous frequency metadata.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Dimensions classify physical quantities independently of the chosen unit system.
+\item Dimensional homogeneity is a powerful necessary check on every equation.
+\item Characteristic scales expose the dimensionless parameters controlling a model.
+\item Frequency, density, and temperature conventions must be explicit.
+\item Normalization affects numerical conditioning and machine-learning loss balance.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$L_0,t_0,U_0$ & reference scales & Characteristic length, time, and velocity. \\
+$V_A$ & Alfv'en speed & $B/\sqrt{\mu_0\rho}$. \\
+$R_m$ & magnetic Reynolds number & Magnetic advection-to-diffusion ratio. \\
+$M_A$ & Alfv'en Mach number & $U/V_A$. \\
+$\hat Q$ & normalized variable & $Q/Q_0$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the dimensions of $\epsilon_0$, electrical resistivity, current density, and electric potential.
+\item Nondimensionalize $\partial_tu=D\partial_x^2u$ and derive the diffusion time.
+\item Show that $B^2/(\mu_0\rho)$ has dimensions of velocity squared.
+\item Convert $\omega=1.8\times10^6\ \si{s^{-1}}$ to hertz.
+\item Construct a normalization table for the current Module 4 benchmark.
+\item Explain how poor scaling can make a PINN satisfy one equation while violating another.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\end{thebibliography}
+
+\end{document}

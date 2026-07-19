@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 41 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 41: Phase Space and Distribution Functions}{VI - Kinetic theory and energetic particles}{From many-particle states to continuous kinetic descriptions, moments, invariants, and numerical marker representations}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Fluid variables describe averages, but energetic-particle resonance depends on where particles lie in both position and velocity. This chapter introduces six-dimensional phase space, defines the distribution function and its normalization, derives phase-space continuity and Liouville's theorem, and explains moments, reduced coordinates, Jacobians, and Monte Carlo marker weights.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Distinguish physical space, velocity space, and phase space.
+\item Interpret $f(\mathbf x,\mathbf v,t)$ as a number-density distribution.
+\item Recover density, flow velocity, pressure, and energy from moments.
+\item Derive phase-space continuity and Liouville's theorem.
+\item Transform a distribution between coordinate systems using the correct Jacobian.
+\item Explain full-$f$, marker-particle, and weighted Monte Carlo representations.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+Recommended prerequisites are Basics 1, 2, 10, 13, 19, and 22. Keep units explicit: in six-dimensional Cartesian coordinates, $f$ has units of particles per physical-space volume per velocity-space volume.
+
+\section{Why phase space is needed}
+A point particle is specified by position and velocity,
+\begin{equation}
+\mathbf z=(\mathbf x,\mathbf v)\in\mathbb R^6.
+\end{equation}
+Two particles at the same position can interact differently with a wave if their velocities differ. A fluid density $n(\mathbf x,t)$ therefore cannot represent resonant velocity selection, trapped and passing populations, pitch anisotropy, or energetic tails.
+
+For $N$ particles, the exact microscopic phase-space density is
+\begin{equation}
+f_{\mathrm{micro}}(\mathbf x,\mathbf v,t)=
+\sum_{p=1}^{N}\delta(\mathbf x-\mathbf x_p(t))
+\delta(\mathbf v-\mathbf v_p(t)).
+\end{equation}
+Kinetic theory replaces this singular object by a smooth or coarse-grained distribution $f$.
+
+\section{Definition and normalization}
+The number of particles in a phase-space element is
+\begin{equation}
+dN=f(\mathbf x,\mathbf v,t)\,d^3x\,d^3v.
+\end{equation}
+Therefore
+\begin{equation}
+N=\int f\,d^3x\,d^3v,
+\qquad
+n(\mathbf x,t)=\int f\,d^3v.
+\end{equation}
+If $f$ is normalized as a probability density instead, the integral is one. A code and its documentation must state which normalization is used.
+
+For a uniform isotropic Maxwellian,
+\begin{equation}
+f_M(v)=n\left(\frac{m}{2\pi k_BT}\right)^{3/2}
+\exp\!\left(-\frac{mv^2}{2k_BT}\right),
+\end{equation}
+whose velocity integral equals $n$.
+
+\section{Moments}
+The mean of a phase-space function $A(\mathbf v)$ at fixed position is
+\begin{equation}
+\langle A\rangle=\frac{1}{n}\int A(\mathbf v)f\,d^3v.
+\end{equation}
+Important moments are
+\begin{align}
+n&=\int f\,d^3v,\\
+\mathbf u&=\frac{1}{n}\int\mathbf v f\,d^3v,\\
+\mathsf P&=m\int(\mathbf v-\mathbf u)(\mathbf v-\mathbf u)f\,d^3v,\\
+\mathcal E&=\int\frac{mv^2}{2}f\,d^3v.
+\end{align}
+The pressure tensor contains more information than a scalar pressure. For a gyrotropic magnetized population,
+\begin{equation}
+\mathsf P=p_\perp(\mathsf I-\mathbf b\mathbf b)+p_\parallel\mathbf b\mathbf b.
+\end{equation}
+
+\section{Phase-space continuity}
+Let the phase-space velocity be
+\begin{equation}
+\dot{\mathbf z}=(\dot{\mathbf x},\dot{\mathbf v}).
+\end{equation}
+Conservation of particles in a phase-space control volume gives
+\begin{equation}
+\boxed{\frac{\partial f}{\partial t}+\nabla_{\mathbf z}\cdot(f\dot{\mathbf z})=0}.
+\end{equation}
+Expanding,
+\begin{equation}
+\frac{Df}{Dt}+f\,\nabla_{\mathbf z}\cdot\dot{\mathbf z}=0,
+\qquad
+\frac{D}{Dt}=\partial_t+\dot{\mathbf z}\cdot\nabla_{\mathbf z}.
+\end{equation}
+If the phase-space flow is incompressible,
+\begin{equation}
+\nabla_{\mathbf z}\cdot\dot{\mathbf z}=0,
+\end{equation}
+then
+\begin{equation}
+\boxed{\frac{Df}{Dt}=0}.
+\end{equation}
+This is the local form of Liouville's theorem: the distribution is constant along collisionless characteristics.
+
+\section{Liouville theorem for Lorentz motion}
+For nonrelativistic Lorentz dynamics,
+\begin{equation}
+\dot{\mathbf x}=\mathbf v,
+\qquad
+\dot{\mathbf v}=\frac{q}{m}(\mathbf E+\mathbf v\times\mathbf B).
+\end{equation}
+The six-dimensional divergence is
+\begin{align}
+\nabla_{\mathbf x}\cdot\dot{\mathbf x}
++\nabla_{\mathbf v}\cdot\dot{\mathbf v}
+&=\nabla_{\mathbf x}\cdot\mathbf v
++\frac{q}{m}\nabla_{\mathbf v}\cdot(\mathbf E+\mathbf v\times\mathbf B)\\
+&=0.
+\end{align}
+Thus collisionless Lorentz trajectories preserve phase-space volume.
+
+\section{Characteristics and filamentation}
+Even though $f$ is constant along each trajectory, the distribution at a fixed point can change because characteristics move and shear. A smooth patch in phase space can stretch into fine filaments. This is phase mixing. Coarse numerical grids may erase those filaments and produce artificial entropy or damping.
+
+\section{Coordinate transformations and Jacobians}
+Suppose velocity coordinates change from $(v_x,v_y,v_z)$ to spherical variables $(v,\vartheta,\varphi)$. Then
+\begin{equation}
+d^3v=v^2\sin\vartheta\,dv\,d\vartheta\,d\varphi.
+\end{equation}
+For an isotropic distribution,
+\begin{equation}
+n=4\pi\int_0^\infty f(v)v^2\,dv.
+\end{equation}
+In pitch coordinates $\xi=v_\parallel/v$,
+\begin{equation}
+d^3v=2\pi v^2\,dv\,d\xi.
+\end{equation}
+A function that is constant in $v$ is not a uniform probability density in speed because the shell volume grows as $v^2$.
+
+Guiding-center and flux coordinates have nontrivial Jacobians. The invariant number is always
+\begin{equation}
+dN=f_z(\mathbf z)d\mathbf z=f_y(\mathbf y)d\mathbf y,
+\end{equation}
+so $f_y=f_z\left|\partial\mathbf z/\partial\mathbf y\right|$.
+
+\section{Reduced distributions}
+A reduced distribution is obtained by integrating over unresolved variables. For example,
+\begin{equation}
+F(\psi,E,\lambda)=\int f\,
+\delta(\psi-\psi(\mathbf z))
+\delta(E-E(\mathbf z))
+\delta(\lambda-\lambda(\mathbf z))\,d\mathbf z.
+\end{equation}
+Reduced models are useful only if their measure and omitted dependencies are documented. A quantity called $f(E,\lambda)$ may represent a density with respect to $dE\,d\lambda$, not the original six-dimensional $f$.
+
+\section{Marker particles and weights}
+Monte Carlo methods represent a distribution with markers sampled from a convenient marker density $g(\mathbf z)$:
+\begin{equation}
+f(\mathbf z)\approx\sum_{p=1}^{N_m}w_p\delta(\mathbf z-\mathbf z_p).
+\end{equation}
+If markers are sampled from $g$, an observable is estimated as
+\begin{equation}
+\int A f\,d\mathbf z
+=\int A\frac{f}{g}g\,d\mathbf z
+\approx\frac{1}{N_m}\sum_{p=1}^{N_m}A(\mathbf z_p)\frac{f(\mathbf z_p)}{g(\mathbf z_p)}.
+\end{equation}
+Importance sampling chooses $g$ to place markers where the integrand matters, especially near resonances or loss boundaries.
+
+\section{Invariants and entropy}
+For collisionless incompressible phase flow,
+\begin{equation}
+\int C(f)\,d\mathbf z
+\end{equation}
+is conserved for broad classes of functions $C$. Particle number and fine-grained entropy are examples. Coarse graining and collisions can increase observable entropy even though exact Vlasov evolution is reversible.
+
+\section{Connection to the Kinetic MHD-PINN project}
+Module 2 defines energetic-particle distributions and their normalization. Module 3 samples orbits. Module 5 evaluates resonant phase-space integrals. Module 6 evolves reduced distributions. Every interface must specify coordinates, Jacobians, units, and whether values represent pointwise $f$, cell-integrated particle number, or marker weights.
+
+\section{Computational laboratory}
+\begin{enumerate}[leftmargin=1.6em]
+\item Sample a three-dimensional Maxwellian and verify density and temperature moments.
+\item Evolve a one-dimensional free-streaming distribution $f(x,v,t)=f_0(x-vt,v)$.
+\item Visualize phase-space filamentation for a sinusoidally modulated initial density.
+\item Compare direct quadrature and Monte Carlo moment estimates.
+\item Demonstrate the error caused by forgetting the $v^2$ Jacobian in an isotropic speed integral.
+\end{enumerate}
+
+\section{Summary}
+Phase space records both position and velocity. The distribution function is a density with respect to a specified phase-space measure. Collisionless Hamiltonian or Lorentz dynamics preserves phase-space volume, so $f$ is constant along characteristics even while it develops fine structure. Fluid variables are moments of $f$, and numerical marker methods approximate those moments through weighted samples.
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.6em]
+\item Determine the SI units of a six-dimensional number-density distribution.
+\item Verify the normalization of the Maxwellian.
+\item Derive $d^3v=2\pi v^2dv\,d\xi$.
+\item Show directly that Lorentz phase-space flow is incompressible.
+\item Explain the difference between fine-grained and coarse-grained entropy.
+\end{enumerate}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$f$ & Distribution function & Particle number density with respect to a stated phase-space measure.\\
+$\mathbf z$ & Phase-space coordinate & Combined position and velocity coordinate.\\
+$\mathsf P$ & Pressure tensor & Second central velocity moment multiplied by mass.\\
+$g$ & Marker density & Probability density used to sample numerical markers.\\
+$w$ & Marker weight & Ratio or coefficient relating the represented distribution to marker density.\\
+\end{symtable}
+
+\section{References}
+\begin{enumerate}[leftmargin=1.6em]
+\item F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}.
+\item N. A. Krall and A. W. Trivelpiece, \emph{Principles of Plasma Physics}.
+\item R. B. White, \emph{The Theory of Toroidally Confined Plasmas}.
+\item C. K. Birdsall and A. B. Langdon, \emph{Plasma Physics via Computer Simulation}.
+\end{enumerate}
+
+\end{document}

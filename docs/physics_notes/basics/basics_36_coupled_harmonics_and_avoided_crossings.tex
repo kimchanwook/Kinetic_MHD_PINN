@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 36 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 36: Coupled Harmonics and Avoided Crossings}{V - Plasma waves and Alfvén physics}{Two-mode matrices, gap formation, harmonic mixing, positivity, and mode tracking}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Toroidal and stellarator geometry couples Fourier harmonics that would be independent in a uniform medium. The simplest two-harmonic model already explains avoided crossings, spectral gaps, mixed eigenvectors, and the numerical issues central to the project's reduced Module 4 benchmark. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Solve a two-mode coupled eigenvalue problem analytically.
+\item Distinguish exact crossing from avoided crossing.
+\item Calculate gap width and harmonic mixing.
+\item Explain positivity constraints on a squared-frequency operator.
+\item Connect local coupling to a global radial eigenproblem.
+\item Track modes robustly across parameter scans.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 6, 7, 34, and 35.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Uncoupled two-mode model}
+
+Let two local squared frequencies be $a(s)=\omega_1^2(s)$ and $b(s)=\omega_2^2(s)$. Without coupling,
+\begin{equation}
+\mathsf H_0=
+\begin{bmatrix}
+a&0\\
+0&b
+\end{bmatrix}.
+\end{equation}
+The eigenvalues cross wherever $a=b$. The corresponding eigenvectors remain pure basis harmonics.
+
+
+\section{Coupled matrix and eigenvalues}
+
+Introduce symmetric coupling $g(s)$:
+\begin{equation}
+\mathsf H=
+\begin{bmatrix}
+a&g\\
+g&b
+\end{bmatrix}.
+\end{equation}
+Its squared-frequency eigenvalues are
+\begin{equation}
+\boxed{\lambda_\pm=
+\frac{a+b}{2}\pm
+\sqrt{\left(\frac{a-b}{2}\right)^2+g^2}}.
+\end{equation}
+For $g\ne0$, $\lambda_+\ne\lambda_-$ even at $a=b$. The exact crossing is replaced by an avoided crossing.
+
+
+\section{Gap at the uncoupled crossing}
+
+At $a=b=a_c$,
+\begin{equation}
+\lambda_\pm=a_c\pm|g_c|.
+\end{equation}
+The gap in squared frequency is $2|g_c|$. In ordinary frequency,
+\begin{equation}
+\Delta\omega=
+\sqrt{a_c+|g_c|}-\sqrt{a_c-|g_c|},
+\end{equation}
+provided $a_c>|g_c|$. For weak coupling,
+\begin{equation}
+\Delta\omega\simeq\frac{|g_c|}{\sqrt{a_c}}.
+\end{equation}
+One must distinguish a gap in $\omega^2$ from a gap in $\omega$.
+
+
+\section{Harmonic mixing and mixing angle}
+
+Write normalized eigenvectors as
+\begin{equation}
+\mathbf v_+=
+\begin{bmatrix}\cos\theta\\ \sin\theta\end{bmatrix},
+\qquad
+\mathbf v_-=
+\begin{bmatrix}-\sin\theta\\ \cos\theta\end{bmatrix}.
+\end{equation}
+The angle satisfies
+\begin{equation}
+\tan(2\theta)=\frac{2g}{a-b}.
+\end{equation}
+Far from crossing, each mode resembles one uncoupled harmonic. Near crossing, $\theta\simeq\pi/4$ and both harmonics contribute comparably. Following modes only by ordered eigenvalue therefore makes their apparent identity exchange across the avoided crossing.
+
+
+\section{Positivity-preserving coupling}
+
+If $\mathsf H$ represents squared frequencies, it should be positive semidefinite in the intended stable local benchmark. For a symmetric $2\times2$ matrix,
+\begin{equation}
+a\ge0,\qquad b\ge0,\qquad g^2\le ab.
+\end{equation}
+A useful parameterization is
+\begin{equation}
+\boxed{g=\epsilon_c\sqrt{ab}},\qquad |\epsilon_c|<1.
+\end{equation}
+This automatically respects $g^2<ab$ where $a,b>0$ and causes coupling to vanish if either uncoupled branch reaches zero. The current repository uses this form to avoid an unphysical negative local squared frequency.
+
+
+\section{From local matrix to radial differential operator}
+
+A global mode has radial structure. One reduced form is
+\begin{equation}
+-\frac{d}{ds}\left(\mathsf K(s)\frac{d\boldsymbol\xi}{ds}\right)
++\mathsf H(s)\boldsymbol\xi
+=\omega^2\mathsf M(s)\boldsymbol\xi.
+\end{equation}
+The diagonal potential terms reconstruct local continuum branches; off-diagonal terms couple harmonics; $\mathsf K$ produces radial communication and boundary quantization. A discrete eigenvalue inside a local gap can represent a global Alfvén eigenmode.
+
+
+\section{Mode tracking across scans}
+
+Eigenvalues sorted by magnitude can swap character near an avoided crossing. Track a mode using mass-weighted overlap,
+\begin{equation}
+\mathcal O_{ij}=
+\frac{|\mathbf x_i^\dagger\mathsf M\mathbf y_j|}
+{\sqrt{(\mathbf x_i^\dagger\mathsf M\mathbf x_i)
+(\mathbf y_j^\dagger\mathsf M\mathbf y_j)}}.
+\end{equation}
+Maximum overlap, harmonic content, and radial localization together provide more reliable identity than eigenvalue index alone.
+
+
+\section{Physical meaning in toroidal plasmas}
+
+Toroidicity, ellipticity, and helical geometry introduce equilibrium Fourier coefficients that multiply perturbation harmonics and generate off-diagonal coupling. The two-mode model is not a complete stellarator spectrum, but it captures the universal mechanism: symmetry-breaking geometry couples branches, opens gaps, and permits discrete mixed-harmonic modes.
+
+
+\section{Computational laboratory}
+Scan a two-by-two matrix through an uncoupled crossing, plot eigenvalues and harmonic weights, and verify the analytic formulas. Compare constant coupling with positivity-preserving coupling. Then solve the repository's global two-harmonic radial benchmark and track modes under changes in coupling strength.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Geometry-induced coupling converts exact branch crossings into avoided crossings.
+\item The coupled eigenvalues and harmonic mixing follow analytically from a two-mode matrix.
+\item Squared-frequency models require positivity-aware coupling choices.
+\item Radial differential terms convert local gaps into global eigenmode problems.
+\item Overlap and harmonic content are essential for tracking modes across parameter changes.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$a,b$ & uncoupled squared frequencies & Diagonal two-mode entries. \\
+$g$ & coupling coefficient & Off-diagonal harmonic interaction. \\
+$\lambda_\pm$ & coupled squared frequencies & Eigenvalues of the local matrix. \\
+$\theta$ & mixing angle & Harmonic composition parameter. \\
+$\epsilon_c$ & dimensionless coupling strength & In $g=\epsilon_c\sqrt{ab}$. \\
+$\mathcal O_{ij}$ & mode overlap & Mass-weighted eigenvector similarity. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the two coupled eigenvalues from the characteristic polynomial.
+\item Derive the mixing-angle formula.
+\item Convert a gap in squared frequency to a gap in frequency.
+\item Prove the positive-semidefinite condition $g^2\le ab$.
+\item Explain why eigenvalue sorting alone fails as a mode-tracking method.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref9} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref10} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref11} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\end{thebibliography}
+
+\end{document}

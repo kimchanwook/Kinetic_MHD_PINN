@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 12 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 12: Maxwell Equations}{II - Electromagnetism foundations}{Local and integral laws, conservation of charge, electromagnetic waves, and plasma limits}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Maxwell's equations organize classical electromagnetism into four coupled field laws. This chapter derives their integral forms, obtains charge conservation and vacuum electromagnetic waves, and then identifies the low-frequency approximations used in magnetohydrodynamics. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item State Maxwell's equations in differential and integral form.
+\item Derive the continuity equation for electric charge.
+\item Derive the electromagnetic wave equation in vacuum.
+\item Explain the displacement-current term.
+\item Distinguish exact field constraints from model-dependent plasma approximations.
+\item Identify numerical consequences of divergence constraints.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 2, 3, and 11.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{The four differential equations}
+
+In SI units,
+\begin{align}
+\nabla\cdot\mathbf E &= \frac{\rho_q}{\epsilon_0},\\
+\nabla\cdot\mathbf B &= 0,\\
+\nabla\times\mathbf E &= -\frac{\partial\mathbf B}{\partial t},\\
+\nabla\times\mathbf B &= \mu_0\mathbf J+\mu_0\epsilon_0\frac{\partial\mathbf E}{\partial t}.
+\end{align}
+Gauss's electric law relates charge to electric flux. Gauss's magnetic law states that the net magnetic flux through a closed surface vanishes. Faraday's law describes induction. Ampere-Maxwell law connects magnetic circulation to conduction current and changing electric flux.
+
+
+\section{Integral forms from the divergence and Stokes theorems}
+
+Integrating the divergence equations over a volume $V$ gives
+\begin{align}
+\oint_{\partial V}\mathbf E\cdot d\mathbf A &= \frac{Q_{\rm enc}}{\epsilon_0},\\
+\oint_{\partial V}\mathbf B\cdot d\mathbf A &=0.
+\end{align}
+Integrating the curl equations over an oriented surface $S$ gives
+\begin{align}
+\oint_{\partial S}\mathbf E\cdot d\boldsymbol\ell
+&=-\frac{d}{dt}\int_S\mathbf B\cdot d\mathbf A,\\
+\oint_{\partial S}\mathbf B\cdot d\boldsymbol\ell
+&=\mu_0 I_{\rm enc}+\mu_0\epsilon_0\frac{d}{dt}\int_S\mathbf E\cdot d\mathbf A.
+\end{align}
+The integral forms expose global flux and circulation balances; the differential forms describe their local density.
+
+
+\section{Why displacement current is required}
+
+Taking the divergence of Ampere-Maxwell law and using $\nabla\cdot(\nabla\times\mathbf B)=0$ yields
+\begin{equation}
+0=\mu_0\nabla\cdot\mathbf J+\mu_0\epsilon_0
+\frac{\partial}{\partial t}\left(\nabla\cdot\mathbf E\right).
+\end{equation}
+Gauss's law then gives
+\begin{equation}
+\frac{\partial\rho_q}{\partial t}+\nabla\cdot\mathbf J=0.
+\end{equation}
+Without the displacement-current term, a time-varying charge density would contradict local charge conservation. Maxwell's correction is therefore not an optional decoration.
+
+
+\section{Electromagnetic waves in vacuum}
+
+Set $\rho_q=0$ and $\mathbf J=0$. Taking the curl of Faraday's law gives
+\begin{equation}
+\nabla\times\nabla\times\mathbf E
+=-\frac{\partial}{\partial t}\left(\nabla\times\mathbf B\right).
+\end{equation}
+Using $\nabla\times\nabla\times\mathbf E=\nabla(\nabla\cdot\mathbf E)-\nabla^2\mathbf E$ and $\nabla\cdot\mathbf E=0$,
+\begin{equation}
+\nabla^2\mathbf E-\mu_0\epsilon_0\frac{\partial^2\mathbf E}{\partial t^2}=0.
+\end{equation}
+The wave speed is
+\begin{equation}
+c=\frac{1}{\sqrt{\mu_0\epsilon_0}}.
+\end{equation}
+An identical equation follows for $\mathbf B$. Plane waves are transverse and satisfy $B=E/c$.
+
+
+\section{Potentials and gauge freedom}
+
+The identities
+\begin{equation}
+\mathbf B=\nabla\times\mathbf A,\qquad
+\mathbf E=-\nabla\phi-\frac{\partial\mathbf A}{\partial t}
+\end{equation}
+automatically satisfy the two homogeneous Maxwell equations. The transformation
+\begin{equation}
+\mathbf A\rightarrow\mathbf A+\nabla\chi,\qquad
+\phi\rightarrow\phi-\frac{\partial\chi}{\partial t}
+\end{equation}
+leaves $\mathbf E$ and $\mathbf B$ unchanged. Gauge freedom changes the mathematical representation, not measurable fields.
+
+
+\section{Low-frequency plasma limits}
+
+MHD typically assumes characteristic speeds much smaller than $c$ and frequencies low enough that
+\begin{equation}
+\epsilon_0\left|\frac{\partial\mathbf E}{\partial t}\right|\ll |\mathbf J|.
+\end{equation}
+Ampere-Maxwell law then becomes approximately
+\begin{equation}
+\nabla\times\mathbf B\simeq\mu_0\mathbf J.
+\end{equation}
+Quasineutrality further assumes $|\rho_q|\ll en$, but it does not imply $\mathbf E=0$. These approximations remove light waves and plasma-frequency charge oscillations from the resolved dynamics. Their domains of validity must be stated.
+
+
+\section{Constraint preservation in numerical models}
+
+The divergence equations act as constraints on admissible initial data. Faraday's law preserves $\nabla\cdot\mathbf B=0$ analytically because
+\begin{equation}
+\frac{\partial}{\partial t}(\nabla\cdot\mathbf B)
+=-\nabla\cdot(\nabla\times\mathbf E)=0.
+\end{equation}
+A discrete scheme may violate the identity. Constrained transport, divergence cleaning, or compatible finite elements are therefore used to control numerical magnetic monopoles.
+
+
+\section{Computational laboratory}
+Discretize a one-dimensional vacuum electromagnetic wave and verify $c=1/\sqrt{\mu_0\epsilon_0}$. Independently evaluate differential and integral forms of Gauss's law for a smooth charge distribution. Measure discrete charge-conservation and divergence errors.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Maxwell's equations couple charges, currents, and time-dependent fields.
+\item The displacement current guarantees compatibility with charge conservation.
+\item Vacuum electromagnetic waves follow directly from the curl equations.
+\item MHD is a controlled low-frequency reduction, not a replacement for Maxwell theory.
+\item Divergence constraints require deliberate preservation in numerical simulations.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\rho_q$ & charge density & Source in Gauss's electric law. \\
+$\mathbf J$ & current density & Charge flow per area. \\
+$c$ & speed of light & $1/\sqrt{\mu_0\epsilon_0}$. \\
+$\mathbf A$ & vector potential & Satisfies $\mathbf B=\nabla\times\mathbf A$. \\
+$\chi$ & gauge function & Generates equivalent potentials. \\
+$Q_{\rm enc},I_{\rm enc}$ & enclosed source measures & Volume charge and surface-crossing current. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive charge conservation from Ampere-Maxwell and Gauss laws.
+\item Derive the vacuum magnetic-field wave equation.
+\item Show that a plane electromagnetic wave is transverse.
+\item Explain why quasineutrality does not eliminate electric fields.
+\item Estimate when displacement current is negligible relative to conduction current.
+\end{enumerate}
+
+\section{References}
+{\small
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref7} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref8} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref9} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref10} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref11} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+}
+
+\end{document}

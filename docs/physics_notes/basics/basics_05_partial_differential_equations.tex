@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 5 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 5: Partial Differential Equations}{I - Mathematical and computational foundations}{Classification, data requirements, characteristics, conservation form, and well-posedness}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Most plasma simulations solve partial differential equations. Their mathematical type predicts information propagation, boundary data, regularity, and suitable numerical methods. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Identify independent variables, dependent fields, order, and linearity.
+\item Classify canonical elliptic, parabolic, and hyperbolic equations.
+\item Choose appropriate initial and boundary conditions.
+\item Derive characteristics for advection.
+\item Distinguish conservative and nonconservative forms.
+\item Explain weak solutions, eigenmodes, and well-posedness.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 1-3 or equivalent multivariable calculus.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Definitions and examples}
+
+A PDE relates a field to its partial derivatives:
+\begin{equation}
+\mathcal F(\mathbf x,t,u,\partial_tu,\nabla u,\nabla^2u,\ldots)=0.
+\end{equation}
+The order is the highest derivative. The equation is linear if $u$ and its derivatives enter linearly with coefficients independent of $u$. Poisson, diffusion, wave, ideal-MHD, and kinetic equations illustrate different mathematical structures.
+
+
+\section{Elliptic, parabolic, and hyperbolic types}
+
+For
+\begin{equation}
+Au_{xx}+2Bu_{xy}+Cu_{yy}+\cdots=0,
+\end{equation}
+the sign of $B^2-AC$ gives the local classification. Poisson equation is elliptic and globally constrained by boundaries. Diffusion is parabolic and smooths gradients. The wave equation is hyperbolic and carries finite-speed signals. Ideal MHD is a nonlinear hyperbolic evolution system, while equilibrium calculations are closer to elliptic boundary-value problems.
+
+
+\section{Initial and boundary conditions}
+
+A first-order-in-time equation generally needs one initial field. A second-order spatial operator needs boundary conditions. Common forms are
+\begin{align}
+u&=g &&\text{Dirichlet},\\
+\pdv{u}{n}&=h &&\text{Neumann},\\
+au+b\pdv{u}{n}&=c &&\text{Robin}.
+\end{align}
+Data must be compatible with the operator. Pure-Neumann Poisson problems need an integral compatibility condition and have an arbitrary additive constant.
+
+A problem is well posed if a solution exists, is unique, and depends continuously on data. Numerical sophistication cannot repair a fundamentally ill-posed model.
+
+
+\section{Characteristics and causality}
+
+For advection,
+\begin{equation}
+u_t+au_x=0,
+\end{equation}
+follow a curve $x(t)$:
+\begin{equation}
+\dv{u}{t}=u_t+\dot xu_x.
+\end{equation}
+Choosing $\dot x=a$ gives $du/dt=0$, so
+\begin{equation}
+u(x,t)=u_0(x-at).
+\end{equation}
+Characteristics identify causal directions and inflow boundaries. For $a>0$, the left boundary is inflow and normally requires data; the right boundary is outflow.
+
+
+\section{Conservative form and discontinuities}
+
+A scalar conservation law is
+\begin{equation}
+u_t+\pdv{}{x}F(u)=0.
+\end{equation}
+For smooth $u$, it is equivalent to $u_t+F'(u)u_x=0$. Across a discontinuity, the conservative form determines shock speed:
+\begin{equation}
+s=\frac{F(u_R)-F(u_L)}{u_R-u_L}.
+\end{equation}
+MHD supports shocks, so flux-form discretization is essential. Expanding products before discretization can destroy the correct jump condition.
+
+
+\section{Separation of variables, spectra, and weak forms}
+
+For the fixed-end wave equation, $u=X(x)T(t)$ gives
+\begin{equation}
+\frac{T''}{c^2T}=\frac{X''}{X}=-k^2,
+\end{equation}
+and boundary conditions select $k_n=n\pi/L$. This is the prototype of a normal-mode eigenproblem.
+
+When solutions are not classically differentiable, multiply by a test function and integrate to obtain a weak form. Finite elements are based on weak forms. Standard PINNs often minimize strong residuals at collocation points, which may be inappropriate near shocks or ideal continuum singularities.
+
+
+\section{Computational laboratory}
+
+Implement one-dimensional Poisson, diffusion, and advection problems on a common grid. Use a direct boundary-value solve, explicit and implicit diffusion stepping, and upwind advection. Demonstrate global boundary influence for Poisson, a stability limit for explicit diffusion, and oscillations from centered advection. Measure convergence against analytic solutions.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item PDE type predicts information propagation and required data.
+\item Elliptic, parabolic, and hyperbolic equations behave qualitatively differently.
+\item Characteristics encode causality.
+\item Conservative form is essential for discontinuous solutions.
+\item Weak and strong residual formulations are not interchangeable in all regimes.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$u(\mathbf x,t)$ & field & Unknown dependent variable. \\
+$\mathcal F$ & PDE operator & Relation among field and derivatives. \\
+$F(u)$ & flux & Transported quantity in a conservation law. \\
+$s$ & shock speed & Discontinuity propagation speed. \\
+$\partial_nu$ & normal derivative & $\nabla u\cdot\mathbf n$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Classify $u_{xx}+4u_{xy}+u_{yy}=0$.
+\item Derive characteristics for $u_t+a(x,t)u_x=0$.
+\item Find the compatibility condition for a pure-Neumann Poisson problem.
+\item Derive Burgers shock speed.
+\item Explain why a wave equation needs two initial conditions while advection needs one.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

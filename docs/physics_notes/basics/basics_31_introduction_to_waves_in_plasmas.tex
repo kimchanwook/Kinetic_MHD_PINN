@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 31 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 31: Introduction to Waves in Plasmas}{V - Plasma waves and Alfvén physics}{Phase, dispersion, polarization, eigenmodes, damping, instability, and plasma wave families}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Plasma waves couple particle inertia, pressure, and electromagnetic restoring forces. This chapter develops a common language for waves before specializing to Alfvén physics: phase and group velocity, polarization, dispersion matrices, continua, damping, and instability. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Identify the ingredients required for wave motion.
+\item Interpret plane-wave phase and wave vector.
+\item Derive a dispersion relation from a linear system.
+\item Distinguish phase velocity, group velocity, and polarization.
+\item Interpret real and imaginary frequency components.
+\item Classify major electrostatic and electromagnetic plasma-wave families.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 5-8, 12, 18, 19, and 29.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{What makes a wave?}
+
+A wave requires a perturbable state, inertia or delayed response, and a restoring mechanism. A schematic field equation,
+\begin{equation}
+\partial_t^2\psi+\mathcal L\psi=0,
+\end{equation}
+oscillates when the spatial operator $\mathcal L$ has positive eigenvalues. In plasmas, restoring forces may arise from charge separation, pressure, magnetic tension, or gyromotion, while several species provide distinct inertias.
+
+
+\section{Plane-wave phase}
+
+A local plane wave is written
+\begin{equation}
+\psi(\mathbf x,t)=\Re\left\{\tilde\psi
+e^{i(\mathbf k\cdot\mathbf x-\omega t)}\right\}.
+\end{equation}
+Surfaces of constant phase satisfy
+\begin{equation}
+\mathbf k\cdot\mathbf x-\omega t=\text{constant}.
+\end{equation}
+$\mathbf k$ points normal to phase fronts and has units of inverse length. The angular frequency $\omega$ has units of inverse time. Sign conventions must be recorded because they determine how growth rates and propagation directions are interpreted.
+
+
+\section{Dispersion relations from linear equations}
+
+After linearization and Fourier substitution,
+\begin{equation}
+\partial_t\rightarrow-i\omega,\qquad
+\nabla\rightarrow i\mathbf k,
+\end{equation}
+a coupled PDE system becomes
+\begin{equation}
+\mathsf D(\omega,\mathbf k)\tilde{\mathbf q}=0.
+\end{equation}
+A nontrivial amplitude requires
+\begin{equation}
+\boxed{\det\mathsf D(\omega,\mathbf k)=0}.
+\end{equation}
+This is the dispersion relation. Multiple roots describe distinct wave branches; the associated null vectors determine polarization and relative phase among field components.
+
+
+\section{Phase and group velocity}
+
+For a one-dimensional branch $\omega(k)$,
+\begin{equation}
+v_{\rm ph}=\frac{\omega}{k},\qquad
+v_g=\frac{d\omega}{dk}.
+\end{equation}
+Phase velocity tracks constant phase. Group velocity gives the leading propagation speed of a narrow wave packet when the medium varies slowly and dissipation is weak. In anisotropic plasma, $\mathbf v_g=\nabla_{\mathbf k}\omega$ need not be parallel to $\mathbf k$.
+
+
+\section{Polarization}
+
+Polarization describes the direction and phase relation of vector perturbations. Examples include:
+\begin{itemize}[leftmargin=1.6em]
+\item longitudinal electrostatic oscillations with $\tilde{\mathbf E}\parallel\mathbf k$;
+\item transverse electromagnetic waves with $\tilde{\mathbf E}\perp\mathbf k$;
+\item circularly polarized waves in magnetized plasma;
+\item shear-Alfvén waves with transverse velocity and magnetic perturbations.
+\end{itemize}
+A scalar dispersion curve alone does not specify the physical mode.
+
+
+\section{Standing waves, eigenmodes, and continua}
+
+Boundaries or spatially varying coefficients replace a freely chosen $k$ by a global eigenproblem:
+\begin{equation}
+\mathcal A\boldsymbol\xi=\omega^2\mathcal M\boldsymbol\xi.
+\end{equation}
+A finite domain often produces discrete standing modes. In nonuniform ideal MHD, each magnetic surface can carry its own local Alfvén frequency, generating a continuum. Geometry-induced coupling may open gaps in that continuum where discrete global eigenmodes can exist.
+
+
+\section{Complex frequency, damping, and growth}
+
+Using $e^{-i\omega t}$, let
+\begin{equation}
+\omega=\omega_r+i\gamma.
+\end{equation}
+Then
+\begin{equation}
+e^{-i\omega t}=e^{-i\omega_rt}e^{\gamma t}.
+\end{equation}
+Thus $\gamma>0$ denotes growth and $\gamma<0$ damping under this convention. Mechanisms include collisions, phase mixing, continuum damping, Landau damping, and energetic-particle drive. A stable oscillation can still decay because of nonideal or kinetic processes.
+
+
+\section{Representative plasma-wave families}
+
+At elementary level:
+\begin{description}[leftmargin=2.5em]
+\item[Langmuir waves:] electron charge-separation oscillations near $\omega_{pe}$.
+\item[Ion-acoustic waves:] compressive electrostatic waves involving electron pressure and ion inertia.
+\item[Electromagnetic waves:] light-like modes modified by plasma response.
+\item[Alfvén waves:] magnetic-tension waves propagating primarily along the field.
+\item[Magnetosonic waves:] compressive coupled pressure-magnetic waves.
+\end{description}
+The appropriate model depends on frequency ordering, propagation angle, collisionality, and scale.
+
+
+\section{Computational laboratory}
+Solve several analytic dispersion relations and plot $\omega(k)$, phase velocity, and group velocity. Construct a two-component dispersion matrix and recover both eigenvalues and polarization vectors. Form a wave packet numerically and compare measured envelope speed with $d\omega/dk$.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Plasma waves combine inertia with electrostatic, pressure, magnetic, or gyroscopic restoring forces.
+\item Dispersion relations determine allowed frequencies; eigenvectors determine polarization.
+\item Phase and group velocities describe different aspects of propagation.
+\item Nonuniform plasmas can support continua and discrete global eigenmodes.
+\item Complex frequency unifies oscillation, damping, and instability under a stated sign convention.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\mathbf k$ & wave vector & Spatial phase gradient. \\
+$\omega$ & complex angular frequency & Oscillation and growth/damping rate. \\
+$v_{\rm ph}$ & phase velocity & $\omega/k$ in one dimension. \\
+$v_g$ & group velocity & $d\omega/dk$. \\
+$\mathsf D$ & dispersion matrix & Fourier-transformed linear operator. \\
+$\gamma$ & growth rate & $\operatorname{Im}\omega$ for $e^{-i\omega t}$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the constant-phase propagation velocity of a plane wave.
+\item Obtain the wave-equation dispersion relation by Fourier substitution.
+\item Explain why $\det\mathsf D=0$ is required for a nonzero amplitude.
+\item For a given dispersive branch, calculate phase and group velocities.
+\item Translate the growth-rate sign if the time convention is changed to $e^{+i\omega t}$.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref9} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref10} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref11} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 25 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 25: Conservation Laws in Magnetohydrodynamics}{IV - Magnetohydrodynamics}{Integral balances of mass, momentum, energy, magnetic flux, and helicity}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Conservation laws are both physical principles and numerical acceptance tests. This chapter develops the local and integral balances of ideal MHD, distinguishes exact invariants from boundary-dependent ones, and shows how conservation constrains multiphysics coupling. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Convert local conservation equations into integral balances.
+\item Interpret momentum flux and Maxwell stress.
+\item Derive ideal-MHD total energy conservation.
+\item State the conditions for magnetic-flux and helicity conservation.
+\item Distinguish global conservation from local redistribution.
+\item Design conservation diagnostics for coupled solvers.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 3, 12, 14, and 24.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Generic local and integral balance}
+
+A local conservation law is
+\begin{equation}
+\partial_tU+\nabla\cdot\mathbf F=S.
+\end{equation}
+Integrating over a fixed control volume $V$ gives
+\begin{equation}
+\frac{d}{dt}\int_VU\,dV
+=-\oint_{\partial V}\mathbf F\cdot d\mathbf A+\int_VS\,dV.
+\end{equation}
+A quantity can change inside $V$ because it crosses the boundary or because a true source acts. Numerical diffusion should not be silently reported as a physical source.
+
+
+\section{Mass conservation}
+
+Ideal MHD satisfies
+\begin{equation}
+\partial_t\rho+\nabla\cdot(\rho\mathbf u)=0.
+\end{equation}
+For an impermeable or periodic boundary,
+\begin{equation}
+\frac{d}{dt}\int_V\rho\,dV=0.
+\end{equation}
+In a multiphysics code, particle birth, wall loss, or source modules must appear explicitly so that the same particles are not removed or deposited twice.
+
+
+\section{Momentum and stress transport}
+
+The momentum equation can be written
+\begin{equation}
+\partial_t(\rho\mathbf u)+\nabla\cdot\mathsf T=0,
+\end{equation}
+where
+\begin{equation}
+\mathsf T=
+\rho\mathbf u\mathbf u+
+\left(p+\frac{B^2}{2\mu_0}\right)\mathsf I
+-\frac{\mathbf B\mathbf B}{\mu_0}.
+\end{equation}
+The tensor contains advective momentum flux, gas pressure, magnetic pressure, and directional magnetic tension. Total momentum is conserved only when boundary tractions and external forces vanish.
+
+
+\section{Total energy}
+
+The conserved ideal-MHD energy density is
+\begin{equation}
+E=\frac{\rho u^2}{2}+\frac{p}{\gamma-1}+\frac{B^2}{2\mu_0}.
+\end{equation}
+Its flux is
+\begin{equation}
+\mathbf F_E=
+\left(E+p+\frac{B^2}{2\mu_0}\right)\mathbf u
+-\frac{\mathbf B(\mathbf u\cdot\mathbf B)}{\mu_0}.
+\end{equation}
+The magnetic contribution can also be interpreted through Poynting flux $\mathbf E\times\mathbf B/\mu_0$ with ideal $\mathbf E=-\mathbf u\times\mathbf B$. Energy may exchange among kinetic, internal, and magnetic reservoirs while total energy remains constant.
+
+
+\section{Magnetic flux conservation}
+
+For a material surface $S(t)$ moving with ideal-MHD velocity,
+\begin{equation}
+\frac{d}{dt}\int_{S(t)}\mathbf B\cdot d\mathbf A=0.
+\end{equation}
+This is Alfvén's flux-freezing theorem. It constrains magnetic topology under smooth ideal evolution. It does not imply that $B$ is constant: compression and stretching alter field strength while preserving flux through the moving surface.
+
+
+\section{Magnetic and cross helicity}
+
+Magnetic helicity is
+\begin{equation}
+H_M=\int_V\mathbf A\cdot\mathbf B\,dV.
+\end{equation}
+Its gauge-invariant interpretation requires suitable closed or relative-helicity boundary conditions. Cross helicity,
+\begin{equation}
+H_C=\int_V\mathbf u\cdot\mathbf B\,dV,
+\end{equation}
+is conserved in restricted ideal barotropic settings. These invariants characterize topology and alignment, but their conservation conditions are narrower than those of mass.
+
+
+\section{Entropy and irreversible physics}
+
+For adiabatic ideal flow,
+\begin{equation}
+\frac{D}{Dt}\left(\frac{p}{\rho^\gamma}\right)=0.
+\end{equation}
+Resistivity, viscosity, shocks, heat conduction, and collisions generate entropy. A mathematically conservative shock-capturing method can conserve total energy while converting resolved kinetic or magnetic energy into internal energy.
+
+
+\section{Conservation across module interfaces}
+
+Suppose a fast-particle module reports lost energy $\Delta E_{\rm fast}<0$. A wall or thermal module should receive exactly $-\Delta E_{\rm fast}$ minus any explicitly exported energy:
+\begin{equation}
+\Delta E_{\rm fast}+\Delta E_{\rm wall}+\Delta E_{\rm other}=0.
+\end{equation}
+Similar ledgers apply to particle number and momentum. Conservative remapping and synchronized timestamps are therefore part of physics correctness, not merely software design.
+
+
+\section{Computational laboratory}
+Run the reduced Alfvén benchmark or a simple periodic MHD wave and track kinetic, magnetic, internal, and total energy. Perturb interpolation between two grids and measure the conservation defect. Implement a module-level particle and energy ledger.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Conservation laws separate transport through boundaries from true sources.
+\item MHD momentum is transported by fluid and Maxwell stresses.
+\item Total energy can remain conserved while its physical reservoirs exchange energy.
+\item Flux and helicity invariants require ideal dynamics and appropriate boundaries.
+\item Coupled simulation modules require explicit particle, momentum, and energy ledgers.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$U$ & conserved density & Quantity per volume. \\
+$\mathbf F$ & flux & Transport rate per area. \\
+$\mathsf T$ & momentum-flux tensor & Fluid plus magnetic stress. \\
+$H_M$ & magnetic helicity & $\int\mathbf A\cdot\mathbf B\,dV$. \\
+$H_C$ & cross helicity & $\int\mathbf u\cdot\mathbf B\,dV$. \\
+$S$ & source density & Nonconservative production or removal. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the integral mass balance from the local equation.
+\item Identify every term in the MHD momentum-flux tensor.
+\item Rewrite the electromagnetic part of the energy flux using ideal Ohm's law.
+\item State boundary conditions required for global momentum and energy conservation.
+\item Design a conservation test for alpha-particle energy transferred to thermal plasma and wall loads.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref7} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref8} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

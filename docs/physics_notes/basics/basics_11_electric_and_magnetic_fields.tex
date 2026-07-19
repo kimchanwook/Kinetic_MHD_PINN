@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 11 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 11: Electric and Magnetic Fields}{II - Electromagnetism foundations}{Forces, potentials, flux, energy, and the field language used throughout plasma physics}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Electric and magnetic fields are the immediate agents that accelerate charged particles and transmit forces through a plasma. This chapter begins with Coulomb's law, develops electric potential and magnetic flux, and explains why field energy and field-line geometry are useful without treating field lines as material objects. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Distinguish force, field, potential, flux, and energy density.
+\item Derive the electric field from a scalar potential in electrostatics.
+\item Use the Lorentz force to interpret electric and magnetic effects.
+\item Compute electric and magnetic flux through simple surfaces.
+\item Check electromagnetic expressions using SI dimensions.
+\item Explain the limits of field-line pictures.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 1-3.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{From forces between particles to fields}
+
+For two point charges separated by $\mathbf r=\mathbf x-\mathbf x'$, Coulomb's law is
+\begin{equation}
+\mathbf F_{12}=\frac{1}{4\pi\epsilon_0}\frac{q_1q_2}{r^3}\mathbf r.
+\end{equation}
+The electric field is defined as force per unit test charge:
+\begin{equation}
+\mathbf E(\mathbf x)=\lim_{q_t\rightarrow0}\frac{\mathbf F}{q_t}.
+\end{equation}
+The limit emphasizes that the test charge should not alter the source configuration. Superposition gives
+\begin{equation}
+\mathbf E(\mathbf x)=\frac{1}{4\pi\epsilon_0}\int
+\rho_q(\mathbf x')\frac{\mathbf x-\mathbf x'}{|\mathbf x-\mathbf x'|^3}\,d^3x'.
+\end{equation}
+A field is therefore a rule assigning a vector to every point, not a stream of material moving along drawn lines.
+
+
+\section{Electric potential and electrostatic energy}
+
+In electrostatics, $\nabla\times\mathbf E=0$, so the field can be written
+\begin{equation}
+\mathbf E=-\nabla\phi.
+\end{equation}
+The potential difference is the work per unit charge required to move slowly against the field:
+\begin{equation}
+\phi(\mathbf b)-\phi(\mathbf a)=-\int_{\mathbf a}^{\mathbf b}\mathbf E\cdot d\boldsymbol\ell.
+\end{equation}
+Combining Gauss's law with $\mathbf E=-\nabla\phi$ gives Poisson's equation,
+\begin{equation}
+\nabla^2\phi=-\frac{\rho_q}{\epsilon_0}.
+\end{equation}
+The electric energy density in vacuum is
+\begin{equation}
+u_E=\frac{\epsilon_0E^2}{2}.
+\end{equation}
+Only potential differences are physically observable in classical mechanics; adding a constant to $\phi$ changes no field.
+
+
+\section{Magnetic field and the Lorentz force}
+
+The force on a particle of charge $q$ and velocity $\mathbf v$ is
+\begin{equation}
+\mathbf F=q\left(\mathbf E+\mathbf v\times\mathbf B\right).
+\end{equation}
+Because $\mathbf v\cdot(\mathbf v\times\mathbf B)=0$, a magnetic field alone does no instantaneous work:
+\begin{equation}
+\frac{d}{dt}\left(\frac{mv^2}{2}\right)=q\mathbf v\cdot\mathbf E.
+\end{equation}
+Magnetic forces nevertheless redirect particles, change momentum transport, and allow a field to confine plasma. The magnetic energy density is
+\begin{equation}
+u_B=\frac{B^2}{2\mu_0}.
+\end{equation}
+This energy density later appears as magnetic pressure, while spatial variation and curvature produce magnetic tension forces.
+
+
+\section{Flux, circulation, and field-line geometry}
+
+Electric and magnetic fluxes through a surface $S$ are
+\begin{equation}
+\Phi_E=\int_S\mathbf E\cdot d\mathbf A,\qquad
+\Phi_B=\int_S\mathbf B\cdot d\mathbf A.
+\end{equation}
+Flux depends on both field strength and surface orientation. Magnetic field lines are tangent to $\mathbf B$ and may be parameterized by
+\begin{equation}
+\frac{d\mathbf x}{d\ell}=\frac{\mathbf B}{B}.
+\end{equation}
+Their visual density is conventionally used to indicate field magnitude, but this is a drawing convention. Since $\nabla\cdot\mathbf B=0$, magnetic field lines do not begin or end at isolated magnetic charges in classical electromagnetism.
+
+
+\section{Electrostatic and inductive electric fields}
+
+When magnetic fields vary in time, the electric field need not be conservative:
+\begin{equation}
+\nabla\times\mathbf E=-\frac{\partial\mathbf B}{\partial t}.
+\end{equation}
+A useful decomposition is
+\begin{equation}
+\mathbf E=-\nabla\phi-\frac{\partial\mathbf A}{\partial t},\qquad
+\mathbf B=\nabla\times\mathbf A.
+\end{equation}
+The first term is potential-derived; the second is inductive. Plasma models often neglect one contribution under a stated ordering, but they should never assume $\mathbf E=-\nabla\phi$ without checking Faraday's law.
+
+
+\section{Scales relevant to plasma simulation}
+
+Typical comparisons include electric and magnetic force magnitudes,
+\begin{equation}
+\frac{|qE|}{|qvB|}\sim\frac{E}{vB},
+\end{equation}
+and field energy relative to thermal pressure,
+\begin{equation}
+\beta=\frac{p}{B^2/(2\mu_0)}.
+\end{equation}
+Such ratios identify dominant physics. In numerical work, $\nabla\cdot\mathbf B$, energy balance, and unit consistency are primary diagnostics rather than cosmetic checks.
+
+
+\section{Computational laboratory}
+Implement Coulomb-field and potential calculations for a pair of charges. Verify numerically that $-\nabla\phi$ matches $\mathbf E$ away from the charges. Compute electric flux through nested spheres and magnetic flux through tilted planar surfaces. Compare finite-difference divergence errors under grid refinement.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Fields convert source information into local force laws.
+\item Electrostatic electric fields derive from a scalar potential, while inductive fields do not.
+\item Magnetic fields redirect charged particles but do not directly change their kinetic energy.
+\item Flux and field-line descriptions are geometric tools whose limitations must be respected.
+\item Field energies and dimensionless ratios connect electromagnetism to plasma dynamics.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\mathbf E$ & electric field & Force per unit positive charge. \\
+$\mathbf B$ & magnetic flux density & Field entering the magnetic Lorentz force. \\
+$\phi$ & electric potential & Potential energy per unit charge. \\
+$\rho_q$ & charge density & Charge per volume. \\
+$\Phi_E,\Phi_B$ & field fluxes & Surface integrals of normal field components. \\
+$\epsilon_0,\mu_0$ & vacuum constants & Permittivity and permeability. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the electric field of a point charge from its potential.
+\item Show explicitly that a magnetic force performs no work on a point particle.
+\item Calculate the flux of a uniform magnetic field through a tilted circular loop.
+\item Use dimensions to verify the units of $u_E$ and $u_B$.
+\item Explain why field lines can move in an ideal-MHD argument even though they are not material strings.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref7} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref8} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\end{thebibliography}
+
+\end{document}

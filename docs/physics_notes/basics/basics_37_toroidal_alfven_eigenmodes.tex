@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 37 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 37: Toroidal Alfvén Eigenmodes}{V - Plasma waves and Alfvén physics}{Toroidicity-induced gaps, coupled poloidal harmonics, discrete modes, and energetic-particle relevance}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Toroidal Alfvén eigenmodes, or TAEs, are discrete shear-Alfvén modes residing in a toroidicity-induced continuum gap. They are important in burning plasmas because fast alpha particles and beam ions can resonantly destabilize them and redistribute energetic particles. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Explain why toroidicity couples neighboring poloidal harmonics.
+\item Derive the approximate location of the TAE branch crossing.
+\item Estimate the TAE gap-center frequency.
+\item Describe the mixed-harmonic global eigenfunction.
+\item Identify energetic-particle drive and damping channels.
+\item Relate the reduced Module 4 benchmark to realistic TAE physics.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 29, 32, and 34-36.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{From cylindrical Alfvén waves to toroidal coupling}
+
+In a straight cylinder, poloidal Fourier harmonics can be independent in an axisymmetric equilibrium. In a torus, field strength and metric coefficients vary with poloidal angle. At large aspect ratio,
+\begin{equation}
+B(\theta)\simeq B_0(1-\epsilon\cos\theta),\qquad
+\epsilon=\frac{r}{R_0}.
+\end{equation}
+Multiplication by $\cos\theta$ maps $e^{im\theta}$ into $e^{i(m\pm1)\theta}$. Toroidicity therefore couples neighboring harmonics $m$ and $m+1$.
+
+
+\section{Uncoupled continuum branches}
+
+For fixed toroidal mode number $n$,
+\begin{equation}
+\omega_{A,m}(r)\simeq
+\frac{v_A(r)}{R_0}|m\iota(r)-n|.
+\end{equation}
+The neighboring branch is
+\begin{equation}
+\omega_{A,m+1}(r)\simeq
+\frac{v_A(r)}{R_0}|(m+1)\iota(r)-n|.
+\end{equation}
+Ignoring coupling, their magnitudes cross where the two parallel wave numbers are opposite:
+\begin{equation}
+m\iota-n=-[(m+1)\iota-n].
+\end{equation}
+Hence
+\begin{equation}
+\boxed{\iota_c=\frac{2n}{2m+1}},
+\qquad
+\boxed{q_c=\frac{2m+1}{2n}}.
+\end{equation}
+
+
+\section{TAE gap-center frequency}
+
+At the crossing,
+\begin{equation}
+|m\iota_c-n|=\frac{\iota_c}{2}.
+\end{equation}
+Thus the leading gap-center estimate is
+\begin{equation}
+\omega_{\rm TAE}\sim
+\frac{v_A}{2qR_0}.
+\end{equation}
+Numerical coefficients and gap width depend on equilibrium geometry, compressibility, finite pressure, and the exact eigenvalue formulation. This estimate is a scaling law, not a precision prediction.
+
+
+\section{Avoided crossing and discrete global mode}
+
+Toroidal coupling produces a local two-harmonic matrix
+\begin{equation}
+\begin{bmatrix}
+\omega_{A,m}^2&g_T\\
+g_T&\omega_{A,m+1}^2
+\end{bmatrix}.
+\end{equation}
+The crossing opens into upper and lower continuum edges. A radial eigenmode whose frequency lies inside the gap can avoid direct intersection with the continuum over its main localization region. It has two significant poloidal components whose relative weights exchange across the coupling region.
+
+
+\section{Radial structure and boundary conditions}
+
+A TAE is global: its radial envelope is determined by equilibrium profiles, magnetic shear, coupling strength, and boundary conditions. Schematically,
+\begin{equation}
+-\frac{d}{dr}\left(K\frac{d\boldsymbol\xi}{dr}\right)
++\mathsf H_{\rm TAE}(r)\boldsymbol\xi
+=\omega^2\mathsf M(r)\boldsymbol\xi.
+\end{equation}
+Gap existence alone does not guarantee a discrete mode. The radial potential and boundaries must support a normalizable solution, and coupling to other continua can still produce damping.
+
+
+\section{Energetic-particle resonance and drive}
+
+Fusion alpha particles or beam ions exchange energy with a TAE when their orbital phase remains coherent with the wave. A schematic resonance condition is
+\begin{equation}
+\omega-n\omega_\phi-m\omega_\theta-\ell\omega_b-\omega_d\simeq0.
+\end{equation}
+The energetic-particle contribution to growth depends on phase-space gradients:
+\begin{equation}
+\gamma_{\rm EP}\sim
+\int d\Gamma\,\delta(\omega-\omega_{\rm res})
+\,\mathcal W\,\mathcal D f_{\rm EP}.
+\end{equation}
+The exact operator $\mathcal D$ and weight $\mathcal W$ depend on coordinates and model. A favorable gradient can drive the mode; other gradients or populations can damp it.
+
+
+\section{Net stability and nonlinear consequence}
+
+The linear growth rate can be organized as
+\begin{equation}
+\gamma_{\rm net}=
+\gamma_{\rm EP}
+-\gamma_{\rm continuum}
+-\gamma_{\rm Landau}
+-\gamma_{\rm coll}
+-\gamma_{\rm other}.
+\end{equation}
+If $\gamma_{\rm net}>0$, amplitude grows until nonlinear effects change the distribution, mode structure, or resonance. Resulting fast-ion redistribution can flatten the driving gradient, cause prompt or resonant losses, alter alpha heating, and create localized wall loads.
+
+
+\section{TAE, HAE, EAE, and terminology}
+
+A TAE is specifically associated with toroidicity-induced coupling. Ellipticity-induced Alfvén eigenmodes (EAEs), noncircularity-induced modes (NAEs), and helical Alfvén eigenmodes (HAEs) arise from other geometric harmonics. In stellarators, broad three-dimensional coupling can make classification approximate. The phrase relevant to the project is \emph{alpha-particle-driven Alfvén eigenmode}, not ``alpha eigenmode.''
+
+
+\section{Relation to the Module 4 benchmark}
+
+The current Module 4 solver uses a reduced two-harmonic self-adjoint radial problem. It reproduces:
+\begin{itemize}[leftmargin=1.6em]
+\item uncoupled continuum branches;
+\item an avoided crossing and finite local gap;
+\item mixed-harmonic eigenfunctions;
+\item a discrete mode inside the gap;
+\item finite-volume convergence and eigenpair verification.
+\end{itemize}
+It does not yet include a realistic three-dimensional stellarator equilibrium, compressible continuum branches, kinetic drive, or damping. Those limitations are deliberate so the conventional reference problem remains transparent enough to validate the future eigenvalue PINN.
+
+
+\section{Computational laboratory}
+Use analytic $\iota(r)$ and density profiles to plot neighboring continuum branches, derive the crossing radius, and compare the numerical gap center with $v_A/(2qR_0)$. Solve the two-harmonic radial eigenproblem, plot harmonic weights, and scan coupling and shear. Identify parameter regions where a discrete gap mode exists.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Toroidicity couples neighboring poloidal harmonics and opens a shear-Alfvén continuum gap.
+\item The leading TAE crossing and frequency scales follow from the parallel wave numbers.
+\item A TAE is a global mixed-harmonic eigenmode, not merely a local branch crossing.
+\item Energetic particles can drive TAEs through orbital resonances and phase-space gradients.
+\item The repository benchmark isolates the gap-mode mechanism before adding stellarator geometry and kinetic feedback.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\epsilon$ & inverse aspect ratio & $r/R_0$. \\
+$\omega_{\rm TAE}$ & TAE frequency scale & Approximately $v_A/(2qR_0)$. \\
+$g_T$ & toroidal coupling & Off-diagonal harmonic coupling. \\
+$\gamma_{\rm EP}$ & energetic-particle drive & Fast-particle contribution to growth. \\
+$\omega_\phi,\omega_\theta,\omega_b$ & orbit frequencies & Toroidal, poloidal, and bounce frequencies. \\
+$d\Gamma$ & phase-space measure & Integration measure for resonant particles. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the crossing condition $\iota_c=2n/(2m+1)$.
+\item Derive the leading $v_A/(2qR_0)$ frequency estimate.
+\item Explain why toroidicity couples $m$ to $m\pm1$.
+\item List physical contributions to net TAE growth or damping.
+\item State which TAE features the current reduced benchmark captures and which it omits.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref2} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref3} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref9} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref10} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref11} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\end{thebibliography}
+
+\end{document}

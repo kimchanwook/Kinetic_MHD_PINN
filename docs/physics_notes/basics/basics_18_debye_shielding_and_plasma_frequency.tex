@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 18 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 18: Debye Shielding and Plasma Frequency}{III - Elementary plasma physics}{Electrostatic screening, the Poisson-Boltzmann equation, and collective electron oscillations}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Debye shielding and plasma oscillation are the canonical examples of collective plasma response. This chapter derives the screened potential and electron plasma frequency, then connects the resulting length and time scales. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Derive the linearized Debye shielding equation.
+\item Interpret the Yukawa screened potential.
+\item Derive the electron plasma frequency from a fluid displacement.
+\item Relate Debye length, thermal speed, and plasma frequency.
+\item Generalize the screening length to multiple species.
+\item Identify the assumptions that fail in kinetic or strongly coupled regimes.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 3, 5, 11, 12, and 17.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Boltzmann response of mobile electrons}
+
+Consider isothermal electrons in a slowly varying electrostatic potential $\phi$. Force balance,
+\begin{equation}
+0=en_e\nabla\phi-\nabla p_e,
+\end{equation}
+with $p_e=n_ek_BT_e$, gives
+\begin{equation}
+\nabla\ln n_e=\frac{e}{k_BT_e}\nabla\phi.
+\end{equation}
+Thus
+\begin{equation}
+n_e=n_{e0}\exp\left(\frac{e\phi}{k_BT_e}\right).
+\end{equation}
+Positive potential attracts electrons because their potential energy is $-e\phi$.
+
+
+\section{Linearized Poisson-Boltzmann equation}
+
+Assume fixed singly charged ions with $n_i=n_0$ and a weak potential,
+\begin{equation}
+\left|\frac{e\phi}{k_BT_e}\right|\ll1.
+\end{equation}
+Then
+\begin{equation}
+n_e\simeq n_0\left(1+\frac{e\phi}{k_BT_e}\right).
+\end{equation}
+Away from an inserted test charge, Poisson's equation becomes
+\begin{equation}
+\nabla^2\phi=-\frac{e(n_i-n_e)}{\epsilon_0}
+=\frac{n_0e^2}{\epsilon_0k_BT_e}\phi
+=\frac{\phi}{\lambda_D^2},
+\end{equation}
+where
+\begin{equation}
+\boxed{\lambda_D=\sqrt{\frac{\epsilon_0k_BT_e}{n_0e^2}}}.
+\end{equation}
+
+
+\section{Screened potential of a point charge}
+
+Including a point test charge $Q$ gives
+\begin{equation}
+\left(\nabla^2-\lambda_D^{-2}\right)\phi
+=-\frac{Q}{\epsilon_0}\delta(\mathbf r).
+\end{equation}
+The spherically symmetric solution is
+\begin{equation}
+\boxed{\phi(r)=\frac{Q}{4\pi\epsilon_0r}e^{-r/\lambda_D}}.
+\end{equation}
+At $r\ll\lambda_D$, the potential is nearly Coulombic. At $r\gg\lambda_D$, collective rearrangement suppresses it exponentially. Screening is not literal cancellation by one nearby particle; it is an ensemble response.
+
+
+\section{Multispecies screening}
+
+If several mobile species respond thermally, the linearized inverse screening length adds:
+\begin{equation}
+\frac{1}{\lambda_D^2}=
+\sum_s\frac{n_{s0}q_s^2}{\epsilon_0k_BT_s}.
+\end{equation}
+The sign of $q_s$ disappears because each species shifts in the direction that screens the perturbation. Whether ions respond depends on the timescale: rapid disturbances may see ions as effectively fixed.
+
+
+\section{Electron plasma oscillation}
+
+Consider a one-dimensional slab in which the uniform electron fluid is displaced by a small positive distance $\xi$ relative to immobile ions. Positive ion charge is exposed on the left and negative electron charge accumulates on the right, so the electric field points in the positive displacement direction:
+\begin{equation}
+E=\frac{en_0}{\epsilon_0}\xi.
+\end{equation}
+Because an electron has charge $-e$, its electric force points opposite to the displacement. The electron equation of motion is therefore
+\begin{equation}
+m_e\ddot\xi=-eE=-\frac{n_0e^2}{\epsilon_0}\xi.
+\end{equation}
+Therefore
+\begin{equation}
+\ddot\xi+\omega_{pe}^2\xi=0,\qquad
+\boxed{\omega_{pe}=\sqrt{\frac{n_0e^2}{m_e\epsilon_0}}}.
+\end{equation}
+This oscillation exists even with no magnetic field and illustrates collective electrostatic inertia.
+
+
+\section{Connection between length and time scales}
+
+Define one common electron thermal speed by
+\begin{equation}
+v_{Te}=\sqrt{\frac{k_BT_e}{m_e}}.
+\end{equation}
+Then
+\begin{equation}
+\boxed{\lambda_D=\frac{v_{Te}}{\omega_{pe}}}.
+\end{equation}
+The Debye length is the distance an electron moving at the thermal speed travels during approximately one inverse plasma frequency. Different thermal-speed conventions introduce factors such as $\sqrt{2}$; definitions must accompany formulas.
+
+
+\section{Assumptions and limitations}
+
+The Boltzmann derivation assumes thermal equilibrium along the response direction, weak potential, weak coupling, and scale separation. Collisionless kinetic plasmas can exhibit Landau damping and non-Maxwellian response. Strongly coupled matter does not obey simple mean-field shielding. Near material boundaries, sheaths may contain order-unity potential variations and require nonlinear treatment.
+
+
+\section{Computational laboratory}
+Solve the radial screened-Poisson equation for a smooth finite-size test charge and compare with the Yukawa solution outside the source. Simulate the cold electron-fluid oscillator and recover $\omega_{pe}$ from a Fourier transform. Verify density and temperature scalings.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Debye shielding follows from self-consistent particle response coupled to Poisson's equation.
+\item The screened point-charge potential decays exponentially beyond the Debye length.
+\item The plasma frequency is the natural electron charge-separation oscillation rate.
+\item Debye length equals a thermal speed divided by plasma frequency under a stated convention.
+\item Both results depend on weak perturbations and a mean-field plasma description.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\lambda_D$ & Debye length & Electrostatic screening scale. \\
+$\omega_{pe}$ & electron plasma frequency & Collective electron oscillation rate. \\
+$v_{Te}$ & electron thermal speed & $\sqrt{k_BT_e/m_e}$ in this note. \\
+$\xi$ & electron displacement & Small fluid displacement from ions. \\
+$Q$ & test charge & Source of the screened potential. \\
+$n_0$ & equilibrium density & Unperturbed electron and ion density. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the Boltzmann electron relation from isothermal force balance.
+\item Derive the Debye length by linearizing the exponential density response.
+\item Verify that the Yukawa potential has the correct Coulomb limit.
+\item Derive the electron plasma frequency using the continuity and momentum equations instead of a slab displacement.
+\item Explain which species contribute to screening on electron and ion timescales.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref7} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref8} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref9} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref10} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\end{thebibliography}
+
+\end{document}

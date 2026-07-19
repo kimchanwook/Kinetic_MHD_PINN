@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 44 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 44: Guiding-Center Theory}{VI - Kinetic theory and energetic particles}{Separation of gyromotion from slow orbit dynamics, adiabatic invariants, mirror force, and reduced equations of motion}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} A fusion alpha particle can execute billions of gyro-orbits before its macroscopic confinement changes. Guiding-center theory removes that rapidly rotating phase while preserving the slow motion needed for orbit following, resonances, and wall-loss calculations. This chapter develops the ordering, magnetic moment, mirror force, principal drifts, validity conditions, and numerical implications of the reduction.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Identify the small parameter that justifies gyro-averaging.
+\item Separate particle position into guiding-center and gyroradius contributions.
+\item Derive and interpret the first adiabatic invariant $\mu$.
+\item Derive the mirror force and trapped-particle condition qualitatively.
+\item State first-order guiding-center equations and principal drifts.
+\item Recognize when guiding-center theory fails.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+Recommended prerequisites are Basics 2, 13, 41, and 42. Review uniform-field gyromotion before studying nonuniform-field corrections.
+
+\section{Separation of scales}
+In a magnetic field, a charged particle rotates at gyrofrequency
+\begin{equation}
+\Omega_c=\frac{|q|B}{m}
+\end{equation}
+with Larmor radius
+\begin{equation}
+\rho_L=\frac{v_\perp}{\Omega_c}.
+\end{equation}
+If the equilibrium varies over length $L_B$ and time $\tau_B$, guiding-center theory requires
+\begin{equation}
+\epsilon=\frac{\rho_L}{L_B}\ll1,
+\qquad
+\frac{1}{\Omega_c\tau_B}\ll1.
+\end{equation}
+The particle position is decomposed as
+\begin{equation}
+\mathbf r=\mathbf R+\boldsymbol\rho,
+\end{equation}
+where $\mathbf R$ is the slowly moving guiding center and $\boldsymbol\rho$ is the rapidly rotating gyroradius vector.
+
+\section{Uniform-field orbit}
+For $\mathbf E=0$ and uniform $\mathbf B=B\mathbf b$,
+\begin{equation}
+m\dot{\mathbf v}=q\mathbf v\times\mathbf B.
+\end{equation}
+The parallel velocity is constant, while the perpendicular velocity rotates. The kinetic energy and pitch components satisfy
+\begin{equation}
+\frac{mv^2}{2}=\frac{mv_\parallel^2}{2}+\frac{mv_\perp^2}{2}.
+\end{equation}
+This exact solution is the zeroth-order motion about which the asymptotic expansion is built.
+
+\section{Magnetic moment as an adiabatic invariant}
+Define
+\begin{equation}
+\boxed{\mu=\frac{mv_\perp^2}{2B}}.
+\end{equation}
+The perpendicular kinetic energy is $E_\perp=\mu B$. When $B$ changes little during one gyro-orbit, gyro-averaging shows
+\begin{equation}
+\frac{d\mu}{dt}=O(\epsilon^2)
+\end{equation}
+for slowly varying static fields. Thus $\mu$ is approximately conserved.
+
+A useful physical derivation treats the gyro-orbit as a current loop. Its magnetic moment is
+\begin{equation}
+I\mathcal A=\frac{q\Omega_c}{2\pi}\pi\rho_L^2
+=\frac{mv_\perp^2}{2B}\operatorname{sgn}(q).
+\end{equation}
+The orbital magnetic dipole interacts with field gradients, producing a force proportional to $-\mu\nabla B$.
+
+\section{Mirror force}
+For static fields and negligible electric work, the total kinetic energy
+\begin{equation}
+\mathcal E=\frac{mv_\parallel^2}{2}+\mu B
+\end{equation}
+is constant. Differentiate along the orbit:
+\begin{equation}
+m v_\parallel\dot v_\parallel+\mu v_\parallel\mathbf b\cdot\nabla B=0.
+\end{equation}
+For $v_\parallel\neq0$,
+\begin{equation}
+\boxed{m\dot v_\parallel=-\mu\nabla_\parallel B}.
+\end{equation}
+A particle moving into larger $B$ converts parallel energy into perpendicular energy until $v_\parallel=0$, where it reflects.
+
+If the particle begins where the field is $B_0$ with pitch angle $\alpha_0$, reflection occurs when
+\begin{equation}
+\sin^2\alpha_0\ge\frac{B_0}{B_{\max}}.
+\end{equation}
+This divides trapped and passing populations.
+
+\section{Guiding-center drifts}
+The lowest-order guiding-center velocity is parallel streaming plus the electric drift:
+\begin{equation}
+\dot{\mathbf R}=v_\parallel\mathbf b+
+\mathbf v_E+\mathbf v_{\nabla B}+\mathbf v_c+\cdots.
+\end{equation}
+The principal drifts are
+\begin{align}
+\mathbf v_E&=\frac{\mathbf E\times\mathbf B}{B^2},\\
+\mathbf v_{\nabla B}&=\frac{\mu}{qB}\,\mathbf b\times\nabla B,\\
+\mathbf v_c&=\frac{mv_\parallel^2}{qB}\,\mathbf b\times\boldsymbol\kappa,
+\qquad
+\boldsymbol\kappa=\mathbf b\cdot\nabla\mathbf b.
+\end{align}
+The $\mathbf E\times\mathbf B$ drift is independent of particle mass and charge. Grad-$B$ and curvature drifts reverse with charge and grow with particle energy, making them central to fast-ion confinement.
+
+A consistent first-order parallel equation is
+\begin{equation}
+\boxed{\dot v_\parallel=\frac{q}{m}E_\parallel-
+\frac{\mu}{m}\mathbf b\cdot\nabla B+\cdots.}
+\end{equation}
+
+\section{Guiding-center coordinates and measure}
+A common coordinate set is
+\begin{equation}
+(\mathbf R,v_\parallel,\mu,\vartheta_g),
+\end{equation}
+where $\vartheta_g$ is gyroangle. Gyro-averaged models remove explicit dependence on $\vartheta_g$. The phase-space measure is not simply $d^3R\,dv_\parallel\,d\mu$; a magnetic Jacobian factor appears. Structure-preserving formulations use a modified field $B_\parallel^*$ and measure proportional to
+\begin{equation}
+B_\parallel^*\,d^3R\,dv_\parallel\,d\mu\,d\vartheta_g.
+\end{equation}
+Ignoring this factor can violate particle conservation in noncanonical coordinates.
+
+\section{Orbit frequencies and resonance}
+A guiding-center orbit can contain fast parallel transit or bounce motion and slower toroidal precession. These generate frequencies
+\begin{equation}
+\omega_t,\qquad\omega_b,\qquad\omega_d,
+\end{equation}
+which enter Alfv\'en-wave resonance conditions. Module 3 must compute these consistently with the same equilibrium and coordinate conventions used by Module 4.
+
+\section{Energy and invariant checks}
+In time-independent electrostatic fields, an ideal guiding-center integrator should preserve
+\begin{equation}
+\mathcal H=\frac{mv_\parallel^2}{2}+\mu B+q\phi
+\end{equation}
+to numerical accuracy. In an axisymmetric field, canonical toroidal momentum provides another benchmark. Monitoring only spatial trajectories can hide large invariant errors.
+
+\section{Limits of validity}
+Guiding-center theory can fail when:
+\begin{itemize}[leftmargin=1.6em]
+\item $\rho_L/L_B$ is not small;
+\item fields vary near the gyrofrequency;
+\item the orbit passes close to magnetic nulls where $B\to0$;
+\item sharp material boundaries require full-orbit impact geometry;
+\item cyclotron resonances or finite-Larmor-radius effects are essential.
+\end{itemize}
+Near marginal validity, a full-orbit comparison is required.
+
+\section{Numerical considerations}
+Runge--Kutta integration is simple but can accumulate secular invariant drift. Symplectic, variational, or volume-preserving methods better respect long-time orbit structure. Adaptive stepping must resolve bounce points and rapid field variation without introducing biased loss boundaries.
+
+\section{Connection to the Kinetic MHD-PINN project}
+Module 3 uses guiding-center trajectories to estimate confinement, orbit frequencies, prompt losses, and wall strikes. Module 5 uses orbit frequencies and mode overlap for resonant drive. Structure-preserving neural surrogates may accelerate orbit maps, but they must be tested against energy, magnetic-moment, and phase-space-volume constraints.
+
+\section{Computational laboratory}
+\begin{enumerate}[leftmargin=1.6em]
+\item Integrate full Lorentz motion in a uniform field and recover $\Omega_c$ and $\rho_L$.
+\item Add a weak field gradient and compare the measured grad-$B$ drift with theory.
+\item Integrate the reduced mirror equations in $B(z)=B_0(1+z^2/L^2)$.
+\item Verify conservation of $\mu$ and energy as the scale ratio $\rho_L/L$ is reduced.
+\item Compare ordinary Runge--Kutta and a structure-preserving method over many bounce periods.
+\end{enumerate}
+
+\section{Summary}
+Guiding-center theory exploits the small ratio of gyroradius to equilibrium scale. It removes fast gyroangle dynamics while retaining parallel streaming, mirror motion, and cross-field drifts. The magnetic moment is the key first adiabatic invariant. The reduction enables practical energetic-particle orbit following, but its Jacobian, invariants, and validity limits must be respected.
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.6em]
+\item Estimate the gyroradius of a 3.5 MeV alpha particle in a 5 T field.
+\item Derive the mirror reflection condition from energy and $\mu$ conservation.
+\item Show dimensionally that each drift velocity has units of speed.
+\item Explain why $\mathbf E\times\mathbf B$ drift is independent of charge sign.
+\item Propose invariant-based acceptance tests for a Module 3 orbit solver.
+\end{enumerate}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\Omega_c$ & Gyrofrequency & Angular frequency of cyclotron motion.\\
+$\rho_L$ & Larmor radius & Radius of the fast gyromotion.\\
+$\mu$ & Magnetic moment & First adiabatic invariant $mv_\perp^2/(2B)$.\\
+$\mathbf R$ & Guiding-center position & Gyro-averaged particle position.\\
+$\boldsymbol\kappa$ & Field-line curvature & $\mathbf b\cdot\nabla\mathbf b$.\\
+\end{symtable}
+
+\section{References}
+\begin{enumerate}[leftmargin=1.6em]
+\item R. G. Littlejohn, guiding-center Hamiltonian theory papers.
+\item R. B. White, \emph{The Theory of Toroidally Confined Plasmas}.
+\item T. G. Northrop, \emph{The Adiabatic Motion of Charged Particles}.
+\item A. J. Brizard and T. S. Hahm, ``Foundations of nonlinear gyrokinetic theory,'' \emph{Reviews of Modern Physics}, 2007.
+\end{enumerate}
+
+\end{document}

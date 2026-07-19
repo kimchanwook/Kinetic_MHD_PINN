@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 6 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 6: Linear Algebra and Eigenvalue Problems}{I - Mathematical and computational foundations}{Vector spaces, inner products, generalized eigenproblems, conditioning, and physical modes}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Discretized plasma equations become algebraic systems. Equilibria require solves, waves require eigenpairs, and multiphysics coupling requires stable linearization and conditioning. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Interpret arrays and functions as vectors in a vector space.
+\item Use bases, inner products, norms, and orthogonality.
+\item Explain rank, null spaces, solvability, and condition number.
+\item Derive ordinary and generalized eigenvalue problems.
+\item Use symmetry, positivity, and Rayleigh quotients.
+\item Assess residuals, normalization, convergence, and mode tracking.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 1 and elementary algebra; integration for continuous inner products.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Vector spaces and bases}
+
+A vector space is closed under addition and scalar multiplication. Functions form vector spaces as naturally as finite arrays. In a basis $\{\mathbf e_i\}$,
+\begin{equation}
+\mathbf x=\sum_i x_i\mathbf e_i.
+\end{equation}
+Discretization represents a continuous field by a finite coordinate vector. The basis may be grid values, finite-element functions, Fourier modes, or learned features.
+
+
+\section{Inner products and orthogonality}
+
+The Euclidean inner product is $\mathbf x^T\mathbf y$. A weighted inner product is
+\begin{equation}
+\langle\mathbf x,\mathbf y\rangle_M=\mathbf x^TM\mathbf y,
+\end{equation}
+with symmetric positive-definite $M$. A continuous analogue is
+\begin{equation}
+\langle\xi,\eta\rangle=\int w(s)\xi(s)\eta(s)\,ds.
+\end{equation}
+Orthogonality depends on the chosen metric. Generalized eigenmodes are often orthogonal in a mass-matrix metric rather than the ordinary dot product.
+
+
+\section{Linear systems, null spaces, and conditioning}
+
+A square system $A\mathbf x=\mathbf b$ has a unique solution if $A$ is nonsingular. The null space contains solutions of $A\mathbf x=0$. Gauge freedoms, pure-Neumann boundary conditions, and unconstrained normalizations often create null spaces.
+
+The condition number
+\begin{equation}
+\kappa(A)=\norm{A}\norm{A^{-1}}
+\end{equation}
+measures worst-case amplification of input error. Nondimensionalization, scaling, and preconditioning improve conditioning without changing the intended physical solution.
+
+
+\section{Eigenvalues and dynamical modes}
+
+An eigenpair satisfies
+\begin{equation}
+A\mathbf x=\lambda\mathbf x,\qquad\mathbf x\ne0.
+\end{equation}
+For $\dot{\mathbf q}=A\mathbf q$, a modal solution $\mathbf q=\mathbf xe^{\lambda t}$ has growth and oscillation set by $\lambda$.
+
+A second-order system
+\begin{equation}
+M\ddot{\mathbf q}+K\mathbf q=0
+\end{equation}
+with $\mathbf q=\mathbf xe^{-i\omega t}$ gives
+\begin{equation}
+K\mathbf x=\omega^2M\mathbf x.
+\end{equation}
+$K$ represents restoring forces and $M$ inertia. Module 4 uses this structure.
+
+
+\section{Symmetry, positivity, and Rayleigh quotients}
+
+If $K$ and $M$ are symmetric and $M$ is positive definite, generalized eigenvalues are real under appropriate boundary conditions. The Rayleigh quotient
+\begin{equation}
+\mathcal R(\mathbf x)=\frac{\mathbf x^TK\mathbf x}{\mathbf x^TM\mathbf x}
+\end{equation}
+equals $\omega^2$ at an eigenvector. Positive $K$ implies positive squared frequencies. An indefinite force operator may produce negative $\omega^2$, signaling ideal instability.
+
+
+\section{Residuals, normalization, sparse solvers, and mode identity}
+
+A computed eigenpair should satisfy a normalized residual such as
+\begin{equation}
+r=\frac{\norm{K\mathbf x-\lambda M\mathbf x}}
+{\norm{K\mathbf x}+|\lambda|\norm{M\mathbf x}}.
+\end{equation}
+A small residual proves algebraic consistency, not continuum convergence. Eigenvectors have arbitrary scale and sign, so impose
+\begin{equation}
+\mathbf x^TM\mathbf x=1
+\end{equation}
+and a reproducible sign rule.
+
+Sparse Krylov and shift-invert methods find selected modes without diagonalizing the whole matrix. During parameter scans, frequency sorting can swap branch identity near avoided crossings. Use metric overlaps, harmonic weights, and localization.
+
+
+\section{Computational laboratory}
+
+Assemble mass and stiffness matrices for a fixed-end mass-spring chain. Solve $Kx=\omega^2Mx$, normalize in the $M$ inner product, and verify orthogonality and residuals. Refine the chain and compare with the analytic string limit. Perturb one spring and track modes by overlap rather than eigenvalue rank.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Discretization maps fields into finite-dimensional vector spaces.
+\item Inner products define normalization and orthogonality.
+\item Generalized eigenproblems separate inertia and restoring forces.
+\item Symmetry and positive definiteness strongly constrain the spectrum.
+\item Residuals, refinement, and mode tracking are all required.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$A,K,M$ & operators & Generic, stiffness, and mass matrices. \\
+$\lambda,\omega^2$ & eigenvalue & Modal growth parameter or squared frequency. \\
+$\mathbf x$ & eigenvector & Discrete mode shape. \\
+$\kappa(A)$ & condition number & Sensitivity of a linear solve. \\
+$\mathcal R$ & Rayleigh quotient & Energy ratio estimating an eigenvalue. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Prove orthogonality of distinct eigenvectors of a real symmetric matrix.
+\item Derive the generalized Rayleigh quotient.
+\item Give an example where a small matrix residual does not imply a good physical solution.
+\item Explain why eigenvector scale and sign are arbitrary.
+\item Derive the eigenvalues of a coupled $2\times2$ matrix.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

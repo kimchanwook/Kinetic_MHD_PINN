@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 39 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 39: Wave-Particle Resonance}{V - Plasma waves and Alfv\'en physics}{Phase synchronism, orbital frequencies, resonant energy exchange, and the origin of energetic-particle drive}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} A plasma wave can exchange substantial energy with a charged particle only when the particle repeatedly encounters nearly the same phase of the wave. This chapter develops that statement from the wave phase, derives transit, bounce, drift, and cyclotron resonance conditions, explains the sign of energy exchange, and connects single-particle synchronism to the kinetic growth rate used in Module 5.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Explain resonance as phase synchronism rather than mere equality of two scalar frequencies.
+\item Derive a resonance condition by differentiating the wave phase along a particle orbit.
+\item Distinguish transit, bounce, drift, and cyclotron resonances.
+\item Relate the work $q\mathbf E\cdot\mathbf v$ to wave growth or damping.
+\item Explain why distribution-function gradients determine the net direction of energy transfer.
+\item Identify resonance broadening and nonlinear trapping scales.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+Recommended prerequisites are Basics 7, 13, 31, 32, 34, and 41. First follow the phase argument geometrically. Then reproduce the action-angle derivation and the reduced resonant-pendulum model.
+
+\section{The elementary phase-synchronism idea}
+Consider a one-dimensional electrostatic wave
+\begin{equation}
+E(x,t)=\Re\!\left\{\widetilde E e^{i(kx-\omega t)}\right\}.
+\end{equation}
+A particle moving approximately as $x(t)=x_0+vt$ samples the phase
+\begin{equation}
+\Phi(t)=kx(t)-\omega t=\Phi_0+(kv-\omega)t.
+\end{equation}
+If $kv-\omega$ is large, the particle rapidly alternates between accelerating and decelerating phases, and the long-time work nearly cancels. If
+\begin{equation}
+\boxed{\omega-kv\simeq0},
+\end{equation}
+the phase changes slowly and coherent energy exchange can accumulate. Resonance is therefore a statement about a slowly varying phase.
+
+\section{Energy exchange with a wave}
+The particle kinetic energy obeys
+\begin{equation}
+\frac{d}{dt}\left(\frac{mv^2}{2}\right)=q\mathbf E\cdot\mathbf v.
+\end{equation}
+For a sinusoidal wave, the sign of the instantaneous work depends on phase. A single resonant particle can gain or lose energy depending on its initial phase. A distribution of particles produces a systematic result only after phase averaging and accounting for how many particles occupy neighboring velocities or actions.
+
+For a weak electrostatic wave, particles slightly slower than the phase velocity $v_\phi=\omega/k$ tend to be accelerated while particles slightly faster tend to be decelerated. A monotonically decreasing distribution has more slower particles than faster particles, so particles gain net energy and the wave damps. A positive slope in the resonant region can reverse the sign and drive the wave.
+
+\section{Toroidal mode phase}
+A perturbation in toroidal geometry is commonly expanded as
+\begin{equation}
+\widetilde F(\psi)\exp\!\left[i(m\theta-n\phi-\omega t)\right],
+\end{equation}
+where $m$ and $n$ are poloidal and toroidal mode numbers. Along an orbit,
+\begin{equation}
+\frac{d\Phi}{dt}=m\dot\theta-n\dot\phi-\omega.
+\end{equation}
+For a simple passing orbit with mean frequencies $\omega_\theta$ and $\omega_\phi$, phase synchronism requires
+\begin{equation}
+\boxed{\omega=m\omega_\theta-n\omega_\phi}.
+\end{equation}
+Different sign conventions for the Fourier phase produce equivalent formulas with corresponding sign changes. The invariant content is $d\Phi/dt\simeq0$.
+
+\section{Action-angle formulation}
+An integrable unperturbed orbit can be described by actions $\mathbf J$ and angles $\boldsymbol\alpha$, with
+\begin{equation}
+\dot{\boldsymbol\alpha}=\boldsymbol\Omega(\mathbf J),\qquad \dot{\mathbf J}=0.
+\end{equation}
+A perturbation has Fourier components
+\begin{equation}
+H_1=\sum_{\boldsymbol\ell} H_{\boldsymbol\ell}(\mathbf J)
+ e^{i(\boldsymbol\ell\cdot\boldsymbol\alpha-\omega t)}.
+\end{equation}
+The phase of one component evolves as
+\begin{equation}
+\dot\Phi_{\boldsymbol\ell}=\boldsymbol\ell\cdot\boldsymbol\Omega-\omega.
+\end{equation}
+The general resonance condition is therefore
+\begin{equation}
+\boxed{\omega-\boldsymbol\ell\cdot\boldsymbol\Omega(\mathbf J)=0}.
+\end{equation}
+In toroidal energetic-particle notation this is often written schematically as
+\begin{equation}
+\boxed{\omega-n\omega_\phi-m\omega_\theta-\ell\omega_b-\omega_d\simeq0},
+\end{equation}
+with the understanding that not every term is independent in every coordinate convention.
+
+\section{Transit, bounce, drift, and cyclotron resonances}
+\subsection{Passing-particle transit resonance}
+Passing particles circulate around the torus. The dominant synchronism involves their parallel transit frequency and the field-aligned wave number:
+\begin{equation}
+\omega-k_\parallel v_\parallel\simeq0.
+\end{equation}
+This is the natural resonance for shear-Alfv\'en waves whose electric field and magnetic perturbation vary along field lines.
+
+\subsection{Trapped-particle bounce resonance}
+Trapped particles oscillate between mirror points with bounce frequency $\omega_b$. Fourier analysis of the periodic bounce motion produces harmonics $\ell\omega_b$, giving
+\begin{equation}
+\omega-n\omega_\phi-\ell\omega_b\simeq0.
+\end{equation}
+The integer $\ell$ labels the bounce harmonic.
+
+\subsection{Precessional or drift resonance}
+The guiding center slowly precesses because of curvature and grad-$B$ drifts. Low-frequency modes can resonate with the toroidal precession frequency:
+\begin{equation}
+\omega-n\omega_d\simeq0.
+\end{equation}
+This is especially important for trapped energetic particles and low-frequency energetic-particle modes.
+
+\subsection{Cyclotron resonance}
+When the wave frequency approaches harmonics of the gyrofrequency,
+\begin{equation}
+\omega-k_\parallel v_\parallel-\ell\Omega_c\simeq0,
+\end{equation}
+particles can exchange perpendicular energy with the wave. The low-frequency kinetic-MHD models used for Alfv\'en eigenmodes normally average over gyromotion and therefore retain cyclotron effects only through reduced finite-Larmor-radius corrections or closures.
+
+\section{Why gradients produce drive or damping}
+Linear kinetic theory produces resonant terms with a denominator
+\begin{equation}
+\frac{1}{\omega-\boldsymbol\ell\cdot\boldsymbol\Omega+i0^+}.
+\end{equation}
+Its imaginary part selects the resonant surface in phase space:
+\begin{equation}
+\Im\frac{1}{x+i0^+}=-\pi\delta(x).
+\end{equation}
+The power transfer contains a directional derivative of the equilibrium distribution,
+\begin{equation}
+P_{\mathrm{res}}\propto-
+\int d\mathbf J\,
+\delta(\omega-\boldsymbol\ell\cdot\boldsymbol\Omega)
+\left(\boldsymbol\ell\cdot\frac{\partial f_0}{\partial\mathbf J}\right)
+|H_{\boldsymbol\ell}|^2.
+\end{equation}
+Thus resonance identifies \emph{where} exchange occurs, while the distribution gradient determines its net sign. Energetic-particle radial gradients, pitch anisotropy, and inverted energy-space populations can drive an Alfv\'en mode.
+
+\section{Finite resonance width and nonlinear trapping}
+A finite growth rate, collisions, orbit stochasticity, or finite observation time broadens the ideal delta-function resonance. Near one isolated resonance, a canonical transformation gives the pendulum Hamiltonian
+\begin{equation}
+H_{\mathrm{res}}\simeq\frac{1}{2}G(\Delta J)^2+h\cos\Phi.
+\end{equation}
+Trapped resonant particles oscillate inside a phase-space island. The characteristic bounce or trapping frequency scales as
+\begin{equation}
+\omega_{\mathrm{tr}}\sim\sqrt{|Gh|}.
+\end{equation}
+When $\omega_{\mathrm{tr}}$ becomes comparable to the linear growth rate, particle trapping can flatten the resonant gradient and saturate the mode.
+
+\section{Connection to the Kinetic MHD-PINN project}
+Module 4 supplies $\omega$ and the mode structure. Module 3 supplies orbit frequencies and trajectories. Module 2 supplies $f_0$. Module 5 combines them to evaluate resonance locations and energetic-particle drive. A surrogate must preserve the sharp dependence on detuning and the sign dependence on distribution gradients; a classifier trained only on mode labels would discard the most important physics.
+
+\section{Computational laboratory}
+\textbf{Goal:} visualize phase locking and nonlinear trapping.
+\begin{enumerate}[leftmargin=1.6em]
+\item Integrate $\dot\Phi=G\Delta J$ and $\dot{\Delta J}=h\sin\Phi$ for several initial conditions.
+\item Plot trajectories in $(\Phi,\Delta J)$ and identify passing and trapped regions.
+\item Vary $h$ and verify that island width scales approximately as $\sqrt{|h/G|}$.
+\item Add weak decorrelation noise and measure resonance broadening.
+\item Implement independently in Python and MATLAB with identical dimensionless parameters.
+\end{enumerate}
+
+\section{Summary}
+Wave-particle resonance is coherent phase synchronism along an orbit. The resonance condition is obtained by differentiating the perturbation phase along that orbit. Resonance alone does not determine stability: the distribution gradient and wave-particle coupling determine whether particles drive or damp the mode. Finite amplitude converts the linear resonance into a phase-space island and provides a natural saturation mechanism.
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.6em]
+\item Derive $\omega=kv$ from the one-dimensional wave phase.
+\item Show how the toroidal resonance condition changes if the Fourier convention is $e^{i(n\phi-m\theta-\omega t)}$.
+\item Explain why a flat distribution near resonance produces little net power transfer.
+\item Derive the separatrix width of the pendulum Hamiltonian.
+\item List the quantities Modules 2--5 must exchange to evaluate a resonance consistently.
+\end{enumerate}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\Phi$ & Wave-particle phase & Perturbation phase evaluated along a particle orbit.\\
+$\mathbf J$ & Action variables & Orbit invariants conjugate to periodic angles.\\
+$\boldsymbol\Omega$ & Orbit frequencies & Transit, bounce, precession, or gyro frequencies.\\
+$\gamma$ & Growth rate & Positive when wave amplitude increases under the adopted convention.\\
+$\omega_{\mathrm{tr}}$ & Trapping frequency & Nonlinear bounce frequency inside a resonant phase-space island.\\
+\end{symtable}
+
+\section{References}
+\begin{enumerate}[leftmargin=1.6em]
+\item T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics, 1992.
+\item R. B. White, \emph{The Theory of Toroidally Confined Plasmas}, Imperial College Press, 2001.
+\item H. L. Berk, B. N. Breizman, and M. Pekker, nonlinear energetic-particle resonance literature.
+\item L. Chen and F. Zonca, ``Physics of Alfv\'en waves and energetic particles in burning plasmas,'' \emph{Reviews of Modern Physics}, 2016.
+\end{enumerate}
+
+\end{document}

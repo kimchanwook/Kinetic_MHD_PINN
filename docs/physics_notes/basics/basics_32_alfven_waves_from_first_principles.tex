@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 32 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 32: Alfvén Waves from First Principles}{V - Plasma waves and Alfvén physics}{A full linear ideal-MHD derivation of the shear-Alfvén wave and its physical energy balance}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} The shear-Alfvén wave is the central elementary wave of magnetized fluid plasma. Starting from a uniform equilibrium, this chapter derives its dispersion relation, polarization, wave equation, energy partition, and propagation along magnetic field lines. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Identify the equilibrium and perturbation assumptions of a shear-Alfvén wave.
+\item Derive linearized induction and momentum relations.
+\item Derive $\omega^2=k_\parallel^2v_A^2$.
+\item Interpret magnetic tension as the restoring force.
+\item Relate velocity and magnetic perturbation amplitudes.
+\item Derive kinetic-magnetic energy equipartition for a traveling wave.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 24, 25, 29, and 31.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Uniform equilibrium and shear polarization}
+
+Take
+\begin{equation}
+\mathbf B_0=B_0\hat{\mathbf z},\qquad
+\rho_0=\text{constant},\qquad
+p_0=\text{constant},\qquad
+\mathbf u_0=0.
+\end{equation}
+Consider incompressible transverse perturbations varying along the field:
+\begin{equation}
+\mathbf u_1=u_x(z,t)\hat{\mathbf x},\qquad
+\mathbf B_1=b_x(z,t)\hat{\mathbf x}.
+\end{equation}
+Then $\nabla\cdot\mathbf u_1=0$, $\nabla\cdot\mathbf B_1=0$, and no density or pressure perturbation is required. The displacement is perpendicular to both $\mathbf B_0$ and the parallel wave vector.
+
+
+\section{Linearized induction}
+
+The ideal induction equation is
+\begin{equation}
+\partial_t\mathbf B=\nabla\times(\mathbf u\times\mathbf B).
+\end{equation}
+To first order,
+\begin{equation}
+\partial_t\mathbf B_1=\nabla\times(\mathbf u_1\times\mathbf B_0).
+\end{equation}
+For the chosen geometry,
+\begin{equation}
+\boxed{\frac{\partial b_x}{\partial t}
+=B_0\frac{\partial u_x}{\partial z}}.
+\end{equation}
+A transverse velocity gradient bends the equilibrium field and creates a transverse magnetic perturbation.
+
+
+\section{Linearized momentum and magnetic tension}
+
+The transverse momentum equation is
+\begin{equation}
+\rho_0\frac{\partial\mathbf u_1}{\partial t}
+=\frac{1}{\mu_0}(\nabla\times\mathbf B_1)\times\mathbf B_0.
+\end{equation}
+For $\mathbf B_1=b_x(z,t)\hat{\mathbf x}$,
+\begin{equation}
+\boxed{\rho_0\frac{\partial u_x}{\partial t}
+=\frac{B_0}{\mu_0}\frac{\partial b_x}{\partial z}}.
+\end{equation}
+This is magnetic tension: curvature of the perturbed field produces a restoring force along the transverse displacement.
+
+
+\section{Wave equation and Alfvén speed}
+
+Differentiate the momentum equation in time and use induction:
+\begin{align}
+\rho_0\frac{\partial^2u_x}{\partial t^2}
+&=\frac{B_0}{\mu_0}\frac{\partial}{\partial z}
+\left(\frac{\partial b_x}{\partial t}\right)\\
+&=\frac{B_0^2}{\mu_0}\frac{\partial^2u_x}{\partial z^2}.
+\end{align}
+Therefore
+\begin{equation}
+\boxed{\frac{\partial^2u_x}{\partial t^2}
+=v_A^2\frac{\partial^2u_x}{\partial z^2}},
+\qquad
+\boxed{v_A=\frac{B_0}{\sqrt{\mu_0\rho_0}}}.
+\end{equation}
+A plane wave $u_x=\tilde u e^{i(k_\parallel z-\omega t)}$ gives
+\begin{equation}
+\boxed{\omega^2=k_\parallel^2v_A^2}.
+\end{equation}
+
+
+\section{Amplitude and phase relation}
+
+For a plane wave, induction gives
+\begin{equation}
+-i\omega\tilde b=ik_\parallel B_0\tilde u.
+\end{equation}
+Thus
+\begin{equation}
+\tilde b=-\frac{k_\parallel B_0}{\omega}\tilde u
+=\mp\sqrt{\mu_0\rho_0}\,\tilde u,
+\end{equation}
+where the sign depends on propagation direction and phase convention. The velocity and magnetic perturbations are correlated; changing the propagation direction changes their relative sign.
+
+
+\section{Energy density and flux}
+
+The quadratic kinetic and magnetic perturbation energies are
+\begin{equation}
+\mathcal E_K=\frac{\rho_0u_1^2}{2},\qquad
+\mathcal E_B=\frac{b_1^2}{2\mu_0}.
+\end{equation}
+Using $|b_1|=\sqrt{\mu_0\rho_0}|u_1|$ for a traveling wave,
+\begin{equation}
+\boxed{\mathcal E_K=\mathcal E_B}.
+\end{equation}
+Multiplying the momentum and induction equations by $u_x$ and $b_x/\mu_0$ yields
+\begin{equation}
+\frac{\partial}{\partial t}\left(
+\frac{\rho_0u_x^2}{2}+\frac{b_x^2}{2\mu_0}\right)
++\frac{\partial}{\partial z}\left(-\frac{B_0u_xb_x}{\mu_0}\right)=0.
+\end{equation}
+The sign of the flux tracks propagation direction.
+
+
+\section{Elsasser variables}
+
+Define
+\begin{equation}
+\mathbf z^\pm=\mathbf u_1\mp\frac{\mathbf B_1}{\sqrt{\mu_0\rho_0}}.
+\end{equation}
+The linear equations become
+\begin{equation}
+\partial_t\mathbf z^\pm\pm v_A\partial_z\mathbf z^\pm=0.
+\end{equation}
+$\mathbf z^+$ and $\mathbf z^-$ describe disturbances propagating in opposite directions along the equilibrium field. This form is central in Alfvénic turbulence.
+
+
+\section{Limits of the elementary derivation}
+
+The result assumes uniform equilibrium, ideal conductivity, scalar pressure, no finite-Larmor-radius effects, and propagation exactly along $\mathbf B_0$. Nonuniform density creates an Alfvén continuum; toroidal geometry couples poloidal harmonics; kinetic particles add damping or drive. Those extensions motivate Basics 34-37 and Modules 4-6.
+
+
+\section{Computational laboratory}
+Integrate the coupled linear induction and momentum equations for a periodic domain. Initialize a single traveling wave and a standing wave. Verify the measured speed, amplitude relation, energy equipartition, and convergence of total perturbation energy in both Python and MATLAB.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Shear-Alfvén waves are transverse ideal-MHD disturbances restored by magnetic tension.
+\item Their speed is $v_A=B_0/\sqrt{\mu_0\rho_0}$ and propagation is along the field.
+\item Velocity and magnetic perturbations have a direction-dependent phase relation.
+\item Traveling waves have equal kinetic and magnetic perturbation energies.
+\item Nonuniformity, geometry, and kinetic particles extend this elementary wave into continua and eigenmodes.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$v_A$ & Alfvén speed & $B_0/\sqrt{\mu_0\rho_0}$. \\
+$k_\parallel$ & parallel wave number & Phase variation along the equilibrium field. \\
+$u_x$ & transverse velocity & Shear-flow perturbation. \\
+$b_x$ & transverse magnetic perturbation & Field-line bending amplitude. \\
+$\mathbf z^\pm$ & Elsasser variables & Counterpropagating Alfvénic combinations. \\
+$\mathcal E_K,\mathcal E_B$ & perturbation energies & Kinetic and magnetic contributions. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the linear induction equation for the chosen polarization.
+\item Derive the transverse Lorentz-force term from $(\nabla\times\mathbf B_1)\times\mathbf B_0$.
+\item Obtain the Alfvén wave equation and check dimensions of $v_A$.
+\item Derive the velocity-magnetic amplitude relation for both propagation directions.
+\item Derive the quadratic energy conservation law.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref2} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref3} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref9} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref10} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref11} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\end{thebibliography}
+
+\end{document}

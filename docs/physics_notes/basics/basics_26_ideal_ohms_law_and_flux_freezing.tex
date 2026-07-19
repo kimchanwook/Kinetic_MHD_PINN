@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 26 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 26: Ideal Ohm's Law and Flux Freezing}{IV - Magnetohydrodynamics}{The moving-fluid electric field, induction, Alfvén's theorem, topology, and nonideal breakdown}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} The relation $\mathbf E+\mathbf u\times\mathbf B=0$ is the kinematic core of ideal MHD. This chapter derives its interpretation, proves magnetic-flux conservation for a moving surface, and explains precisely how resistive and kinetic effects break ideal topology. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Interpret ideal Ohm's law in the fluid rest frame.
+\item Derive the ideal induction equation.
+\item Derive the field-to-density stretching relation.
+\item Prove flux freezing for a material surface.
+\item Distinguish flux conservation from constant field strength.
+\item Identify physical and numerical mechanisms that break flux freezing.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 3, 12, 21, and 24.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Electric field in the moving fluid frame}
+
+At nonrelativistic speeds, the leading transformation to a frame moving with $\mathbf u$ is
+\begin{equation}
+\mathbf E'=\mathbf E+\mathbf u\times\mathbf B.
+\end{equation}
+Ideal Ohm's law,
+\begin{equation}
+\boxed{\mathbf E+\mathbf u\times\mathbf B=0},
+\end{equation}
+states that the electric field vanishes in the local bulk-fluid frame. It does not state that the laboratory electric field vanishes.
+
+
+\section{From generalized to ideal Ohm's law}
+
+Electron momentum balance gives schematically
+\begin{equation}
+\mathbf E+\mathbf u\times\mathbf B
+=\eta\mathbf J+\frac{\mathbf J\times\mathbf B}{en_e}
+-\frac{\nabla\cdot\mathsf P_e}{en_e}
+-\frac{m_e}{e}\frac{D_e\mathbf u_e}{Dt}.
+\end{equation}
+Ideal MHD orders every term on the right small. The condition is therefore scale dependent. A plasma can be ideal globally while containing localized nonideal layers.
+
+
+\section{Induction and magnetic-field stretching}
+
+Faraday's law gives
+\begin{equation}
+\partial_t\mathbf B=\nabla\times(\mathbf u\times\mathbf B).
+\end{equation}
+Use
+\begin{equation}
+\nabla\times(\mathbf u\times\mathbf B)=
+\mathbf u(\nabla\cdot\mathbf B)-\mathbf B(\nabla\cdot\mathbf u)
++(\mathbf B\cdot\nabla)\mathbf u-(\mathbf u\cdot\nabla)\mathbf B.
+\end{equation}
+With $\nabla\cdot\mathbf B=0$,
+\begin{equation}
+\frac{D\mathbf B}{Dt}=(\mathbf B\cdot\nabla)\mathbf u-\mathbf B\nabla\cdot\mathbf u.
+\end{equation}
+Combining with $D\rho/Dt=-\rho\nabla\cdot\mathbf u$ gives
+\begin{equation}
+\boxed{\frac{D}{Dt}\left(\frac{\mathbf B}{\rho}\right)
+=\left(\frac{\mathbf B}{\rho}\cdot\nabla\right)\mathbf u}.
+\end{equation}
+The field-to-mass ratio is stretched by velocity gradients.
+
+
+\section{Flux-freezing theorem}
+
+Let $S(t)$ move with the fluid. The transport theorem for magnetic flux gives
+\begin{equation}
+\frac{d}{dt}\int_{S(t)}\mathbf B\cdot d\mathbf A
+=\int_{S(t)}
+\left[\partial_t\mathbf B-\nabla\times(\mathbf u\times\mathbf B)\right]\cdot d\mathbf A.
+\end{equation}
+The bracket vanishes by the ideal induction equation:
+\begin{equation}
+\boxed{\frac{d\Phi_B}{dt}=0}.
+\end{equation}
+Equivalently, Faraday's law plus the motional electromotive force around a material loop gives zero net change.
+
+
+\section{Physical interpretation and cautions}
+
+If two ideal-fluid elements lie on the same magnetic field line initially, the mapping keeps them connected under smooth evolution. Field lines may be compressed, stretched, and folded, so $B$ can change greatly even though material-surface flux is fixed. The statement is topological and Lagrangian; it is not the assertion that drawn field lines are physical strings embedded in matter.
+
+
+\section{Breaking ideal flux freezing}
+
+With resistivity,
+\begin{equation}
+\partial_t\mathbf B=\nabla\times(\mathbf u\times\mathbf B)+\eta_m\nabla^2\mathbf B
+\end{equation}
+for uniform magnetic diffusivity $\eta_m=\eta/\mu_0$. The magnetic Reynolds number
+\begin{equation}
+R_m=\frac{UL}{\eta_m}
+\end{equation}
+compares advection with diffusion. Hall, pressure-tensor, inertia, finite-Larmor-radius, and turbulent effects can also break the bulk-fluid frozen-in relation, often with different species carrying distinct field-line velocities.
+
+
+\section{Numerical flux freezing}
+
+A discrete method may change topology because of truncation error even when the PDE is ideal. Excess numerical resistivity can damp Alfvén waves and alter eigenmode continua. Diagnostics include magnetic-energy decay, flux through advected loops, and convergence of reconnection rates toward zero in an ideal benchmark.
+
+
+\section{Computational laboratory}
+Advect a two-dimensional divergence-free magnetic field with a prescribed incompressible velocity. Track flux through a moving material loop and compare centered, upwind, and constrained-transport discretizations. Add controlled resistivity and recover the expected magnetic-diffusion scaling.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Ideal Ohm's law means the electric field vanishes in the bulk-fluid frame.
+\item It produces induction by advection, compression, and stretching of magnetic field.
+\item Magnetic flux through a material surface is conserved under smooth ideal evolution.
+\item Resistive, Hall, pressure, inertia, and kinetic effects can break the bulk frozen-in condition.
+\item Numerical diffusion can mimic nonideal physics and must be quantified.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\mathbf E'$ & moving-frame electric field & $\mathbf E+\mathbf u\times\mathbf B$. \\
+$\Phi_B$ & magnetic flux & Surface integral of magnetic field. \\
+$\eta_m$ & magnetic diffusivity & $\eta/\mu_0$. \\
+$R_m$ & magnetic Reynolds number & Advection-to-diffusion ratio. \\
+$S(t)$ & material surface & Surface moving with the fluid. \\
+$D/Dt$ & material derivative & $\partial_t+\mathbf u\cdot\nabla$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the expanded material form of the induction equation.
+\item Combine mass and induction equations to obtain the evolution of $\mathbf B/\rho$.
+\item Prove flux freezing using the moving-surface transport theorem.
+\item Explain why magnetic-field strength can change under frozen flux.
+\item Estimate the magnetic Reynolds number for a representative fusion-plasma scale.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref2} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref3} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref4} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref5} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref6} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref7} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref8} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\end{thebibliography}
+
+\end{document}

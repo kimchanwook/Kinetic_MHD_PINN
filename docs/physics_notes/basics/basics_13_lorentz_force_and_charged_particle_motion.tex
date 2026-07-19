@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 13 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 13: Lorentz Force and Charged-Particle Motion}{II - Electromagnetism foundations}{Gyromotion, helical trajectories, electric acceleration, drift motion, and numerical integration}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} The Lorentz equation is the microscopic starting point for orbit following, guiding-center theory, and kinetic descriptions. This chapter solves the simplest field configurations exactly and uses them to develop gyrofrequency, Larmor radius, pitch angle, and the electric-cross-magnetic drift. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Solve charged-particle motion in uniform electric and magnetic fields.
+\item Derive gyrofrequency and Larmor radius.
+\item Separate parallel and perpendicular motion.
+\item Derive the electric-cross-magnetic drift.
+\item Explain why drift velocity is independent of particle mass and charge sign.
+\item Assess numerical orbit integration using invariants.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 2, 4, and 11.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Equation of motion and energy balance}
+
+For a nonrelativistic particle,
+\begin{equation}
+m\frac{d\mathbf v}{dt}=q\left(\mathbf E+\mathbf v\times\mathbf B\right),
+\qquad
+\frac{d\mathbf x}{dt}=\mathbf v.
+\end{equation}
+Dotting with $\mathbf v$ gives
+\begin{equation}
+\frac{d}{dt}\left(\frac{mv^2}{2}\right)=q\mathbf v\cdot\mathbf E.
+\end{equation}
+Electric fields can change kinetic energy. Magnetic fields change direction but not speed. This separation is a powerful diagnostic for orbit codes.
+
+
+\section{Uniform magnetic field: gyromotion}
+
+Let $\mathbf B=B_0\hat{\mathbf z}$ and $\mathbf E=0$. Then
+\begin{align}
+\dot v_x&=\Omega_s v_y,\\
+\dot v_y&=-\Omega_s v_x,\\
+\dot v_z&=0,
+\end{align}
+where the signed cyclotron frequency is
+\begin{equation}
+\Omega_s=\frac{qB_0}{m}.
+\end{equation}
+Differentiating once more gives $\ddot v_x+\Omega_s^2v_x=0$. The perpendicular velocity rotates at $|\Omega_s|$, while $v_\parallel=v_z$ is constant. The Larmor radius is
+\begin{equation}
+\rho_L=\frac{v_\perp}{|\Omega_s|}=\frac{mv_\perp}{|q|B_0}.
+\end{equation}
+The sign of $q$ determines the direction of rotation.
+
+
+\section{Helical trajectories and pitch angle}
+
+Integrating velocity produces a circle in the plane perpendicular to $\mathbf B$ and uniform translation along $\mathbf B$. The result is a helix. Define pitch angle $\alpha$ by
+\begin{equation}
+v_\parallel=v\cos\alpha,\qquad v_\perp=v\sin\alpha.
+\end{equation}
+The distance advanced along the field during one gyroperiod $T_c=2\pi/|\Omega_s|$ is
+\begin{equation}
+L_{\rm pitch}=v_\parallel T_c.
+\end{equation}
+Do not confuse this geometric helix pitch with pitch variables used for magnetic-mirror or guiding-center coordinates.
+
+
+\section{Uniform electric field}
+
+With $\mathbf B=0$ and constant $\mathbf E$,
+\begin{equation}
+\mathbf v(t)=\mathbf v_0+\frac{q\mathbf E}{m}t,\qquad
+\mathbf x(t)=\mathbf x_0+\mathbf v_0t+\frac{q\mathbf E}{2m}t^2.
+\end{equation}
+For $\mathbf E=E_\parallel\hat{\mathbf b}$ in the presence of a uniform magnetic field, the parallel motion accelerates while perpendicular gyromotion persists. A sustained parallel electric field therefore changes both energy and pitch angle.
+
+
+\section{Crossed fields and the $\mathbf E\times\mathbf B$ drift}
+
+Let $\mathbf E\perp\mathbf B$ be constant. Seek a constant velocity $\mathbf v_E$ for which the transverse Lorentz force vanishes:
+\begin{equation}
+\mathbf E+\mathbf v_E\times\mathbf B=0.
+\end{equation}
+Cross with $\mathbf B$ and use $\mathbf E\cdot\mathbf B=0$:
+\begin{equation}
+\boxed{\mathbf v_E=\frac{\mathbf E\times\mathbf B}{B^2}}.
+\end{equation}
+Writing $\mathbf v=\mathbf v_E+\mathbf w$ reduces the equation for $\mathbf w$ to ordinary gyromotion. The guiding center drifts at $\mathbf v_E$, independent of $m$, $|q|$, and charge sign. Hence ions and electrons share this bulk drift and it does not itself create a current in a uniform plasma.
+
+
+\section{Ordering toward guiding-center theory}
+
+If field scales $L$ and times $\tau$ satisfy
+\begin{equation}
+\epsilon_\rho=\frac{\rho_L}{L}\ll1,\qquad
+\epsilon_\Omega=\frac{1}{|\Omega_s|\tau}\ll1,
+\end{equation}
+the rapid gyrophase can be separated from slow guiding-center motion. Nonuniform fields then produce grad-$B$, curvature, polarization, and other drifts. Those are developed in later kinetic notes.
+
+
+\section{Numerical orbit integration}
+
+A naive explicit Euler step can increase particle energy in a static magnetic field. Suitable checks include
+\begin{equation}
+\Delta K,\qquad \Delta v_\parallel,\qquad
+\Delta \rho_L,\qquad \text{phase error per gyroperiod}.
+\end{equation}
+The Boris algorithm is widely used because its magnetic rotation preserves speed to high accuracy. Adaptive Runge-Kutta methods may be accurate locally but do not automatically preserve long-time geometric structure.
+
+
+\section{Computational laboratory}
+Implement analytic and numerical trajectories for uniform $\mathbf B$, parallel $\mathbf E$, and crossed $\mathbf E$ and $\mathbf B$. Compare Euler, Runge-Kutta, and Boris updates over hundreds of gyroperiods. Measure energy, phase, guiding-center, and Larmor-radius errors.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item The Lorentz equation separates electric work from magnetic redirection.
+\item Uniform magnetic fields produce gyromotion characterized by gyrofrequency and Larmor radius.
+\item Parallel motion combines with gyromotion to form a helix.
+\item Crossed uniform fields produce a species-independent $\mathbf E\times\mathbf B$ drift.
+\item Orbit solvers should be judged by invariant and phase preservation, not only local truncation error.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\Omega_s$ & signed cyclotron frequency & $qB/m$. \\
+$\rho_L$ & Larmor radius & $v_\perp/|\Omega_s|$. \\
+$v_\parallel,v_\perp$ & velocity components & Parallel and perpendicular to the field. \\
+$\alpha$ & pitch angle & Angle between velocity and magnetic field. \\
+$\mathbf v_E$ & electric-cross-magnetic drift & $\mathbf E\times\mathbf B/B^2$. \\
+$T_c$ & gyroperiod & $2\pi/|\Omega_s|$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the gyromotion solution including the charge-sign dependence.
+\item Show that the magnetic moment $mv_\perp^2/(2B_0)$ is constant in a uniform field.
+\item Derive the $\mathbf E\times\mathbf B$ drift using a shifted velocity.
+\item Calculate electron and deuteron gyrofrequencies at a specified magnetic field.
+\item Explain why shared $\mathbf E\times\mathbf B$ motion produces no current in a uniform quasineutral plasma.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref5} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref6} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref7} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref8} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\end{thebibliography}
+
+\end{document}

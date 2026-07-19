@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 24 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 24: Derivation of Ideal Magnetohydrodynamics}{IV - Magnetohydrodynamics}{From multifluid plasma dynamics and Maxwell equations to the closed ideal-MHD system}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Ideal MHD is a controlled long-wavelength, low-frequency reduction of plasma dynamics. This chapter derives its equations, records every major approximation, and emphasizes exactly which kinetic and nonideal effects are removed. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item State the closed ideal-MHD equations.
+\item Derive mass and momentum conservation from species equations.
+\item Reduce generalized Ohm's law to the ideal condition.
+\item Derive the induction equation.
+\item Derive pressure and total-energy closures.
+\item Construct an explicit assumption ledger for model validity.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 12, 21, 22, and 23; Basics 3 and 5 for vector/PDE manipulations.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Target ideal-MHD system}
+
+A common conservative ideal-MHD system is
+\begin{align}
+\partial_t\rho+\nabla\cdot(\rho\mathbf u)&=0,\\
+\partial_t(\rho\mathbf u)+\nabla\cdot\left[
+\rho\mathbf u\mathbf u+
+\left(p+\frac{B^2}{2\mu_0}\right)\mathsf I
+-\frac{\mathbf B\mathbf B}{\mu_0}\right]&=0,\\
+\partial_t\mathbf B-\nabla\times(\mathbf u\times\mathbf B)&=0,\\
+\partial_tE+\nabla\cdot\left[
+\left(E+p+\frac{B^2}{2\mu_0}\right)\mathbf u
+-\frac{\mathbf B(\mathbf u\cdot\mathbf B)}{\mu_0}\right]&=0,\\
+\nabla\cdot\mathbf B&=0,
+\end{align}
+with
+\begin{equation}
+E=\frac{\rho u^2}{2}+\frac{p}{\gamma-1}+\frac{B^2}{2\mu_0}.
+\end{equation}
+We now identify where each equation comes from.
+
+
+\section{Mass conservation}
+
+Summing species number equations weighted by mass gives
+\begin{equation}
+\partial_t\rho+\nabla\cdot(\rho\mathbf u)=0
+\end{equation}
+when nuclear reactions, external injection, and mass loss are absent. This step requires no quasineutral approximation; it follows from total mass accounting.
+
+
+\section{Momentum and magnetic stress}
+
+Summing species momentum gives, under quasineutrality and negligible relative-drift inertia,
+\begin{equation}
+\rho\frac{D\mathbf u}{Dt}=-\nabla p+\mathbf J\times\mathbf B.
+\end{equation}
+At low frequency, Ampere's law gives $\mathbf J=\nabla\times\mathbf B/\mu_0$. Using
+\begin{equation}
+(\nabla\times\mathbf B)\times\mathbf B
+=-\nabla\left(\frac{B^2}{2}\right)+(\mathbf B\cdot\nabla)\mathbf B
+\end{equation}
+for $\nabla\cdot\mathbf B=0$,
+\begin{equation}
+\mathbf J\times\mathbf B
+=-\nabla\left(\frac{B^2}{2\mu_0}\right)
++\frac{(\mathbf B\cdot\nabla)\mathbf B}{\mu_0}.
+\end{equation}
+These terms are magnetic pressure and magnetic tension. Rewriting them as the divergence of Maxwell stress yields the conservative momentum equation.
+
+
+\section{Ideal Ohm's law as an ordering}
+
+Generalized Ohm's law contains
+\begin{equation}
+\mathbf E+\mathbf u\times\mathbf B
+=\eta\mathbf J+\frac{\mathbf J\times\mathbf B}{en_e}
+-\frac{\nabla\cdot\mathsf P_e}{en_e}
+-\frac{m_e}{e}\frac{D_e\mathbf u_e}{Dt}+\cdots.
+\end{equation}
+Ideal MHD assumes all right-hand terms are small on the scales of interest:
+\begin{equation}
+\boxed{\mathbf E+\mathbf u\times\mathbf B=0}.
+\end{equation}
+This is not a universal law. It fails at sufficiently small scales, high frequencies, low collisionality, reconnection layers, and kinetic resonances.
+
+
+\section{Induction equation}
+
+Insert ideal Ohm's law into Faraday's law:
+\begin{equation}
+\frac{\partial\mathbf B}{\partial t}
+=-\nabla\times\mathbf E
+=\nabla\times(\mathbf u\times\mathbf B).
+\end{equation}
+Together with $\nabla\cdot\mathbf B=0$, this transports and stretches magnetic flux with the fluid. Expanding the curl gives
+\begin{equation}
+\frac{D\mathbf B}{Dt}
+=(\mathbf B\cdot\nabla)\mathbf u
+-\mathbf B(\nabla\cdot\mathbf u),
+\end{equation}
+after using mass conservation and zero magnetic divergence in the appropriate form.
+
+
+\section{Thermodynamic closure}
+
+For an adiabatic ideal gas with no heat conduction or dissipation,
+\begin{equation}
+\frac{Dp}{Dt}+\gamma p\nabla\cdot\mathbf u=0,
+\end{equation}
+equivalently
+\begin{equation}
+\frac{D}{Dt}\left(\frac{p}{\rho^\gamma}\right)=0.
+\end{equation}
+The parameter $\gamma$ represents the chosen closure, commonly $5/3$ for an isotropic monatomic gas. Collisionless magnetized plasmas may not justify this scalar adiabatic law.
+
+
+\section{Total energy conservation}
+
+Dot the momentum equation with $\mathbf u$, combine the internal-energy equation with Poynting's theorem, and use ideal Ohm's law. The result is
+\begin{equation}
+\partial_tE+\nabla\cdot\left[
+\left(E+p+\frac{B^2}{2\mu_0}\right)\mathbf u
+-\frac{\mathbf B(\mathbf u\cdot\mathbf B)}{\mu_0}\right]=0.
+\end{equation}
+The flux contains advected kinetic/internal energy, pressure work, and electromagnetic transport. A numerical solver that updates the separate pieces inconsistently can violate this balance.
+
+
+\section{Assumption ledger and domain of validity}
+
+Ideal MHD commonly assumes:
+\begin{enumerate}[leftmargin=1.8em]
+\item quasineutrality and negligible displacement current;
+\item scales large relative to Debye length and relevant gyro radii;
+\item frequencies below electron and often ion kinetic scales;
+\item sufficiently small Hall, resistive, electron-inertia, and anisotropic-pressure effects;
+\item a scalar thermodynamic closure;
+\item a continuum description with enough particles per resolved volume.
+\end{enumerate}
+The present project uses ideal MHD for bulk Alfvén-wave structure, then adds energetic-particle kinetics because resonant fast-ion drive lies outside this closure.
+
+
+\section{Computational laboratory}
+Create an assumption-ledger notebook that evaluates dimensionless ratios for a selected fusion-plasma case. Numerically verify the magnetic-force identity and conservative stress form on a smooth divergence-free field. Integrate a one-dimensional ideal-MHD wave benchmark and monitor total energy.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Ideal MHD is derived by combining species moments, low-frequency Maxwell equations, and an ordered Ohm law.
+\item Magnetic pressure and tension arise from the Lorentz force.
+\item Ideal Ohm's law produces the induction equation and frozen magnetic flux.
+\item A scalar adiabatic law closes the thermodynamics.
+\item Every ideal-MHD result inherits a clear scale and closure domain.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\rho,\mathbf u,p$ & fluid variables & Mass density, bulk velocity, and scalar pressure. \\
+$E$ & total energy density & Kinetic, internal, and magnetic energy. \\
+$\gamma$ & adiabatic index & Thermodynamic closure parameter. \\
+$\eta$ & resistivity & Nonideal coefficient omitted in ideal MHD. \\
+$D/Dt$ & material derivative & $\partial_t+\mathbf u\cdot\nabla$. \\
+$\mathsf I$ & identity tensor & Unit second-order tensor. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the magnetic-pressure and tension decomposition of $\mathbf J\times\mathbf B$.
+\item Derive the induction equation from Faraday and ideal Ohm laws.
+\item Show that $p/\rho^\gamma$ is advected for the adiabatic closure.
+\item List the terms omitted from generalized Ohm's law and associate each with a physical scale.
+\item Explain why ideal MHD can describe an Alfvén eigenfunction but not energetic-particle resonant drive by itself.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} D. J. Griffiths, \emph{Introduction to Electrodynamics}, 4th ed., Cambridge University Press (2017).
+\bibitem{ref2} J. D. Jackson, \emph{Classical Electrodynamics}, 3rd ed., Wiley (1998).
+\bibitem{ref3} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref4} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref5} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref6} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref7} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref8} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref9} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref10} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\end{thebibliography}
+
+\end{document}

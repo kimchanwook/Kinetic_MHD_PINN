@@ -1,0 +1,205 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 42 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 42: Vlasov Equation}{VI - Kinetic theory and energetic particles}{Derivation, characteristics, conservation laws, phase mixing, self-consistent fields, and computational representations}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} The Vlasov equation is the collisionless evolution law for a plasma distribution function. This chapter derives it from phase-space particle conservation, shows its equivalence to advection along Lorentz trajectories, couples it to Maxwell's equations, derives key conservation properties, and explains why phase mixing can produce macroscopic damping without microscopic dissipation.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Derive the Vlasov equation from phase-space continuity.
+\item Write and interpret its characteristic equations.
+\item Couple species distributions to charge, current, and electromagnetic fields.
+\item Derive particle-number conservation and outline total-energy conservation.
+\item Explain phase mixing and the conceptual origin of Landau damping.
+\item Compare Eulerian, semi-Lagrangian, particle, and PINN solution strategies.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+Recommended prerequisites are Basics 12, 13, 19, 22, and 41. First understand the conservative phase-space form; then study characteristics and moments.
+
+\section{Derivation from phase-space continuity}
+For species $s$, phase-space conservation is
+\begin{equation}
+\frac{\partial f_s}{\partial t}
++\nabla_{\mathbf x}\cdot(f_s\dot{\mathbf x})
++\nabla_{\mathbf v}\cdot(f_s\dot{\mathbf v})=0.
+\end{equation}
+The Lorentz characteristics are
+\begin{equation}
+\dot{\mathbf x}=\mathbf v,
+\qquad
+\dot{\mathbf v}=\frac{q_s}{m_s}
+(\mathbf E+\mathbf v\times\mathbf B).
+\end{equation}
+Because Lorentz phase-space flow is incompressible, expansion gives
+\begin{equation}
+\boxed{
+\frac{\partial f_s}{\partial t}
++\mathbf v\cdot\nabla_{\mathbf x}f_s
++\frac{q_s}{m_s}(\mathbf E+\mathbf v\times\mathbf B)
+\cdot\nabla_{\mathbf v}f_s=0.}
+\end{equation}
+This is the Vlasov equation.
+
+\section{Characteristic interpretation}
+Along a trajectory satisfying the Lorentz equations,
+\begin{equation}
+\frac{df_s}{dt}
+=\partial_t f_s+\dot{\mathbf x}\cdot\nabla_{\mathbf x}f_s
++\dot{\mathbf v}\cdot\nabla_{\mathbf v}f_s=0.
+\end{equation}
+Thus
+\begin{equation}
+\boxed{f_s(\mathbf x(t),\mathbf v(t),t)=f_s(\mathbf x_0,\mathbf v_0,0)}.
+\end{equation}
+The distribution is transported and deformed, not locally created or destroyed.
+
+\section{Self-consistent Vlasov-Maxwell system}
+Charge and current are moments:
+\begin{equation}
+\rho_c=\sum_s q_s\int f_s\,d^3v,
+\qquad
+\mathbf J=\sum_s q_s\int\mathbf v f_s\,d^3v.
+\end{equation}
+They source Maxwell's equations,
+\begin{align}
+\nabla\cdot\mathbf E&=\rho_c/\epsilon_0, &
+\nabla\cdot\mathbf B&=0,\\
+\nabla\times\mathbf E&=-\partial_t\mathbf B, &
+\nabla\times\mathbf B&=\mu_0\mathbf J+
+\mu_0\epsilon_0\partial_t\mathbf E.
+\end{align}
+The fields accelerate particles, while the distributions determine the field sources. This nonlinear feedback is the essence of a self-consistent kinetic plasma model.
+
+\section{Electrostatic reductions}
+For nonrelativistic electrostatic phenomena, set
+\begin{equation}
+\mathbf E=-\nabla\phi,
+\qquad
+\nabla^2\phi=-\frac{1}{\epsilon_0}
+\sum_s q_s\int f_s\,d^3v.
+\end{equation}
+The resulting Vlasov-Poisson system is a standard benchmark for phase mixing, plasma oscillations, two-stream instability, and particle methods.
+
+A one-dimensional form is
+\begin{equation}
+\frac{\partial f}{\partial t}
++v\frac{\partial f}{\partial x}
++\frac{qE}{m}\frac{\partial f}{\partial v}=0.
+\end{equation}
+
+\section{Conservation of particle number}
+Integrate the Vlasov equation over all phase space. If spatial and velocity-space boundary fluxes vanish or are periodic,
+\begin{equation}
+\frac{d}{dt}\int f_s\,d^3x\,d^3v=0.
+\end{equation}
+Therefore each collisionless species conserves particle number.
+
+\section{Energy conservation}
+Multiply the Vlasov equation by $m_sv^2/2$ and integrate. The magnetic force does no work because
+\begin{equation}
+\mathbf v\cdot(\mathbf v\times\mathbf B)=0.
+\end{equation}
+The particle kinetic-energy change is
+\begin{equation}
+\frac{dK}{dt}=\int\mathbf J\cdot\mathbf E\,d^3x.
+\end{equation}
+Poynting's theorem gives
+\begin{equation}
+\frac{dW_{\mathrm{field}}}{dt}
+=-\int\mathbf J\cdot\mathbf E\,d^3x
+-\oint\mathbf S\cdot d\mathbf A.
+\end{equation}
+For a closed or periodic domain, particle plus field energy is conserved.
+
+\section{Moments and the fluid hierarchy}
+Velocity integration gives the continuity equation. Multiplication by $m\mathbf v$ gives momentum balance. Multiplication by $mv^2/2$ gives energy balance. Each equation introduces a higher moment, producing the closure problem. Ideal MHD is obtained only after additional assumptions about quasineutrality, collisionality, pressure closure, and electron inertia.
+
+\section{Linearization and phase mixing}
+Let
+\begin{equation}
+f=f_0(\mathbf v)+f_1(\mathbf x,\mathbf v,t),
+\qquad |f_1|\ll f_0.
+\end{equation}
+For one electrostatic Fourier component,
+\begin{equation}
+(-i\omega+ikv)f_1+
+\frac{qE_1}{m}\frac{\partial f_0}{\partial v}=0,
+\end{equation}
+so
+\begin{equation}
+f_1=-i\frac{qE_1}{m}
+\frac{\partial f_0/\partial v}{\omega-kv}.
+\end{equation}
+The denominator identifies the resonant velocity $v=\omega/k$. A mathematically correct contour prescription yields Landau damping or growth. Physically, velocity classes dephase, transferring coherent field energy into fine velocity-space structure even though the exact Vlasov dynamics is nondissipative.
+
+\section{Equilibria and invariants}
+Any distribution that is a function of constants of unperturbed motion is a stationary Vlasov solution. In static electromagnetic fields, energy
+\begin{equation}
+\mathcal E=\frac{mv^2}{2}+q\phi
+\end{equation}
+may be conserved. In axisymmetric toroidal geometry, canonical toroidal momentum can also be conserved. This principle guides construction of equilibrium energetic-particle distributions.
+
+\section{Numerical methods}
+\subsection{Eulerian grids}
+Finite-difference, finite-volume, or spectral methods discretize $f$ on phase-space grids. They resolve smooth distributions well but suffer from the dimensionality of six-dimensional space.
+
+\subsection{Semi-Lagrangian methods}
+Characteristics are traced backward and $f$ is interpolated from its departure point. Large time steps are possible, but interpolation can violate conservation or positivity.
+
+\subsection{Particle methods}
+Particle-in-cell methods sample $f$ with markers, deposit charge/current, solve fields, and push particles. They scale well in phase-space dimension but introduce sampling noise.
+
+\subsection{Physics-informed neural methods}
+A PINN can minimize the Vlasov residual plus initial, boundary, and conservation losses. However, filamentation and multiscale phase mixing create severe spectral-bias and sampling challenges. Conventional benchmarks remain essential.
+
+\section{Connection to the Kinetic MHD-PINN project}
+The full Vlasov-Maxwell problem is too expensive for the initial digital twin. Module 3 uses guiding-center characteristics; Module 5 uses reduced kinetic response or closures; Module 6 evolves reduced fast-ion distributions. The Vlasov equation supplies the parent conservation law and clarifies which approximations remove gyromotion, collisions, or self-consistent field feedback.
+
+\section{Computational laboratory}
+\begin{enumerate}[leftmargin=1.6em]
+\item Solve free streaming, $\partial_t f+v\partial_x f=0$, by exact characteristic translation.
+\item Implement a first-order upwind Eulerian solver and compare numerical diffusion.
+\item Verify particle number and positivity.
+\item Initialize $f_0(v)[1+\epsilon\cos(kx)]$ and visualize phase mixing.
+\item Compare Python and MATLAB arrays using a common CSV output.
+\end{enumerate}
+
+\section{Summary}
+The Vlasov equation is phase-space advection under self-consistent Lorentz dynamics. It conserves particles and, when coupled to Maxwell's equations, total energy. Fluid equations are moments of Vlasov, but kinetic resonance and phase mixing require retaining velocity-space structure. Reduced kinetic-MHD models should be understood as controlled approximations to this parent equation.
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.6em]
+\item Derive the one-dimensional Vlasov equation from phase-space continuity.
+\item Show that the magnetic force contributes no kinetic-energy work.
+\item Derive the continuity equation by integrating Vlasov over velocity.
+\item Explain how macroscopic damping is possible under reversible fine-grained dynamics.
+\item Compare the numerical strengths of Eulerian and particle representations.
+\end{enumerate}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$f_s$ & Species distribution & Phase-space density for plasma species $s$.\\
+$\rho_c$ & Charge density & Charge-weighted zeroth velocity moment.\\
+$\mathbf J$ & Current density & Charge-weighted first velocity moment.\\
+$K$ & Particle kinetic energy & Velocity-space integral of $m_sv^2f_s/2$.\\
+$\phi$ & Electrostatic potential & Scalar potential satisfying Poisson's equation in the electrostatic reduction.\\
+\end{symtable}
+
+\section{References}
+\begin{enumerate}[leftmargin=1.6em]
+\item T. H. Stix, \emph{Waves in Plasmas}.
+\item N. A. Krall and A. W. Trivelpiece, \emph{Principles of Plasma Physics}.
+\item C. K. Birdsall and A. B. Langdon, \emph{Plasma Physics via Computer Simulation}.
+\item R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}.
+\end{enumerate}
+
+\end{document}

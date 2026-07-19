@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 29 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 29: Linearization of Magnetohydrodynamic Equations}{IV - Magnetohydrodynamics}{Equilibrium-plus-perturbation expansions, displacement variables, normal modes, and eigenvalue structure}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Linearization converts nonlinear MHD into a wave and stability problem around a chosen equilibrium. This chapter derives the first-order equations, introduces the Lagrangian displacement, and explains how a time-dependent PDE becomes an eigenvalue problem for mode frequency and structure. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Perform a controlled first-order perturbation expansion.
+\item Derive linearized continuity, induction, pressure, and momentum equations.
+\item Relate Eulerian perturbations to a Lagrangian displacement.
+\item Apply normal-mode substitution to obtain an eigenproblem.
+\item Distinguish equilibrium constraints from perturbation equations.
+\item State the validity limits of linear theory.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 5-8, 24, and 26.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Equilibrium and perturbation ordering}
+
+Write every field as equilibrium plus a small perturbation:
+\begin{equation}
+Q(\mathbf x,t)=Q_0(\mathbf x)+\epsilon Q_1(\mathbf x,t)+O(\epsilon^2),
+\qquad \epsilon\ll1.
+\end{equation}
+For a static equilibrium $\mathbf u_0=0$,
+\begin{equation}
+\nabla p_0=\mathbf J_0\times\mathbf B_0,\qquad
+\nabla\cdot\mathbf B_0=0.
+\end{equation}
+Substitute expansions into the full equations, cancel the $O(1)$ equilibrium balance, retain $O(\epsilon)$ terms, and discard products such as $\rho_1\mathbf u_1$.
+
+
+\section{Linearized continuity and pressure}
+
+Mass conservation gives
+\begin{equation}
+\partial_t\rho_1+\nabla\cdot(\rho_0\mathbf u_1)=0.
+\end{equation}
+The adiabatic pressure equation yields
+\begin{equation}
+\partial_tp_1+\mathbf u_1\cdot\nabla p_0
++\gamma p_0\nabla\cdot\mathbf u_1=0.
+\end{equation}
+Equilibrium gradients therefore couple displacement to compressibility even when perturbation amplitudes are small.
+
+
+\section{Linearized induction equation}
+
+From
+\begin{equation}
+\partial_t\mathbf B=\nabla\times(\mathbf u\times\mathbf B),
+\end{equation}
+the first-order equation is
+\begin{equation}
+\partial_t\mathbf B_1=\nabla\times(\mathbf u_1\times\mathbf B_0),
+\qquad
+\nabla\cdot\mathbf B_1=0.
+\end{equation}
+The term $\mathbf u_1\times\mathbf B_1$ is second order and is omitted.
+
+
+\section{Linearized momentum equation}
+
+For a static equilibrium,
+\begin{equation}
+\rho_0\partial_t\mathbf u_1
+=-\nabla p_1+\mathbf J_1\times\mathbf B_0+\mathbf J_0\times\mathbf B_1,
+\end{equation}
+where
+\begin{equation}
+\mathbf J_1=\frac{1}{\mu_0}\nabla\times\mathbf B_1.
+\end{equation}
+Both perturbed current acting on the equilibrium field and equilibrium current acting on the perturbed field are first order.
+
+
+\section{Lagrangian displacement}
+
+Introduce displacement $\boldsymbol\xi$ by
+\begin{equation}
+\mathbf u_1=\partial_t\boldsymbol\xi.
+\end{equation}
+Integrating the linearized continuity, pressure, and induction equations for perturbations initially consistent with the displacement gives
+\begin{align}
+\rho_1&=-\nabla\cdot(\rho_0\boldsymbol\xi),\\
+p_1&=-\boldsymbol\xi\cdot\nabla p_0-\gamma p_0\nabla\cdot\boldsymbol\xi,\\
+\mathbf B_1&=\nabla\times(\boldsymbol\xi\times\mathbf B_0).
+\end{align}
+These relations express all perturbed fields in terms of one geometric variable.
+
+
+\section{Normal modes and the force operator}
+
+Substitute $\boldsymbol\xi(\mathbf x,t)=\hat{\boldsymbol\xi}(\mathbf x)e^{-i\omega t}$. The momentum equation becomes
+\begin{equation}
+-\omega^2\rho_0\hat{\boldsymbol\xi}
+=\mathcal F[\hat{\boldsymbol\xi}],
+\end{equation}
+or
+\begin{equation}
+\mathcal A\hat{\boldsymbol\xi}
+=\omega^2\mathcal M\hat{\boldsymbol\xi}.
+\end{equation}
+Under ideal boundary conditions, the force operator has a self-adjoint energy structure. Positive $\omega^2$ gives oscillation; negative $\omega^2$ corresponds to $\omega=i\gamma$ and exponential instability.
+
+
+\section{Eulerian and Lagrangian perturbations}
+
+An Eulerian perturbation compares fields at a fixed position. A Lagrangian perturbation follows a displaced fluid element:
+\begin{equation}
+\Delta Q=\delta Q+\boldsymbol\xi\cdot\nabla Q_0.
+\end{equation}
+For density and pressure,
+\begin{equation}
+\Delta\rho=-\rho_0\nabla\cdot\boldsymbol\xi,\qquad
+\Delta p=-\gamma p_0\nabla\cdot\boldsymbol\xi.
+\end{equation}
+Confusing $\delta Q$ and $\Delta Q$ is a common source of sign and gradient errors.
+
+
+\section{Validity and nonlinear continuation}
+
+Linear theory is valid while perturbations remain small relative to equilibrium scales and do not significantly modify particle distributions or equilibrium profiles. It predicts frequencies, mode shapes, and initial growth rates, but not nonlinear saturation. In this project, the Module 4 eigenproblem is linear; Modules 5-8 later supply energetic-particle drive, transport, and feedback.
+
+
+\section{Computational laboratory}
+Use symbolic algebra to linearize a one-dimensional nonlinear conservation law and the uniform-field ideal-MHD equations. Construct the shear-Alfvén matrix eigenproblem, verify eigenvector normalization and residuals, and compare time-domain oscillation frequency with the eigenvalue.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Linearization is an ordered expansion about an equilibrium, not simply deletion of nonlinear-looking terms.
+\item Continuity, pressure, induction, and momentum perturbations are coupled.
+\item The Lagrangian displacement expresses the perturbation system through one primary variable.
+\item Normal-mode substitution produces a generalized eigenvalue problem.
+\item Linear theory determines initial waves and stability but not nonlinear saturation.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$Q_0,Q_1$ & equilibrium and perturbation & Zeroth- and first-order fields. \\
+$\epsilon$ & perturbation parameter & Formal amplitude ordering. \\
+$\boldsymbol\xi$ & Lagrangian displacement & Fluid-element displacement. \\
+$\delta Q$ & Eulerian perturbation & Change at fixed position. \\
+$\Delta Q$ & Lagrangian perturbation & Change following a fluid element. \\
+$\mathcal F$ & linear force operator & Restoring or destabilizing MHD force. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Linearize the product $\rho\mathbf u$ about a static equilibrium.
+\item Derive the displacement expression for $\rho_1$.
+\item Derive $\mathbf B_1=\nabla\times(\boldsymbol\xi\times\mathbf B_0)$.
+\item Explain why $\mathbf J_0\times\mathbf B_1$ must be retained.
+\item Interpret positive, zero, and negative values of $\omega^2$.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref7} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref8} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref9} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref10} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref11} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\end{thebibliography}
+
+\end{document}

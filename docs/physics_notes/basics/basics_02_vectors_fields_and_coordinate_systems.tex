@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 2 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 2: Vectors, Fields, and Coordinate Systems}{I - Mathematical and computational foundations}{Geometry and notation for Cartesian, cylindrical, toroidal, and field-aligned descriptions}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Plasma models are field theories. Correctly representing them requires a careful distinction among coordinates, basis vectors, vector components, metrics, and physical vectors. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Distinguish scalars, vectors, tensors, coordinates, and components.
+\item Use dot, cross, and triple products physically and algebraically.
+\item Represent vectors in Cartesian and cylindrical coordinates.
+\item Explain why curvilinear basis vectors vary with position.
+\item Use scale factors and Jacobians to compute distances, areas, and volumes.
+\item Interpret radial, poloidal, toroidal, parallel, and perpendicular directions.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 1 or equivalent algebra and elementary trigonometry.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Scalars, vectors, tensors, and fields}
+
+A scalar such as density $\rho(\mathbf x,t)$ assigns one number to each point. A vector such as velocity $\mathbf u(\mathbf x,t)$ assigns a magnitude and direction. A tensor such as the pressure tensor $\mathsf P$ describes a direction-dependent linear relation.
+
+The physical vector is independent of coordinates, but its components are not:
+\begin{equation}
+\mathbf B=B^1\mathbf e_1+B^2\mathbf e_2+B^3\mathbf e_3.
+\end{equation}
+Changing the basis changes the components while leaving the vector unchanged. This is why a data file must identify both component ordering and coordinate system.
+
+
+\section{Dot products, cross products, and projections}
+
+The dot product
+\begin{equation}
+\mathbf a\cdot\mathbf b=ab\cos\theta
+\end{equation}
+measures projection and defines orthogonality. The component of $\mathbf a$ along a unit vector $\mathbf b$ is $a_\parallel=\mathbf a\cdot\mathbf b$.
+
+The cross product
+\begin{equation}
+\mathbf a\times\mathbf b=ab\sin\theta\,\mathbf n
+\end{equation}
+is normal to the plane of the two vectors. The Lorentz magnetic force is perpendicular to both velocity and magnetic field. The scalar triple product
+\begin{equation}
+\mathbf a\cdot(\mathbf b\times\mathbf c)
+\end{equation}
+is an oriented volume and appears in coordinate Jacobians.
+
+
+\section{Cartesian coordinates}
+
+Cartesian coordinates use fixed orthonormal basis vectors:
+\begin{equation}
+\mathbf r=x\mathbf e_x+y\mathbf e_y+z\mathbf e_z,
+\qquad
+d\ell^2=dx^2+dy^2+dz^2.
+\end{equation}
+Because the basis vectors do not vary with position, differentiation is comparatively simple. Cartesian coordinates are ideal for local wave derivations and code-verification cases, though they do not conform naturally to a torus.
+
+
+\section{Cylindrical coordinates and rotating basis vectors}
+
+Cylindrical coordinates $(R,\phi,Z)$ satisfy
+\begin{equation}
+x=R\cos\phi,\qquad y=R\sin\phi,\qquad z=Z.
+\end{equation}
+The basis vectors are
+\begin{align}
+\mathbf e_R&=(\cos\phi,\sin\phi,0),\\
+\mathbf e_\phi&=(-\sin\phi,\cos\phi,0),\\
+\mathbf e_Z&=(0,0,1).
+\end{align}
+They obey
+\begin{equation}
+\pdv{\mathbf e_R}{\phi}=\mathbf e_\phi,
+\qquad
+\pdv{\mathbf e_\phi}{\phi}=-\mathbf e_R.
+\end{equation}
+The line element is
+\begin{equation}
+d\ell^2=dR^2+R^2d\phi^2+dZ^2,
+\end{equation}
+so an angular differential represents physical distance $R\,d\phi$.
+
+
+\section{General coordinates, metric factors, and Jacobians}
+
+For orthogonal coordinates $(q^1,q^2,q^3)$ with scale factors $h_i$,
+\begin{equation}
+d\ell^2=\sum_i h_i^2(dq^i)^2,
+\qquad
+dV=h_1h_2h_3\,dq^1dq^2dq^3.
+\end{equation}
+In cylindrical coordinates $(h_R,h_\phi,h_Z)=(1,R,1)$, so $dV=R\,dR\,d\phi\,dZ$. Omitting the Jacobian factor changes integrals, conservation laws, and matrix symmetry.
+
+In nonorthogonal coordinates, the metric tensor
+\begin{equation}
+g_{ij}=\pdv{\mathbf r}{q^i}\cdot\pdv{\mathbf r}{q^j}
+\end{equation}
+determines distances and inner products. Covariant and contravariant components are then distinct.
+
+
+\section{Toroidal and magnetic coordinates}
+
+A simple circular torus may be written
+\begin{align}
+R&=R_0+r\cos\theta,\\
+Z&=r\sin\theta,
+\end{align}
+where $\theta$ is poloidal and $\phi$ toroidal. Real stellarator surfaces require Fourier representations in both angles.
+
+Magnetic coordinates commonly use a surface label $\psi$ together with angles. A magnetic surface satisfies
+\begin{equation}
+\mathbf B\cdot\nabla\psi=0.
+\end{equation}
+The field-aligned unit vector is $\mathbf b=\mathbf B/B$, and any vector decomposes as
+\begin{equation}
+\mathbf a=(\mathbf a\cdot\mathbf b)\mathbf b+
+\left[\mathbf a-(\mathbf a\cdot\mathbf b)\mathbf b\right].
+\end{equation}
+The terms parallel and perpendicular always refer to a specified local magnetic field.
+
+\begin{notebox}
+A component called ``radial'' may mean cylindrical $R$, minor radius $r$, or flux coordinate $\psi$. Never infer the meaning from the word alone.
+\end{notebox}
+
+
+\section{Computational laboratory}
+
+Generate points on a circular torus, convert between $(r,\theta,\phi)$ and Cartesian coordinates, and verify basis orthogonality. Approximate the torus volume using the correct Jacobian and compare with $2\pi^2R_0a^2$. Then omit the Jacobian deliberately and quantify the error. Implement identical coordinate conventions in Python and MATLAB.
+
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Vectors are coordinate independent, but their components and bases are not.
+\item Curvilinear basis vectors and metric factors vary with position.
+\item Jacobians are essential to physical integration and numerical conservation.
+\item Toroidal, poloidal, radial, parallel, and perpendicular directions are distinct.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\mathbf e_i$ & basis vector & Direction associated with coordinate $q^i$. \\
+$h_i$ & scale factor & Converts coordinate differential to physical length. \\
+$g_{ij}$ & metric tensor & Inner products of coordinate basis vectors. \\
+$R,\phi,Z$ & cylindrical coordinates & Radius, azimuth, and vertical coordinate. \\
+$\mathbf b$ & field unit vector & $\mathbf B/B$. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Prove the cylindrical-basis derivative identities.
+\item Compute the physical length associated with $d\phi$ at two different major radii.
+\item Decompose a given vector into parallel and perpendicular components.
+\item Derive the volume of a circular torus from a coordinate mapping.
+\item Explain the difference between a coordinate basis and an orthonormal physical basis.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\end{thebibliography}
+
+\end{document}

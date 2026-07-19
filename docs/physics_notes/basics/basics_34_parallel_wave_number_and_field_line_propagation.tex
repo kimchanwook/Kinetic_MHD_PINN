@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 34 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 34: Parallel Wave Number and Field-Line Propagation}{V - Plasma waves and Alfvén physics}{Directional derivatives, toroidal mode numbers, rotational transform, rational surfaces, and sign conventions}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} Alfvén waves propagate along magnetic field lines, so the physically relevant wave number is the component parallel to the equilibrium field. This chapter derives the toroidal expression connecting $k_\parallel$ to poloidal and toroidal mode numbers and rotational transform. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Define the derivative parallel to a magnetic field.
+\item Relate local phase variation to parallel wave number.
+\item Derive the large-aspect-ratio toroidal form of $k_\parallel$.
+\item Interpret rotational transform and safety factor.
+\item Locate rational or resonant magnetic surfaces.
+\item Track sign conventions consistently.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 2, 7, 31, and 32.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Parallel derivative}
+
+Let
+\begin{equation}
+\mathbf b=\frac{\mathbf B}{B}
+\end{equation}
+be the magnetic-field unit vector. The derivative along a field line is
+\begin{equation}
+\nabla_\parallel=\mathbf b\cdot\nabla.
+\end{equation}
+For a local phase $S(\mathbf x)$ with $\mathbf k=\nabla S$,
+\begin{equation}
+k_\parallel=\mathbf b\cdot\mathbf k=\mathbf b\cdot\nabla S.
+\end{equation}
+The shear-Alfvén relation is locally $\omega=\pm k_\parallel v_A$.
+
+
+\section{Straight-field interpretation}
+
+For $\mathbf B=B_0\hat{\mathbf z}$ and phase
+\begin{equation}
+S=k_xx+k_yy+k_zz-\omega t,
+\end{equation}
+the parallel wave number is simply $k_\parallel=k_z$. Components perpendicular to $\mathbf B$ shape the transverse structure but do not enter the elementary tension-wave frequency directly.
+
+
+\section{Magnetic field lines on a torus}
+
+Let $\theta$ be poloidal angle and $\phi$ toroidal angle. Rotational transform is
+\begin{equation}
+\iota=\frac{d\theta}{d\phi}
+\end{equation}
+along a magnetic field line, while tokamak safety factor is commonly $q=1/\iota$. On a rational surface $\iota=n/m$, a field line closes after $m$ toroidal or $n$ poloidal turns under the stated convention.
+
+
+\section{Mode phase and toroidal $k_\parallel$}
+
+Use the harmonic convention
+\begin{equation}
+\tilde f(s,\theta,\phi,t)
+=\hat f(s)e^{i(m\theta-n\phi-\omega t)}.
+\end{equation}
+Along a field line,
+\begin{equation}
+\frac{d}{d\phi}(m\theta-n\phi)=m\iota-n.
+\end{equation}
+If toroidal arc length is approximately $R_0d\phi$,
+\begin{equation}
+\boxed{k_\parallel(s)\simeq\frac{m\iota(s)-n}{R_0}}.
+\end{equation}
+The opposite phase convention or reversed angle orientation changes the sign. Frequencies based on $k_\parallel^2$ are unchanged, but propagation direction and resonance signs are not.
+
+
+\section{Rational surfaces and local continuum zeros}
+
+At
+\begin{equation}
+m\iota(s_r)-n=0,
+\end{equation}
+the selected harmonic has $k_\parallel=0$. The elementary local Alfvén frequency therefore approaches zero:
+\begin{equation}
+\omega_{A,m}(s)=|k_{\parallel,m}(s)|v_A(s).
+\end{equation}
+In a complete toroidal system, pressure, compressibility, geometry, and coupling modify the spectrum, but rational surfaces remain central landmarks.
+
+
+\section{Magnetic shear}
+
+Magnetic shear measures radial variation of field-line pitch. One common tokamak form is
+\begin{equation}
+\hat s=\frac{r}{q}\frac{dq}{dr}.
+\end{equation}
+Because $k_\parallel$ depends on $\iota(s)$, shear changes the radial slope of continuum branches and the width of resonant layers. Low shear can produce broad near-resonant regions; strong shear changes $k_\parallel$ rapidly with radius.
+
+
+\section{Three-dimensional stellarator extension}
+
+A stellarator equilibrium has many Fourier harmonics in magnetic geometry. A perturbation component labeled $(m,n)$ can couple to $(m+\mu,n+\nu N_{\rm fp})$, where $(\mu,\nu)$ label equilibrium harmonics and $N_{\rm fp}$ is field periodicity. There is no single isolated $k_\parallel$ branch once coupling is strong; instead one solves a matrix or differential eigenproblem.
+
+
+\section{Connection to particle resonance}
+
+Wave-particle interaction depends on phase coherence along orbits. A schematic resonance is
+\begin{equation}
+\omega-n\omega_\phi-m\omega_\theta-\ell\omega_b-\omega_d\simeq0.
+\end{equation}
+Consistent mode-number and angle conventions are essential when connecting MHD eigenfunctions to orbit frequencies. A sign error can exchange co- and counter-passing resonances.
+
+
+\section{Computational laboratory}
+Define analytic $\iota(s)$ profiles and plot $k_{\parallel,m}(s)$ for several $(m,n)$ pairs. Locate rational surfaces, vary magnetic shear, and compare sign conventions. Trace a field line numerically and verify the phase accumulation predicted by $m\iota-n$.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Parallel wave number measures phase variation along equilibrium magnetic field lines.
+\item Toroidal mode labels and rotational transform determine $k_\parallel$.
+\item Rational surfaces occur where a selected harmonic has zero parallel wave number.
+\item Magnetic shear controls radial variation of the local parallel phase.
+\item Stellarator geometry couples many harmonics, so conventions must remain consistent from fields to particle resonances.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$\mathbf b$ & field unit vector & $\mathbf B/B$. \\
+$k_\parallel$ & parallel wave number & $\mathbf b\cdot\nabla S$. \\
+$m,n$ & mode numbers & Poloidal and toroidal indices in this note. \\
+$\iota$ & rotational transform & $d\theta/d\phi$ along a field line. \\
+$q$ & safety factor & Commonly $1/\iota$. \\
+$\hat s$ & magnetic shear & Radial change of field-line pitch. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive $k_\parallel=\mathbf b\cdot\nabla S$.
+\item Derive the large-aspect-ratio expression from the toroidal harmonic phase.
+\item Locate the rational surface for a specified $\iota(s)$, $m$, and $n$.
+\item Explain why changing the Fourier convention changes propagation signs but not $\omega^2$.
+\item Describe how three-dimensional equilibrium harmonics expand the coupling network.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref7} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref8} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref9} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref10} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref11} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 19 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 19: Plasma Distributions and Temperature}{III - Elementary plasma physics}{Velocity-space probability, Maxwellians, moments, anisotropy, and energetic tails}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} A kinetic plasma is described by a distribution over position and velocity rather than one trajectory or one bulk velocity. This chapter builds the distribution-function language, derives Maxwellian moments, and clarifies the statistical meaning of plasma temperature. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Interpret the distribution function as phase-space density.
+\item Normalize one- and three-dimensional Maxwellian distributions.
+\item Derive density, flow velocity, pressure, and temperature moments.
+\item Distinguish common thermal-speed conventions.
+\item Represent anisotropic and nonthermal populations.
+\item Connect particle-marker samples to continuum moments.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 1, 2, 6, 10, and 17.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Distribution function and normalization}
+
+For species $s$, let $f_s(\mathbf x,\mathbf v,t)$ satisfy
+\begin{equation}
+dN_s=f_s\,d^3x\,d^3v.
+\end{equation}
+Its velocity integral is number density:
+\begin{equation}
+n_s(\mathbf x,t)=\int f_s\,d^3v.
+\end{equation}
+Some communities normalize $f$ to unity and write $nf$ for phase-space density. The convention must be explicit because it changes every moment formula.
+
+
+\section{One-dimensional Maxwellian}
+
+Thermal equilibrium in one velocity component has
+\begin{equation}
+f(v_x)=n\sqrt{\frac{m}{2\pi k_BT}}
+\exp\left[-\frac{m(v_x-u_x)^2}{2k_BT}\right].
+\end{equation}
+The Gaussian integral ensures $\int f\,dv_x=n$. Its mean is $u_x$, and its variance is
+\begin{equation}
+\left\langle(v_x-u_x)^2\right\rangle=\frac{k_BT}{m}.
+\end{equation}
+Temperature therefore measures random kinetic-energy spread, not bulk flow speed.
+
+
+\section{Three-dimensional Maxwellian and kinetic energy}
+
+For an isotropic equilibrium,
+\begin{equation}
+f_M(\mathbf v)=n\left(\frac{m}{2\pi k_BT}\right)^{3/2}
+\exp\left[-\frac{m|\mathbf v-\mathbf u|^2}{2k_BT}\right].
+\end{equation}
+Each quadratic degree of freedom contributes $k_BT/2$:
+\begin{equation}
+\frac{m}{2n}\int|\mathbf v-\mathbf u|^2f_M\,d^3v=\frac{3}{2}k_BT.
+\end{equation}
+Bulk kinetic energy $mn u^2/2$ is separate from internal thermal energy.
+
+
+\section{Moments and the pressure tensor}
+
+The bulk velocity is
+\begin{equation}
+\mathbf u_s=\frac{1}{n_s}\int\mathbf v f_s\,d^3v.
+\end{equation}
+Define peculiar velocity $\mathbf c=\mathbf v-\mathbf u_s$. The pressure tensor is
+\begin{equation}
+\mathsf P_s=m_s\int\mathbf c\mathbf c\,f_s\,d^3v.
+\end{equation}
+For an isotropic distribution, $\mathsf P_s=p_s\mathsf I$ and
+\begin{equation}
+p_s=n_sk_BT_s=\frac{1}{3}\operatorname{tr}\mathsf P_s.
+\end{equation}
+The heat flux is a third-order moment,
+\begin{equation}
+\mathbf q_s=\frac{m_s}{2}\int c^2\mathbf c f_s\,d^3v.
+\end{equation}
+
+
+\section{Thermal-speed conventions}
+
+Several definitions are common:
+\begin{equation}
+v_T=\sqrt{\frac{k_BT}{m}},\qquad
+v_{\rm mp}=\sqrt{\frac{2k_BT}{m}},\qquad
+v_{\rm rms}=\sqrt{\frac{3k_BT}{m}}.
+\end{equation}
+They are respectively a one-component standard deviation, most-probable speed, and root-mean-square speed. Calling all three ``thermal speed'' without a definition creates factor-of-$\sqrt{2}$ or $\sqrt{3}$ errors.
+
+
+\section{Anisotropic distributions}
+
+Magnetized collisionless plasmas often have different parallel and perpendicular temperatures. A bi-Maxwellian can be written
+\begin{equation}
+f_b=
+n\left(\frac{m}{2\pi k_BT_\perp}\right)
+\left(\frac{m}{2\pi k_BT_\parallel}\right)^{1/2}
+\exp\left[-\frac{mv_\perp^2}{2k_BT_\perp}
+-\frac{m(v_\parallel-u_\parallel)^2}{2k_BT_\parallel}\right].
+\end{equation}
+Its pressure tensor has $p_\parallel=nk_BT_\parallel$ and $p_\perp=nk_BT_\perp$. Such anisotropy can drive kinetic instabilities.
+
+
+\section{Nonthermal and energetic populations}
+
+Fusion alpha particles and neutral-beam ions are not generally Maxwellian. A slowing-down distribution has a characteristic form
+\begin{equation}
+f_{\rm sd}(v)\propto\frac{1}{v^3+v_c^3}
+\end{equation}
+over a finite birth-energy range. Beams may be strongly anisotropic. A small energetic population can dominate wave drive even when its density is much lower than the thermal-plasma density because resonance depends on phase-space gradients and particle energy.
+
+
+\section{Particle markers and sampling error}
+
+A Monte Carlo representation uses weighted markers:
+\begin{equation}
+f(\mathbf z)\approx\sum_{p=1}^{N_p}w_pK_h(\mathbf z-\mathbf z_p).
+\end{equation}
+Moments become weighted sums. Statistical error typically decreases as $N_p^{-1/2}$ for independent samples, while interpolation kernels introduce bias and smoothing. Verification should compare sampled moments with analytic distribution moments.
+
+
+\section{Computational laboratory}
+Sample one- and three-dimensional Maxwellians, reconstruct histograms, and estimate density, flow, pressure, and temperature. Compare thermal-speed definitions. Repeat for a bi-Maxwellian and a simple slowing-down distribution, then quantify Monte Carlo convergence.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item A distribution function describes particle density in phase space.
+\item Temperature is a moment of random velocity spread, not bulk motion.
+\item Pressure is generally a tensor and becomes scalar only under isotropy.
+\item Thermal-speed conventions must be stated explicitly.
+\item Energetic and anisotropic populations require non-Maxwellian models and careful sampling.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$f_s$ & distribution function & Species phase-space density. \\
+$\mathbf u_s$ & bulk velocity & First velocity moment divided by density. \\
+$\mathsf P_s$ & pressure tensor & Second central velocity moment. \\
+$\mathbf q_s$ & heat flux & Third central moment. \\
+$\mathbf c$ & peculiar velocity & $\mathbf v-\mathbf u_s$. \\
+$T_\parallel,T_\perp$ & anisotropic temperatures & Parallel and perpendicular random-energy measures. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Normalize the one-dimensional Maxwellian.
+\item Derive $p=nk_BT$ from the isotropic pressure tensor.
+\item Separate bulk and thermal kinetic energy for a shifted Maxwellian.
+\item Calculate $T_\parallel$ and $T_\perp$ from sampled velocities.
+\item Explain why a low-density energetic tail can strongly affect an Alfvén eigenmode.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref2} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref3} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\bibitem{ref4} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref5} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref6} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\end{thebibliography}
+
+\end{document}

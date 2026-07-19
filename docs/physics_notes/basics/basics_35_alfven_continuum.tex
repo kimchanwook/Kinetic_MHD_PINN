@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 35 Textbook Draft}
+
+\begin{document}
+\DocTitle{Basics 35: Alfvén Continuum}{V - Plasma waves and Alfvén physics}{Surface-dependent shear-Alfvén frequency, resonant layers, phase mixing, and continuum damping}
+
+\begin{overviewbox}
+\textbf{Textbook draft, version 1.0.} In a nonuniform magnetized plasma, each flux surface can possess a different local shear-Alfvén frequency. The resulting spectrum is a continuum rather than a single wave speed. This chapter develops the continuum and explains its numerical and physical consequences. This chapter is designed for a reader with no prior plasma-physics training. It distinguishes exact identities from physical approximations and connects the central equations to later simulation modules.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Learning objectives}
+After completing this note, the reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Derive a local Alfvén-continuum frequency.
+\item Explain why radial nonuniformity produces a continuum.
+\item Locate continuum resonances for a global frequency.
+\item Interpret phase mixing and ideal singular behavior.
+\item Distinguish physical continua from grid-generated discrete eigenvalues.
+\item Explain the origin of continuum damping.
+\end{itemize}
+
+\section{Prerequisites and reading strategy}
+\begin{itemize}[leftmargin=1.6em]
+\item Basics 29, 32, and 34.
+\end{itemize}
+On a first reading, emphasize physical meaning and dimensional checks. On a second reading, reproduce the derivations. Attempt the computational laboratory only after the limiting cases are understood.
+
+\section{Local surface frequency}
+
+For a flux-surface label $s$ and one harmonic $(m,n)$,
+\begin{equation}
+\omega_{A,m}(s)=|k_{\parallel,m}(s)|v_A(s),
+\end{equation}
+with
+\begin{equation}
+k_{\parallel,m}(s)\simeq\frac{m\iota(s)-n}{R(s)},\qquad
+v_A(s)=\frac{B(s)}{\sqrt{\mu_0\rho(s)}}.
+\end{equation}
+Both field-line pitch and Alfvén speed vary radially, so the natural frequency varies from surface to surface.
+
+
+\section{Why the spectrum is continuous}
+
+In an idealized model with no radial coupling, every surface can oscillate independently at its own $\omega_A(s)$. Since $s$ is continuous, the set
+\begin{equation}
+\{\omega_A(s):0\le s\le1\}
+\end{equation}
+fills intervals of frequency. This differs from a string with boundary conditions that quantize a finite set of standing modes. Weak radial derivatives do not necessarily remove the essential resonant structure.
+
+
+\section{Continuum branches and rational surfaces}
+
+For fixed $n$, each poloidal harmonic gives a branch
+\begin{equation}
+\omega_{A,m}(s)=\frac{v_A(s)}{R(s)}
+|m\iota(s)-n|.
+\end{equation}
+A branch reaches zero at a rational surface $m\iota=n$ in the simplest shear-Alfvén model. Adjacent $m$ branches may cross. Toroidal or helical geometry couples such branches and can replace crossings with avoided crossings and gaps.
+
+
+\section{Continuum resonance}
+
+Suppose a global perturbation has real frequency $\omega_g$. A resonant surface $s_r$ satisfies
+\begin{equation}
+\omega_g=\omega_A(s_r).
+\end{equation}
+The ideal radial equation often contains a coefficient proportional to
+\begin{equation}
+\omega_g^2-\omega_A^2(s).
+\end{equation}
+At $s_r$ this coefficient vanishes, and the ideal eigenfunction can develop singular derivatives. Small dissipation, kinetic effects, or finite-Larmor-radius physics regularize the layer.
+
+
+\section{Phase mixing}
+
+Initialize neighboring surfaces in phase. Their phases evolve as
+\begin{equation}
+\varphi(s,t)=\omega_A(s)t.
+\end{equation}
+The radial phase difference grows:
+\begin{equation}
+\frac{\partial\varphi}{\partial s}
+=t\frac{d\omega_A}{ds}.
+\end{equation}
+Thus ever-shorter radial scales appear even without ordinary collisional damping. Weak resistivity or viscosity becomes increasingly effective on these gradients. This is phase mixing.
+
+
+\section{Continuum damping}
+
+A discrete global mode whose frequency overlaps a continuum can transfer coherent energy to localized resonant motion. In ideal language this appears through singular continuum structure; in kinetic or dissipative treatments the transferred energy is absorbed in a thin layer. The global amplitude can therefore decay even when bulk equations are formally nondissipative.
+
+
+\section{Discretization caution}
+
+A finite radial grid replaces a continuum by many discrete matrix eigenvalues. These grid eigenvalues move as resolution changes, whereas a genuine isolated global eigenmode tends to converge. Useful diagnostics include:
+\begin{equation}
+\text{frequency convergence},\quad
+\text{eigenfunction localization},\quad
+\text{overlap across grids}.
+\end{equation}
+Plotting only the discrete spectrum without the analytic or reconstructed continuum can lead to false mode identification.
+
+
+\section{Role in the present project}
+
+Module 4 computes uncoupled continuum branches, a positivity-preserving coupled local spectrum, and a global reduced radial eigenproblem. The continuum supplies the background against which gap modes are identified. Later kinetic modules add growth and damping rather than treating every matrix eigenpair as an undamped physical mode.
+
+
+\section{Computational laboratory}
+Prescribe density and rotational-transform profiles, compute several continuum branches, and locate rational and resonant surfaces. Evolve uncoupled oscillators with radially varying frequency to demonstrate phase mixing. Discretize the continuum and study which eigenvalues move under grid refinement.
+
+\section{Summary}
+\begin{itemize}[leftmargin=1.6em]
+\item Nonuniform field-line pitch and mass density make the Alfvén frequency surface dependent.
+\item A continuum arises because flux surfaces form a continuous family.
+\item Global frequencies overlapping the continuum encounter resonant layers.
+\item Phase mixing generates progressively fine radial structure.
+\item Resolution studies are essential because numerical discretization converts a continuum into many apparent eigenvalues.
+\end{itemize}
+
+\SymbolsAcronymsSection
+\begin{symtable}
+$s$ & flux-surface coordinate & Continuous radial label. \\
+$\omega_{A,m}(s)$ & Alfvén continuum branch & Local harmonic frequency. \\
+$s_r$ & resonant surface & Location where global and local frequencies match. \\
+$\omega_g$ & global-mode frequency & Frequency tested against the continuum. \\
+$d\omega_A/ds$ & continuum shear & Radial frequency gradient. \\
+$\varphi$ & wave phase & Accumulated local oscillation phase. \\
+\end{symtable}
+
+\section{Exercises}
+\begin{enumerate}[leftmargin=1.8em]
+\item Derive the radial dependence of $\omega_{A,m}$ for specified $v_A(s)$ and $\iota(s)$.
+\item Locate all continuum resonances for a chosen global frequency.
+\item Show that the radial phase gradient grows linearly in time.
+\item Explain why a finite matrix cannot contain a literal continuum.
+\item Propose numerical criteria distinguishing a gap mode from a grid-discretized continuum state.
+\end{enumerate}
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{ref1} F. F. Chen, \emph{Introduction to Plasma Physics and Controlled Fusion}, 3rd ed., Springer (2016).
+\bibitem{ref2} R. J. Goldston and P. H. Rutherford, \emph{Introduction to Plasma Physics}, CRC Press (1995).
+\bibitem{ref3} P. M. Bellan, \emph{Fundamentals of Plasma Physics}, Cambridge University Press (2006).
+\bibitem{ref4} J. P. Freidberg, \emph{Ideal MHD}, Cambridge University Press (2014).
+\bibitem{ref5} J. P. Goedbloed, R. Keppens, and S. Poedts, \emph{Advanced Magnetohydrodynamics}, Cambridge University Press (2010).
+\bibitem{ref6} H. Goedbloed and S. Poedts, \emph{Principles of Magnetohydrodynamics}, Cambridge University Press (2004).
+\bibitem{ref7} T. H. Stix, \emph{Waves in Plasmas}, American Institute of Physics (1992).
+\bibitem{ref8} D. A. Gurnett and A. Bhattacharjee, \emph{Introduction to Plasma Physics}, 2nd ed., Cambridge University Press (2017).
+\bibitem{ref9} G. B. Arfken, H. J. Weber, and F. E. Harris, \emph{Mathematical Methods for Physicists}, 7th ed., Academic Press (2013).
+\bibitem{ref10} G. Strang, \emph{Linear Algebra and Its Applications}, 4th ed., Brooks/Cole (2006).
+\bibitem{ref11} W. A. Strauss, \emph{Partial Differential Equations: An Introduction}, 2nd ed., Wiley (2007).
+\end{thebibliography}
+
+\end{document}
