@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 63 Course Note}
+
+\begin{document}
+\DocTitle{Basics 63: Stellarator Symmetry and Fourier Geometry}{VIII - Stellarator and magnetic-confinement foundations}{Planned textbook-style prerequisite note for the Kinetic MHD-PINN computational-plasma-physics curriculum}
+
+\begin{overviewbox}
+\textbf{Curriculum scaffold - not yet a completed textbook chapter.} This file reserves the scope, learning sequence, and advanced-module connections for Basics 63. The completed version will begin from first principles, derive its central equations, include physical intuition and worked examples, and connect each derivation to numerical implementation. No placeholder statement in this scaffold should be cited as a finished derivation.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Role in the curriculum}
+This note belongs to \textbf{VIII - Stellarator and magnetic-confinement foundations}. Its purpose is to make the later simulation modules readable to a student who has no prior plasma-physics background. The principal downstream connections are: \textbf{Modules 1, 3, and 4}.
+
+\section{Learning objectives}
+After the completed note is written and studied, a reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Field periods.
+\item Stellarator symmetry.
+\item Fourier surface representation.
+\item Helical harmonics.
+\item Mode-number conventions.
+\item Geometric coefficients.
+\item Explain which assumptions are physical approximations and which choices are purely numerical.
+\item Reproduce the main derivations and verify dimensional consistency.
+\item Identify where the concepts enter the Python and MATLAB implementations.
+\end{itemize}
+
+\section{Planned textbook chapter structure}
+\begin{enumerate}[leftmargin=1.8em]
+\item \textbf{Chapter 1: Field periods.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 2: Stellarator symmetry.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 3: Fourier surface representation.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 4: Helical harmonics.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 5: Mode-number conventions.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 6: Geometric coefficients.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Worked examples and limiting cases.} Analytic checks, order-of-magnitude estimates, and common misconceptions.
+\item \textbf{Computational laboratory.} A language-neutral numerical exercise with parallel Python and MATLAB implementations where appropriate.
+\item \textbf{Summary, symbol table, and exercises.} Conceptual questions, derivations, coding exercises, and verification tasks.
+\end{enumerate}
+
+\section{Expected derivation standard}
+The completed note will not merely quote final equations. It will state the starting assumptions, define every symbol, show intermediate algebra, identify boundary or initial conditions, test units and limiting cases, and distinguish exact identities from reduced-model closures. Numerical formulas will be derived from the continuous equations before code is introduced.
+
+\section{Repository integration}
+The planned source and PDF names are:
+\begin{center}
+\path{basics_63_stellarator_symmetry_and_fourier_geometry.tex}\\
+\path{basics_63_stellarator_symmetry_and_fourier_geometry.pdf}
+\end{center}
+Advanced module notes may list this document in a prerequisite table. Once the note is completed, those references should become clickable PDF links and should state exactly which sections are required rather than treating the entire note as mandatory.
+
+\section{Completion checklist}
+This scaffold will be considered complete only when it contains:
+\begin{itemize}[leftmargin=1.6em]
+\item a detailed symbols-and-acronyms table;
+\item first-principles derivations of the key equations;
+\item physical interpretation and order-of-magnitude examples;
+\item at least one fully worked analytic example;
+\item at least one computational exercise or reproducible notebook/script;
+\item verification questions and common-error warnings;
+\item references to authoritative textbooks, papers, or official software documentation.
+\end{itemize}
+
+\end{document}

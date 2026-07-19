@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\input{../../shared/project_style.tex}
+\rhead{Basics 79 Course Note}
+
+\begin{document}
+\DocTitle{Basics 79: High-Performance Computing for Simulation}{IX - Computational physics methods}{Planned textbook-style prerequisite note for the Kinetic MHD-PINN computational-plasma-physics curriculum}
+
+\begin{overviewbox}
+\textbf{Curriculum scaffold - not yet a completed textbook chapter.} This file reserves the scope, learning sequence, and advanced-module connections for Basics 79. The completed version will begin from first principles, derive its central equations, include physical intuition and worked examples, and connect each derivation to numerical implementation. No placeholder statement in this scaffold should be cited as a finished derivation.
+\end{overviewbox}
+
+\ProjectTOC
+
+\section{Role in the curriculum}
+This note belongs to \textbf{IX - Computational physics methods}. Its purpose is to make the later simulation modules readable to a student who has no prior plasma-physics background. The principal downstream connections are: \textbf{All numerical modules, especially Modules 3, 4, 6, 8, and 9}.
+
+\section{Learning objectives}
+After the completed note is written and studied, a reader should be able to:
+\begin{itemize}[leftmargin=1.6em]
+\item Vectorization.
+\item Threading.
+\item Multiprocessing.
+\item Gpu acceleration.
+\item Domain decomposition.
+\item Particle parallelism.
+\item Memory hierarchy.
+\item Profiling.
+\item Explain which assumptions are physical approximations and which choices are purely numerical.
+\item Reproduce the main derivations and verify dimensional consistency.
+\item Identify where the concepts enter the Python and MATLAB implementations.
+\end{itemize}
+
+\section{Planned textbook chapter structure}
+\begin{enumerate}[leftmargin=1.8em]
+\item \textbf{Chapter 1: Vectorization.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 2: Threading.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 3: Multiprocessing.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 4: Gpu acceleration.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 5: Domain decomposition.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 6: Particle parallelism.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 7: Memory hierarchy.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Chapter 8: Profiling.} Definitions, physical interpretation, derivations, worked examples, and computational implications will be developed.
+\item \textbf{Worked examples and limiting cases.} Analytic checks, order-of-magnitude estimates, and common misconceptions.
+\item \textbf{Computational laboratory.} A language-neutral numerical exercise with parallel Python and MATLAB implementations where appropriate.
+\item \textbf{Summary, symbol table, and exercises.} Conceptual questions, derivations, coding exercises, and verification tasks.
+\end{enumerate}
+
+\section{Expected derivation standard}
+The completed note will not merely quote final equations. It will state the starting assumptions, define every symbol, show intermediate algebra, identify boundary or initial conditions, test units and limiting cases, and distinguish exact identities from reduced-model closures. Numerical formulas will be derived from the continuous equations before code is introduced.
+
+\section{Repository integration}
+The planned source and PDF names are:
+\begin{center}
+\path{basics_79_high_performance_computing_for_simulation.tex}\\
+\path{basics_79_high_performance_computing_for_simulation.pdf}
+\end{center}
+Advanced module notes may list this document in a prerequisite table. Once the note is completed, those references should become clickable PDF links and should state exactly which sections are required rather than treating the entire note as mandatory.
+
+\section{Completion checklist}
+This scaffold will be considered complete only when it contains:
+\begin{itemize}[leftmargin=1.6em]
+\item a detailed symbols-and-acronyms table;
+\item first-principles derivations of the key equations;
+\item physical interpretation and order-of-magnitude examples;
+\item at least one fully worked analytic example;
+\item at least one computational exercise or reproducible notebook/script;
+\item verification questions and common-error warnings;
+\item references to authoritative textbooks, papers, or official software documentation.
+\end{itemize}
+
+\end{document}
