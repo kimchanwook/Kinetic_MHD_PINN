@@ -1,0 +1,21 @@
+# Placeholder configuration for the likely first milestone.
+# Numerical values are intentionally not fixed in the architecture baseline.
+
+[project]
+name = "reduced_tae_baseline"
+fidelity = "F1"
+status = "unconfigured"
+
+[modules]
+equilibrium = true
+energetic_particle_source = true
+alfven_eigenmode = true
+kinetic_drive = true
+fast_ion_transport = false
+profile_evolution = false
+
+[verification]
+require_unit_checks = true
+require_analytic_limit = true
+require_resolution_study = true
+require_conservation_budget = true

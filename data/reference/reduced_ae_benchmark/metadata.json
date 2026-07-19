@@ -1,0 +1,13 @@
+{
+  "case_name": "reduced_ae_benchmark_v1",
+  "model_status": "reduced verification model; not a predictive stellarator eigenmode calculation",
+  "crossing_iota": 0.5714285714285714,
+  "crossing_s": 0.7380952380952379,
+  "crossing_cell_s": 0.736328125,
+  "gap_lower_frequency_khz": 183.20698110066243,
+  "gap_upper_frequency_khz": 297.51605845026114,
+  "axis_boundary_condition": "zero radial flux (homogeneous Neumann)",
+  "edge_boundary_condition": "zero face value (homogeneous Dirichlet)",
+  "normalization": "integral_0^1 (xi_m^2 + xi_mplus1^2) ds = 1",
+  "python_solver": "scipy.sparse.linalg.eigsh, smallest algebraic eigenpairs"
+}
